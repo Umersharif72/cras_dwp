@@ -1,0 +1,67 @@
+<!-- myapp/templates/myapp/sql_server_data.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SQL Server Data</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Optional: Add custom styles here */
+        body {
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            margin-bottom: 1rem;
+            color: #212529;
+            border-collapse: collapse;
+        }
+        table th, table td {
+            padding: 0.75rem;
+            vertical-align: top;
+            border-top: 1px solid #dee2e6;
+        }
+        table th {
+            vertical-align: bottom;
+            border-bottom: 2px solid #dee2e6;
+            background-color: #f8f9fa;
+            color: #495057;
+            text-align: inherit;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>SQL Server Data</h1>
+
+        {% if error_message %}
+            <div class="alert alert-danger" role="alert">
+                {{ error_message }}
+            </div>
+        {% else %}
+            <table class="table table-bordered table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        {% for column in rows.0.keys %}
+                            <th>{{ column }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in rows %}
+                        <tr>
+                            {% for value in row.values %}
+                                <td>{{ value }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+    </div>
+
+    <!-- Bootstrap JS (Optional: if you need Bootstrap JS functionality) -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,259 @@
+{% if table_display == "OK" %}
+<div
+  id="juri_table"
+  class="page visible"
+  style="margin-left: 390px; padding: 50px"
+>
+  <form method="post" id="myForm">
+    {% csrf_token %}
+    <label for="jurisdictionCol">Select Jurisdiction:</label>
+    <select
+      id="jurisdictionCol"
+      name="jurisdiction"
+      style="width: 200px; font-size: 16px; padding: 5px"
+    >
+      {% for jurisdictionCol in juriss %}
+      <option value="{{ jurisdictionCol }}">{{ jurisdictionCol }}</option>
+      {% endfor %}
+    </select>
+    <button type="submit" id="submitBtnCol">Submit</button>
+  </form>
+
+  <form method="post" class="mt-3" id="sourceFormTable">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="actionCol">Select Source:</label>
+      <select
+        class="form-control"
+        id="actionColl"
+        name="actionCol"
+        onchange="showHideFields()"
+      >
+        <option value="tables">Tables</option>
+        <option value="api">API</option>
+        <option value="file">File</option>
+      </select>
+    </div>
+    <div class="form-group" id="tablesCol-div">
+      <label for="table">Select Table:</label>
+      <select class="form-control" id="table" name="tables[]" multiple>
+        {% for table in tabless %}
+        <option value="{{ table }}">{{ table }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-group" id="api-div" style="display: none">
+      <label for="api">Enter API:</label>
+      <input type="text" class="form-control" id="api" name="tablesCol[]" />
+    </div>
+    <div class="form-group" id="file-div" style="display: none">
+      <label for="file">Upload File:</label>
+      <div class="form-group" id="file-div">
+        <label for="file">Upload File:</label>
+        <input
+          type="file"
+          class="form-control-file"
+          id="file"
+          name="fileclls[]"
+          multiple
+        />
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary" onclick="submitForm()">
+      Submit
+    </button>
+  </form>
+</div>
+{% endif %}
+
+<script>
+  function submitForm() {
+    // Get the file input element
+    var fileInput = document.getElementById("file");
+
+    // Get selected files
+    var files = fileInput.files;
+
+    // Extract file names
+    var fileNames = [];
+    for (var i = 0; i < files.length; i++) {
+      fileNames.push(files[i].name);
+    }
+
+    // Create a hidden input field to hold file names
+    var hiddenInput = document.createElement("input");
+    hiddenInput.type = "hidden";
+    hiddenInput.name = "fileNames"; // Adjust name as needed
+    hiddenInput.value = fileNames.join(", ");
+
+    // Append the hidden input to the form
+    var uploadForm = document.getElementById("uploadForm");
+    uploadForm.appendChild(hiddenInput);
+
+    // Submit the form
+    uploadForm.submit();
+  }
+</script>
+<script>
+  function showHideFields() {
+    var action = document.getElementById("actionColl").value;
+    document.getElementById("tablesCol-div").style.display =
+      action === "tables" ? "block" : "none";
+    document.getElementById("api-div").style.display =
+      action === "api" ? "block" : "none";
+    document.getElementById("file-div").style.display =
+      action === "file" ? "block" : "none";
+  }
+</script>
+<div id="notification">
+  Submission Message: <br />
+  Data submitted successfully
+</div>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+<link
+  href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css"
+  rel="stylesheet"
+/>
+
+<script>
+  $(document).ready(function () {
+    // Initialize Select2 on table and file elements
+    $("#table").select2();
+    $("#file").select2();
+  });
+
+  $(document).ready(function () {
+    $("#sourceFormTable").submit(function (event) {
+      event.preventDefault(); // Prevent the default form submission
+
+      // Manually submit the form
+      var form = $(this);
+      $.post(form.attr("action"), form.serialize(), function (response) {
+        // Show the notification
+        $("#notification").fadeIn();
+
+        // Hide the notification after 1 second and reload the page
+        setTimeout(function () {
+          $("#notification").fadeOut();
+          location.reload(); // Refresh the window to clear the form
+        }, 2000); // Show the notification for 1 second
+      });
+    });
+  });
+</script>
+
+<div id="juri_col" class="page" style="margin-left: 390px; padding: 50px">
+  {% if column_display == "OK" %}
+  <form method="post" id="myForm">
+    {% csrf_token %}
+    <label for="jurisdictionCol">Select Jurisdiction:</label>
+    <select
+      id="jurisdictionCol"
+      name="jurisdictionCol"
+      style="width: 200px; font-size: 16px; padding: 5px"
+    >
+      {% for jurisdictionCol in juri %}
+      <option value="{{ jurisdictionCol }}">{{ jurisdictionCol }}</option>
+      {% endfor %}
+    </select>
+    <button type="submit">Submit</button>
+  </form>
+
+  <form method="post" class="mt-3">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="actionCol">Select actionCol:</label>
+      <select class="form-control" id="actionCol" name="actionCol">
+        <option value="tables">Tables</option>
+        <option value="api">API</option>
+        <option value="file">File</option>
+      </select>
+    </div>
+    <div class="form-group" id="tablesCol-div">
+      <label for="table">Select Table:</label>
+      <select class="form-control" id="table" name="tableclls">
+        {% for table in tablescls %}
+        <option value="{{ table }}">{{ table }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-group" id="api-div" style="display: none">
+      <label for="api">Enter API:</label>
+      <input type="text" class="form-control" id="api" name="tablesCol[]" />
+    </div>
+    <div class="form-group" id="file-div" style="display: none">
+      <label for="file">Upload File:</label>
+      <select class="form-control" id="file" name="fileclls">
+        {% for file in files %}
+        <option value="{{ file }}">{{ file }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+  {% endif %} {% if fetched_cols %}
+  <form method="post" class="mt-3" id="sourceFormCol">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="columns">Select Columns:</label>
+      <select class="form-control" id="columns" name="columns[]" multiple>
+        {% for column in fetched_cols %}
+        <option value="{{ column }}">{{ column }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+  {% endif %}
+</div>
+
+<div id="notification">
+  Submission Message: <br />
+  Data submitted successfully
+</div>
+
+<script>
+  document.getElementById("actionCol").addEventListener("change", function () {
+    var action = this.value;
+    document.getElementById("tablesCol-div").style.display = "none";
+    document.getElementById("api-div").style.display = "none";
+    document.getElementById("file-div").style.display = "none";
+
+    if (action === "tables") {
+      document.getElementById("tablesCol-div").style.display = "block";
+    } else if (action === "api") {
+      document.getElementById("api-div").style.display = "block";
+    } else if (action === "file") {
+      document.getElementById("file-div").style.display = "block";
+    }
+  });
+</script>
+
+<script>
+  $(document).ready(function () {
+    // Initialize Select2
+    $("#jurisdictionCol,  #columns").select2();
+  });
+
+  $(document).ready(function () {
+    $("#sourceFormCol").submit(function (event) {
+      event.preventDefault(); // Prevent the default form submission
+
+      // Manually submit the form
+      var form = $(this);
+      $.post(form.attr("action"), form.serialize(), function (response) {
+        // Show the notification
+        $("#notification").fadeIn();
+
+        // Hide the notification after 1 second and reload the page
+        setTimeout(function () {
+          $("#notification").fadeOut();
+          window.location.href = "/sources/juri_col";
+        }, 2000); // Show the notification for 1 second
+      });
+    });
+  });
+</script>

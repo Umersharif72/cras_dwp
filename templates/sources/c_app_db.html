@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>App Database</title>
+    <!-- Add Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Set background color of the whole page */
+        body {
+            background-color: #172b4d; /* Dark blue color */
+            color: #fff; /* Text color */
+            padding-top: 20px;
+        }
+    
+        /* Set text color of table cells to white */
+        table.table td {
+            color: #fff;
+            font-size: 14px; /* Decrease font size */
+            padding: 8px; /* Adjust padding */
+        }
+        table.table th {
+            font-size: 16px; /* Decrease font size for table headings */
+        }
+        table.table {
+            background-color: #808080; /* Gray color */
+            font-family: Arial, sans-serif; /* Standardize font style */
+            border: none; /* Remove table border */
+        }
+    
+        /* Adjust modal size */
+        .modal-content {
+            width: 80%; /* Adjust width of modal content */
+            max-width: 600px; /* Limit maximum width */
+        }
+    
+        /* Decrease padding of table cells */
+        .table td, .table th {
+            padding: 8px; /* Adjust padding */
+        }
+    </style>
+    
+</head>
+<body>
+    <div class="container">
+        <h1 class="mb-4">ERP TYPES</h1>
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>SID</th>
+                        <th>Apps</th>
+                        <th>DB Name</th>
+                        <th>Update Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in records %}
+                    <tr>
+                        <td>{{ record.sid }}</td>
+                        <td>{{ record.Apps }}</td>
+                        <td>{{ record.DB_name }}</td>
+                        <td>{{ record.Update_time }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="modal fade" id="addEntryModal" tabindex="-1" role="dialog" aria-labelledby="addEntryModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addEntryModalLabel">Add Connection</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        
+                       
+                           
+                        <form method="post" style="background-color: #808080; padding: 20px;">
+                            {% csrf_token %}
+                            <div class="form-group row">
+                                <label for="Apps" class="col-sm-2 col-form-label">Apps</label>
+                                <div class="col-sm-8 offset-sm-1">
+                                    <input type="text" class="form-control" id="Apps" name="Apps" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="DB_name" class="col-sm-2 col-form-label">DB Name</label>
+                                <div class="col-sm-8 offset-sm-1">
+                                    <input type="text" class="form-control" id="DB_name" name="DB_name" required>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-sm-8 offset-sm-3">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </div>
+                        </form>
+                        
+                            
+                         
+                                
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Button to trigger modal -->
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#addEntryModal">Add Connection</button>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+
+    <!-- Add Bootstrap JS (optional) -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

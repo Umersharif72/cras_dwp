@@ -1,0 +1,264 @@
+{% block content %}
+<div id="user_list" class="page hidden">
+  <div class="container-fluid">
+    <div class="heading-wrapper">
+      <img src="" alt="" />
+      <h1>List of Users</h1>
+    </div>
+    <form method="GET" class="form-inline mb-4">
+      {{ filter.form.as_p }}
+      <button type="submit" class="btn btn-primary download-button">
+        Search
+      </button>
+    </form>
+
+    <!-- Form to handle update/delete actions -->
+    <form
+      id="action-form"
+      method="POST"
+      action="{% url 'update_or_delete_users' %}"
+    >
+      {% csrf_token %}
+      <div class="wrap-buttons">
+        <button
+          type="button"
+          id="update-button"
+          class="btn btn-warning"
+          disabled
+        >
+          Update
+        </button>
+        <button
+          name="delete"
+          id="delete-button"
+          class="btn btn-danger"
+          disabled
+        >
+          Delete
+        </button>
+      </div>
+
+      <div class="table-responsive table-wrapper">
+        <table
+          class="table table-striped table-dark"
+          style="background-color: #d3e2f4"
+        >
+          <thead class="table-header">
+            <tr>
+              <th>Select</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Department</th>
+              <th>Entity Name</th>
+              <th>Cluster Name</th>
+              <th>Part of Group Reporting</th>
+              <th>Permissions</th>
+              <th>Activation Date</th>
+              <th>Activation End Date</th>
+            </tr>
+          </thead>
+          <tbody id="lazyBodysales" class="tbody-center">
+            {% for user in filter.qs %}
+            <tr>
+              <td>
+                <input
+                  type="checkbox"
+                  class="user-checkbox"
+                  name="users"
+                  value="{{ user.id }}"
+                  data-name="{{ user.name }}"
+                  data-email="{{ user.email }}"
+                  data-role="{{ user.get_role_display }}"
+                  data-department="{{ user.get_department_display }}"
+                  data-entity-name="{{ user.entity_name }}"
+                  data-cluster-name="{{ user.cluster_name }}"
+                  data-part-of-group-reporting="{{ user.part_of_group_reporting }}"
+                  data-permissions="{{ user.get_permissions_display }}"
+                />
+              </td>
+              <td>{{ user.name }}</td>
+              <td>{{ user.email }}</td>
+              <td>{{ user.get_role_display }}</td>
+              <td>{{ user.get_department_display }}</td>
+              <td>{{ user.entity_name }}</td>
+              <td>{{ user.cluster_name }}</td>
+              <td>{{ user.part_of_group_reporting }}</td>
+              <td>{{ user.get_permissions_display }}</td>
+              <td>{{ user.activation_date }}</td>
+              <td>{{ user.activation_end_date }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </form>
+  </div>
+
+  <!-- Modal for updating user details -->
+  <div
+    id="updateModal"
+    class="modal fade"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="updateModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="updateModalLabel">Update User</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form
+            id="update-user-form"
+            method="POST"
+            action="{% url 'update_or_delete_users' %}"
+          >
+            {% csrf_token %}
+            <input type="hidden" name="user_id" id="user_id" />
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input type="text" class="form-control" id="name" name="name" />
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                name="email"
+              />
+            </div>
+            <div class="form-group">
+              <label for="role">Role</label>
+              <input type="text" class="form-control" id="role" name="role" />
+            </div>
+            <div class="form-group">
+              <label for="department">Department</label>
+              <input
+                type="text"
+                class="form-control"
+                id="department"
+                name="department"
+              />
+            </div>
+            <div class="form-group">
+              <label for="entity_name">Entity Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="entity_name"
+                name="entity_name"
+              />
+            </div>
+            <div class="form-group">
+              <label for="cluster_name">Cluster Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="cluster_name"
+                name="cluster_name"
+              />
+            </div>
+            <div class="form-group">
+              <label for="part_of_group_reporting"
+                >Part of Group Reporting</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="part_of_group_reporting"
+                name="part_of_group_reporting"
+              />
+            </div>
+            <div class="form-group">
+              <label for="permissions">Permissions</label>
+              <input
+                type="text"
+                class="form-control"
+                id="permissions"
+                name="permissions"
+              />
+            </div>
+            <button name="Update" type="submit" class="btn btn-primary">
+              Save changes
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const checkboxes = document.querySelectorAll(".user-checkbox");
+      const updateButton = document.getElementById("update-button");
+      const deleteButton = document.getElementById("delete-button");
+      const updateUserForm = document.getElementById("update-user-form");
+      const actionForm = document.getElementById("action-form");
+
+      function updateButtonState() {
+        const selected = Array.from(checkboxes).some(
+          (checkbox) => checkbox.checked
+        );
+        updateButton.disabled = !selected;
+        deleteButton.disabled = !selected;
+      }
+
+      function fillUpdateForm(userData) {
+        document.getElementById("user_id").value = userData.value;
+        document.getElementById("name").value = userData.dataset.name;
+        document.getElementById("email").value = userData.dataset.email;
+        document.getElementById("role").value = userData.dataset.role;
+        document.getElementById("department").value =
+          userData.dataset.department;
+        document.getElementById("entity_name").value =
+          userData.dataset.entityName;
+        document.getElementById("cluster_name").value =
+          userData.dataset.clusterName;
+        document.getElementById("part_of_group_reporting").value =
+          userData.dataset.partOfGroupReporting;
+        document.getElementById("permissions").value =
+          userData.dataset.permissions;
+      }
+
+      function confirmDeletion() {
+        return confirm(
+          "Are you sure you want to delete the selected users? This action cannot be undone."
+        );
+      }
+
+      checkboxes.forEach((checkbox) => {
+        checkbox.addEventListener("change", updateButtonState);
+      });
+
+      updateButton.addEventListener("click", function (event) {
+        event.preventDefault();
+        const selectedUser = Array.from(checkboxes).find(
+          (checkbox) => checkbox.checked
+        );
+        if (selectedUser) {
+          fillUpdateForm(selectedUser);
+          $("#updateModal").modal("show");
+        }
+      });
+
+      deleteButton.addEventListener("click", function (event) {
+        event.preventDefault();
+        if (confirmDeletion()) {
+          actionForm.submit();
+        }
+      });
+    });
+  </script>
+</div>
+{% endblock %}

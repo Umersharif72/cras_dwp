@@ -1,0 +1,61 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Interface</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <style>
+      .heading {
+        text-align: center;
+        margin-top: 30px; /* Slightly smaller margin to push it up */
+        font-size: 1.8rem; /* Smaller font size */
+        color: #000000; /* Black color */
+        font-weight: bold; /* Make text bold */
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="logo_item">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 262 263"
+          class="w-18-0 lg:w-46-0"
+        >
+          <path
+            stroke="#0FF"
+            stroke-miterlimit="10"
+            d="M0 6.709c69.032 0 124.988 55.812 124.988 124.652 0 68.846-55.962 124.652-124.988 124.652M261.996 256.013c-69.032 0-124.988-55.812-124.988-124.652 0-68.846 55.962-124.652 124.988-124.652"
+          ></path>
+          <path
+            stroke="#0FF"
+            stroke-miterlimit="10"
+            d="M6.008 262.008c0-68.847 55.962-124.653 124.988-124.653 69.032 0 124.988 55.812 124.988 124.653M255.988.713c0 68.846-55.962 124.652-124.988 124.652C61.968 125.365 6.012 69.553 6.012.713"
+          ></path>
+          <path
+            stroke="#0FF"
+            stroke-miterlimit="10"
+            d="M107.68 123.304C103.694 90.7 75.836 65.441 42.068 65.441h64.145M106.213 197.287H42.068c33.69 0 61.487-25.133 65.581-57.623M154.326 139.445c3.992 32.598 31.844 57.845 65.611 57.845h-64.09M155.807 65.441h64.126c-33.719 0-61.541 25.175-65.593 57.713"
+          ></path>
+        </svg>
+      </div>
+      <div class="navbar_content">
+        <i class="bi bi-grid"></i>
+        <i class="bx bx-sun" id="darkLight"></i>
+        <i class="bx bx-bell"></i>
+        <!-- <img src="{% static 'images/logo.png' %}" alt="" class="profile" /> -->
+      </div>
+    </nav>
+
+    <h1 class="heading">Admin Interface</h1>
+  </body>
+</html>

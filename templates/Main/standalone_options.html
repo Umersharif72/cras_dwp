@@ -1,0 +1,396 @@
+<div>
+  <!-- <div class="breadcrumb" id="hierarchy"></div> -->
+  <div id="navbar" class="breadcrumb marpad" style="display: none">
+    <a
+      href="{% url 'inventory' %}"
+      class="nav_link sublink first-child-inventory"
+      onclick="showPage('inventory')"
+      >inventory</a
+    >
+    <a
+      href="{% url 'balance' %}"
+      class="nav_link sublink"
+      onclick="showPage('balance')"
+      >balance</a
+    >
+    <a
+      href="{% url 'COGS' %}"
+      class="nav_link sublink"
+      onclick="showPage('COGS')"
+      >COGS</a
+    >
+    <a
+      href="{% url 'INFO1' %}"
+      class="nav_link sublink"
+      onclick="showPage('INFO1')"
+      >INFO1</a
+    >
+    <a
+      href="{% url 'INFO2' %}"
+      class="nav_link sublink"
+      onclick="showPage('INFO2')"
+      >INFO2</a
+    >
+    <a
+      href="{% url 'marketing' %}"
+      class="nav_link sublink"
+      onclick="showPage('Marketing')"
+      >Marketing</a
+    >
+    <a
+      href="{% url 'reclass' %}"
+      class="nav_link sublink"
+      onclick="showPage('Reclass')"
+      >Reclass</a
+    >
+    <a
+      href="{% url 'sales' %}"
+      class="nav_link sublink"
+      onclick="showPage('sales')"
+      >sales</a
+    >
+    <a
+      href="{% url 'purchases' %}"
+      class="nav_link sublink"
+      onclick="showPage('purchases')"
+      >purchases</a
+    >
+    <a
+      href="{% url 'invbalpur' %}"
+      class="nav_link sublink"
+      onclick="showPage('invbalancepurchase')"
+      >Inventory Balance Purchase</a
+    >
+    <a
+      href="{% url 'otherassetliabilities' %}"
+      class="nav_link sublink"
+      onclick="showPage('otherassetliabilities')"
+      >Other Asset Liabilities</a
+    >
+    <a
+      href="{% url 'leaserollforward' %}"
+      class="nav_link sublink"
+      onclick="showPage('leaserollforward')"
+      >Lease Roll Forward</a
+    >
+    <a
+      href="{% url 'capex1v' %}"
+      class="nav_link sublink"
+      onclick="showPage('capex1v')"
+      >Capex 1V</a
+    >
+    <a
+      href="{% url 'capex2v' %}"
+      class="nav_link sublink"
+      onclick="showPage('capex2v')"
+      >Capex 2V</a
+    >
+    <a
+      href="{% url 'fincostview' %}"
+      class="nav_link sublink"
+      onclick="showPage('fincostview')"
+      >Financial Cost View</a
+    >
+    <a href="{% url '01' %}" class="nav_link sublink" onclick="showPage('01')"
+      >Section 01</a
+    >
+    <a
+      href="{% url 'taxeshead' %}"
+      class="nav_link sublink"
+      onclick="showPage('taxeshead')"
+      >Taxes Head</a
+    >
+    <a href="{% url 'bcv' %}" class="nav_link sublink" onclick="showPage('bcv')"
+      >Business Cash Value</a
+    >
+    <a
+      href="{% url 'consult' %}"
+      class="nav_link sublink"
+      onclick="showPage('consult')"
+      >Consult</a
+    >
+    <a href="{% url 'mon' %}" class="nav_link sublink" onclick="showPage('mon')"
+      >Monthly Reports</a
+    >
+    <a href="{% url '0ev' %}" class="nav_link sublink" onclick="showPage('0ev')"
+      >Zero Equity Value</a
+    >
+    <a href="{% url 'sfv' %}" class="nav_link sublink" onclick="showPage('sfv')"
+      >SFV</a
+    >
+    <a href="{% url 'tcv' %}" class="nav_link sublink" onclick="showPage('tcv')"
+      >TCV</a
+    >
+    <a href="{% url 'tiv' %}" class="nav_link sublink" onclick="showPage('tiv')"
+      >TIV</a
+    >
+    <a
+      href="{% url 'l0v12' %}"
+      class="nav_link sublink"
+      onclick="showPage('l0v12')"
+      >L0V12</a
+    >
+    <a
+      href="{% url '11icv1' %}"
+      class="nav_link sublink"
+      onclick="showPage('11icv1')"
+      >11IcV1</a
+    >
+    <a
+      href="{% url 'quantity1v' %}"
+      class="nav_link sublink"
+      onclick="showPage('quantity1v')"
+      >Quantity 1V</a
+    >
+    <a
+      href="{% url 'quantity2v' %}"
+      class="nav_link sublink"
+      onclick="showPage('quantity2v')"
+      >Quantity 2V</a
+    >
+    <a
+      href="{% url 'grossdiscount1v' %}"
+      class="nav_link sublink"
+      onclick="showPage('grossdiscount1v')"
+      >Gross Discount 1V</a
+    >
+    <a
+      href="{% url 'grossdiscount2v' %}"
+      class="nav_link sublink"
+      onclick="showPage('grossdiscount2v')"
+      >Gross Discount 2V</a
+    >
+    <a
+      href="{% url 'grossrevenue1v' %}"
+      class="nav_link sublink"
+      onclick="showPage('grossrevenue1v')"
+      >Gross Revenue 1V</a
+    >
+    <a
+      href="{% url 'grossrevenue2v' %}"
+      class="nav_link sublink"
+      onclick="showPage('grossrevenue2v')"
+      >Gross Revenue 2V</a
+    >
+    <a
+      href="{% url 'cogs1v' %}"
+      class="nav_link sublink"
+      onclick="showPage('cogs1v')"
+      >COGS 1V</a
+    >
+    <a
+      href="{% url 'cogs2v' %}"
+      class="nav_link sublink"
+      onclick="showPage('cogs2v')"
+      >COGS 2V</a
+    >
+    <a
+      href="{% url 'cogscustom' %}"
+      class="nav_link sublink"
+      onclick="showPage('cogscustom')"
+      >COGS Custom</a
+    >
+    <a
+      href="{% url 'cogsmon' %}"
+      class="nav_link sublink"
+      onclick="showPage('cogsmon')"
+      >COGS Mon</a
+    >
+    <a
+      href="{% url 'coglog' %}"
+      class="nav_link sublink"
+      onclick="showPage('coglog')"
+      >COGS Logistics</a
+    >
+    <a
+      href="{% url 'log1' %}"
+      class="nav_link sublink"
+      onclick="showPage('log1')"
+      >Log 1</a
+    >
+    <a
+      href="{% url 'ctuspl6log2' %}"
+      class="nav_link sublink"
+      onclick="showPage('pl_6_log_2')"
+      >Log 2</a
+    >
+    <a
+      href="{% url 'ctuspnl9forexv' %}"
+      class="nav_link sublink"
+      onclick="showPage('pnl_9_forex_v')"
+      >Forex V</a
+    >
+    <a
+      href="{% url 'ctcwcpl0v12' %}"
+      class="nav_link sublink"
+      onclick="showPage('cwc_pl_0_v12')"
+      >CWC PL 0 V12</a
+    >
+    <a
+      href="{% url 'ctusbs2invbalancedateatv' %}"
+      class="nav_link sublink"
+      onclick="showPage('bs_2_inv_balance_date_at_v')"
+      >Inv Balance Date</a
+    >
+    <a
+      href="{% url 'ctusbs2invbalancepurchase' %}"
+      class="nav_link sublink"
+      onclick="showPage('bs_2_inv_balance_purchase')"
+      >Inv Balance Purchase</a
+    >
+    <a
+      href="{% url 'ctuspnl0v' %}"
+      class="nav_link sublink"
+      onclick="showPage('pnl_0_v')"
+      >PNL 0 V</a
+    >
+    <!-- <a href="{% url 'usa_guide_list' %}" class="nav_link sublink" onclick="showPage('usa_guide_list')">PNL 0 V</a> -->
+  </div>
+</div>
+
+<div id="us_guide_table" class="page" style="margin: 0px 0px 0px 300px">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Name of Sheet</th>
+        <th>Short Instruction</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for guide in guides %}
+      <tr>
+        <td>{{ guide.id }}</td>
+        <td>{{ guide.name_of_sheet }}</td>
+        <td>{{ guide.short_instruction|linebreaks }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<div id="azrb_guide_table" class="page" style="margin: 0px 0px 0px 280px">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Name of Sheet</th>
+        <th>Short Instruction</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for guide in azrb_guides %}
+      <tr>
+        <td>{{ guide.id }}</td>
+        <td>{{ guide.name_of_sheet }}</td>
+        <td>{{ guide.short_instruction}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<div id="kz_guide_table" class="page" style="margin: 0px 0px 0px 280px">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Name of Sheet</th>
+        <th>Short Instruction</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for guide in kz_guides %}
+      <tr>
+        <td>{{ guide.id }}</td>
+        <td>{{ guide.name_of_sheet }}</td>
+        <td>{{ guide.short_instruction }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<script>
+  function toggleDropdown(id) {
+    var dropdown = document.getElementById(id);
+    if (dropdown.style.display === "none" || dropdown.style.display === "") {
+      dropdown.style.display = "block";
+    } else {
+      dropdown.style.display = "none";
+    }
+  }
+
+  function showSubmenu(option) {
+    if (option === "Us") {
+      document.getElementById("navbar").style.display = "flex";
+    }
+  }
+
+  // function showHomeImage() {
+  //         var imageContainer = document.getElementById('imageContainer');
+  //         if (imageContainer.style.display === 'block') {
+  //             imageContainer.style.display = 'none'; // Hide the image if already visible
+  //         } else {
+  //             imageContainer.style.display = 'block'; // Show the image if hidden
+  //         }
+  //     }
+</script>
+
+<script>
+  // Function to update the nav title
+  // Function to update the nav title
+  function showPage(pageId) {
+    var pages = document.querySelectorAll(".page");
+    pages.forEach(function (page) {
+      if (page.id === pageId) {
+        page.classList.remove("hidden");
+        page.classList.add("visible");
+      } else {
+        page.classList.remove("visible");
+        page.classList.add("hidden");
+      }
+    });
+  }
+
+  function updateNavTitle(text) {
+    document.getElementById("hierarchy").innerText = text;
+  }
+
+  function setPageName(main, sub = null) {
+    const path = sub ? `${main} / ${sub}` : main;
+    localStorage.setItem("currentPage", path);
+    updateNavTitle(path);
+  }
+
+  window.onload = function () {
+    document.querySelectorAll(".nav_link").forEach((link) => {
+      link.addEventListener("click", function (event) {
+        // If a sublink exists within this link, handle it separately
+        if (event.target.classList.contains("sublink")) return;
+
+        let navTitle = this.querySelector(".navlink")
+          ? this.querySelector(".navlink").innerText
+          : this.innerText;
+        setPageName(navTitle);
+      });
+    });
+
+    document.querySelectorAll(".sublink").forEach((sublink) => {
+      sublink.addEventListener("click", function (event) {
+        const sublinkTitle = this.innerText;
+        const mainLink =
+          this.closest("li").querySelector(".nav_link .navlink").innerText;
+        setPageName(mainLink, sublinkTitle);
+
+        // Manually trigger the existing onclick event handler
+        const originalOnClick = this.getAttribute("onclick");
+        if (originalOnClick) {
+          eval(originalOnClick); // Evaluate the original onclick attribute
+        }
+      });
+    });
+
+    const currentPage = localStorage.getItem("currentPage");
+    if (currentPage) {
+      updateNavTitle(currentPage);
+    }
+  };
+</script>

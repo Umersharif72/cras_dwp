@@ -1,0 +1,1364 @@
+<!-- {% load is_admin %}
+
+<nav
+  class="sidebar border-bottom border-body"
+  data-bs-theme="dark"
+  style="width: 300px"
+>
+  <div class="menu_content">
+    <ul class="menu_items">
+      <li class="item">
+        <div class="nav_link submenu_item" id="homeLink">
+          <span class="navlink_icon">
+            <i class="bx bx-home-alt"></i>
+          </span>
+          <a
+            href="{% url 'landingpage' %}"
+            class="nav_link sublink"
+            onclick="showPage('home')"
+            >Home</a
+          >
+        </div>
+      </li>
+
+      <script>
+        function toggleDropdown(id) {
+          var element = document.getElementById(id);
+          element.classList.toggle("show");
+        }
+
+        function toggleSubOptions(id) {
+          var element = document.getElementById(id);
+          element.classList.toggle("show");
+        }
+        document
+          .getElementById("homeLink")
+          .addEventListener("click", function () {
+            window.location.href = "/sources/landingpage";
+          });
+        function toggleDropdown(id) {
+          var element = document.getElementById(id);
+          element.classList.toggle("show");
+        }
+      </script>
+      <li class="item">
+        <div
+          class="nav_link submenu_item"
+          onclick="toggleDropdown('standAlonesDropdown')"
+        >
+          <span class="navlink_icon">
+            <i class="bx bx-grid-alt"></i>
+          </span>
+          <span class="navlink">Stand-Alones Report (FRP)</span>
+          <i class="bx bx-chevron-right arrow-left"></i>
+        </div>
+        <ul class="menu_items submenu" id="standAlonesDropdown">
+          <li>
+            <div
+              class="nav_link submenu_item pad_adj"
+              onclick="toggleDropdown('georgianClusterDropdown')"
+            >
+              <span class="navlink_icon">
+                <i class="bx bx-chevron-right"></i>
+              </span>
+              <span class="navlink">Georgian Cluster Entities</span>
+            </div>
+            <ul class="menu_items submenu" id="georgianClusterDropdown">
+              <li
+                class="dropdown_option nav_link sublink"
+                onclick="toggleSubOptions('trCoSubmenu')"
+              >
+                TrCo Operation
+              </li>
+              <ul class="submenu subsubmenu" id="trCoSubmenu">
+                <li class="dropdown_option nav_link sublink">
+                  Borjomi Waters Ltd
+                </li>
+                <li class="dropdown_option nav_link sublink">
+                  IDS Borjomi Tbilisi
+                </li>
+                <li class="dropdown_option nav_link sublink">
+                  UAB IDS Borjomi Europe
+                </li>
+                <li
+                  class="dropdown_option nav_link sublink"
+                  onclick="showSubmenu('Us')"
+                >
+                  <a
+                    href="{% url 'usa_guide_list' %}"
+                    onclick="showPage('us_guide_table')"
+                    >Borjomi America Inc</a
+                  >
+                </li>
+                <li class="dropdown_option nav_link sublink">
+                  IDS Borjomi Azerbaijan LLC
+                </li>
+                <li class="dropdown_option nav_link sublink">
+                  IDS Borjomi Kazakhstan
+                </li>
+                <li class="dropdown_option nav_link sublink">IDS Borjomi</li>
+              </ul>
+              <li
+                class="dropdown_option nav_link sublink"
+                onclick="toggleSubOptions('opCoSubmenu')"
+              >
+                OpCo Operation
+              </li>
+              <ul class="submenu subsubmenu" id="opCoSubmenu">
+                <li class="dropdown_option nav_link sublink">Curacao</li>
+                <li class="dropdown_option nav_link sublink">
+                  IDS Borjomi Beverages Branch
+                </li>
+                <li class="dropdown_option nav_link sublink">
+                  Borjomi Mineral Waters
+                </li>
+                <li class="dropdown_option nav_link sublink">
+                  IDS Borjomi Georgia
+                </li>
+              </ul>
+            </ul>
+          </li>
+          <li>
+            <div
+              class="nav_link submenu_item pad_adj"
+              onclick="toggleDropdown('russianClusterDropdown')"
+            >
+              <span class="navlink_icon">
+                <i class="bx bx-chevron-right"></i>
+              </span>
+              <span class="navlink">Russian Cluster</span>
+            </div>
+            <ul class="menu_items submenu" id="russianClusterDropdown">
+              <li class="dropdown_option nav_link sublink">
+                <a href="{% url 'sql_query_1' %}" onclick="showPage('query1')"
+                  >Query 1</a
+                >
+              </li>
+              <li class="dropdown_option nav_link sublink">
+                <a href="{% url 'sql_query_2' %}" onclick="showPage('query2')"
+                  >Query 2</a
+                >
+              </li>
+              <li class="dropdown_option nav_link sublink">
+                Highroad Holdings Limited
+              </li>
+              <li class="dropdown_option nav_link sublink">Edelweis L LLC</li>
+              <li class="dropdown_option nav_link sublink">LLC Edel Lab</li>
+              <li class="dropdown_option nav_link sublink">LLC Aqua Star</li>
+              <li class="dropdown_option nav_link sublink">
+                LLC Mineral Waters Borjomi
+              </li>
+              <li class="dropdown_option nav_link sublink">IDS Borjomi Bel</li>
+              <li class="dropdown_option nav_link sublink">IDS Borjomi LLC</li>
+              <li class="dropdown_option nav_link sublink">
+                LLC Lipetskkurortresoursy
+              </li>
+              <li class="dropdown_option nav_link sublink">
+                LLC Zavod Svyatoy Istochnik
+              </li>
+              <li class="dropdown_option nav_link sublink">
+                LLC Kompaniya Chistaya Voda
+              </li>
+              <li class="dropdown_option nav_link sublink">LLC Borjomi Tech</li>
+            </ul>
+          </li>
+          <li>
+            <div
+              class="nav_link submenu_item pad_adj"
+              onclick="toggleDropdown('rissaOffshoreDropdown')"
+            >
+              <span class="navlink_icon">
+                <i class="bx bx-chevron-right"></i>
+              </span>
+              <span class="navlink">Rissa Offshore Entities</span>
+            </div>
+            <ul class="menu_items submenu" id="rissaOffshoreDropdown">
+              <li class="dropdown_option nav_link sublink">
+                Rissa investments Limited
+              </li>
+              <li class="dropdown_option nav_link sublink">
+                International Distribution Systems Limited
+              </li>
+              <li class="dropdown_option nav_link sublink">
+                LLC Borjomi Finance
+              </li>
+              <li class="dropdown_option nav_link sublink">
+                Rissa investments Limited
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li class="item">
+        <div
+          class="nav_link submenu_item"
+          onclick="toggleDropdown('manualAdjustmentsDropdown')"
+        >
+          <span class="navlink_icon">
+            <i class="bx bx-grid-alt"></i>
+          </span>
+          <span class="navlink">Manual Adjustments/Discounts</span>
+          <i class="bx bx-chevron-right arrow-left"></i>
+        </div>
+        <ul class="menu_items submenu" id="manualAdjustmentsDropdown">
+          <li>
+            <div
+              class="nav_link submenu_item pad_adj"
+              onclick="toggleDropdown('adjustmentsDropdown')"
+            >
+              <span class="navlink_icon">
+                <i class="bx bx-chevron-right"></i>
+              </span>
+              <span class="navlink">Adjustments</span>
+            </div>
+            <ul class="menu_items submenu" id="adjustmentsDropdown">
+              <li>
+                <div
+                  class="nav_link submenu_item pad_adj"
+                  onclick="toggleDropdown('entityDropDown')"
+                >
+                  <span class="navlink_icon">
+                    <i class="bx bx-chevron-right"></i>
+                  </span>
+                  <span class="navlink">Entity</span>
+                </div>
+                <ul class="menu_items submenu" id="entityDropDown">
+                  <li>
+                    <a
+                      href="{% url 'anythinga' %}"
+                      class="nav_link sublink"
+                      onclick="showPage('ge_drp')"
+                      >Georgian</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="{% url 'anything_ru' %}"
+                      class="nav_link sublink"
+                      onclick="showPage('ru_drp')"
+                      >Rusian</a
+                    >
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <a
+                  href="{% url 'unique_clusters' %}"
+                  class="nav_link sublink"
+                  onclick="showPages('unique_clusters');"
+                  >Cluster</a
+                >
+              </li>
+              <li>
+                <a
+                  href="{% url 'xyz' %}"
+                  class="nav_link sublink"
+                  onclick="showPage('adjustment_screen')"
+                  >Group</a
+                >
+              </li>
+            </ul>
+          </li>
+          <li>
+            <div
+              class="nav_link submenu_item pad_adj"
+              onclick="toggleDropdown('discountsDropdown')"
+            >
+              <span class="navlink_icon">
+                <i class="bx bx-chevron-right"></i>
+              </span>
+              <span class="navlink">Discounts</span>
+            </div>
+            <ul class="menu_items submenu" id="discountsDropdown">
+              <li>
+                <div
+                  class="nav_link submenu_item pad_adj"
+                  onclick="toggleDropdown('ONDiscountSubmenu')"
+                >
+                  <span class="navlink_icon">
+                    <i class="bx bx-chevron-right"></i>
+                  </span>
+                  <span class="navlink">ON Discounts</span>
+                </div>
+                <ul class="menu_items submenu" id="ONDiscountSubmenu">
+                  <li class="dropdown_option nav_link sublink">ENTITY</li>
+                  <li class="dropdown_option nav_link sublink">GROUP</li>
+                  <li class="dropdown_option nav_link sublink">CLUSTER</li>
+                </ul>
+              </li>
+              <li>
+                <div
+                  class="nav_link submenu_item pad_adj"
+                  onclick="toggleDropdown('offDiscountSubmenu')"
+                >
+                  <span class="navlink_icon">
+                    <i class="bx bx-chevron-right"></i>
+                  </span>
+                  <span class="navlink">OFF Discounts</span>
+                </div>
+                <ul class="menu_items submenu" id="offDiscountSubmenu">
+                  <li class="dropdown_option nav_link sublink">ENTITY</li>
+                  <li class="dropdown_option nav_link sublink">GROUP</li>
+                  <li class="dropdown_option nav_link sublink">CLUSTER</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <div
+              class="nav_link submenu_item pad_adj"
+              onclick="toggleDropdown('manualEntries')"
+            >
+              <span class="navlink_icon">
+                <i class="bx bx-chevron-right"></i>
+              </span>
+              <span class="navlink">Manual Entries</span>
+            </div>
+            <ul class="menu_items submenu" id="manualEntries">
+              <li class="dropdown_option nav_link sublink">
+                <a
+                  href="{% url 'upload' %}"
+                  id="loader"
+                  onclick="showPage('loader_upload')"
+                  >Kazakhstan</a
+                >
+              </li>
+              <li class="dropdown_option nav_link sublink">
+                <a
+                  href="{% url 'upload' %}"
+                  id="loader"
+                  onclick="showPage('loader_upload')"
+                  >Uzbekistan</a
+                >
+              </li>
+              <li class="dropdown_option nav_link sublink">
+                <a
+                  href="{% url 'upload' %}"
+                  id="loader"
+                  onclick="showPage('loader_upload')"
+                  >Azerbaijan</a
+                >
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li class="item">
+        <div
+          class="nav_link submenu_item"
+          onclick="toggleDropdown('consolidationsDropdown')"
+        >
+          <span class="navlink_icon">
+            <i class="bx bx-grid-alt"></i>
+          </span>
+          <span class="navlink">Cluster/Group Consolidation</span>
+          <i class="bx bx-chevron-right arrow-left"></i>
+        </div>
+        <ul class="menu_items submenu" id="consolidationsDropdown">
+          <div class="nav_link submenu_item">
+            <span class="navlink_icon"> </span>
+            <span class="navlink">Cluster Consolidation</span>
+            <i class="bx bx-chevron-right arrow-left"></i>
+          </div>
+          <ul class="menu_items submenu" id="consolidationsDropdown">
+            <li class="dropdown_option nav_link sublink">Georgian Cluster</li>
+            <li class="dropdown_option nav_link sublink">Russian Cluster</li>
+          </ul>
+          <li class="dropdown_option nav_link sublink">Group Consolidation</li>
+        </ul>
+      </li>
+      <li class="item">
+        <div href="#" class="nav_link submenu_item">
+          <span class="navlink_icon">
+            <i class="bx bx-grid-alt"></i>
+          </span>
+          <span class="navlink">Group Reports</span>
+          <i class="bx bx-chevron-right arrow-left"></i>
+        </div>
+        <ul class="menu_items submenu">
+          <li class="dropdown_option nav_link sublink">
+            Sales statistics Sales Q-ty by product, customer, country
+          </li>
+          <li class="dropdown_option nav_link sublink">
+            Net Debt Cash and loan balances by bank accounts, card holders,
+            amount in original and reporting CCY
+          </li>
+          <li class="dropdown_option nav_link sublink">Bridge Act vs Bud</li>
+          <li class="dropdown_option nav_link sublink">
+            Bridge Act CY vs Act LY
+          </li>
+          <li class="dropdown_option nav_link sublink">Bridge Act vs LE</li>
+          <li class="dropdown_option nav_link sublink">Bridge Bud vs LE</li>
+          <li class="dropdown_option nav_link sublink">PnL Old format</li>
+          <li class="dropdown_option nav_link sublink">PnL New format</li>
+          <li class="dropdown_option nav_link sublink">
+            Cluster PnL Conso PnL by clusters with specific allocation of CC
+            expenses
+          </li>
+          <li class="dropdown_option nav_link sublink">
+            Cash flow Indirect method
+          </li>
+          <li class="dropdown_option nav_link sublink">
+            Segment Report PnL by SKU, by Country, by Channel
+          </li>
+          <li class="dropdown_option nav_link sublink">Debt roll forward</li>
+          <li class="dropdown_option nav_link sublink">Lease roll forward</li>
+          <li class="dropdown_option nav_link sublink">
+            PPE and IA roll forward
+          </li>
+          <li class="dropdown_option nav_link sublink">
+            Inventory roll forward By Q-ty and product
+          </li>
+          <li class="dropdown_option nav_link sublink">G&A by nature</li>
+          <li class="dropdown_option nav_link sublink">G&A by function</li>
+          <li class="dropdown_option nav_link sublink">PPE register</li>
+          <li class="dropdown_option nav_link sublink">
+            Capex by projects only for GE
+          </li>
+          <li class="dropdown_option nav_link sublink">
+            Dashboard Key metrics
+          </li>
+          <li class="dropdown_option nav_link sublink">
+            COGS report By Recipe and overheads
+          </li>
+          <li class="dropdown_option nav_link sublink">
+            Intercompany BS (transactions) report
+          </li>
+          <li class="dropdown_option nav_link sublink">Brand EBITDA</li>
+        </ul>
+      </li>
+      <li class="item">
+        <div href="#" class="nav_link submenu_item">
+          <span class="navlink_icon">
+            <i class="bx bx-grid-alt"></i>
+          </span>
+          <span class="navlink">Setting</span>
+          <i class="bx bx-chevron-right arrow-left"></i>
+        </div>
+        <ul class="menu_items submenu">
+          <a
+            href="{% url 'juri_table' %}"
+            class="nav_link sublink"
+            onclick="showPage('juri_table')"
+            >Source Tables
+          </a>
+          <a
+            href="{% url 'juri_col' %}"
+            class="nav_link sublink"
+            onclick="showPage('juri_col')"
+            >Source Columns</a
+          >
+          <a
+            href="{% url 'fetch_sourceConn' %}"
+            class="nav_link sublink"
+            onclick="showPage('fetch_sourceConn')"
+            >Data Source</a
+          >
+          <a
+            href="{% url 'fetch_cappdb' %}"
+            class="nav_link sublink"
+            onclick="showPage('fetch_cappdb')"
+            >ERPs</a
+          >
+          <a
+            href="{% url 'cemapng' %}"
+            class="nav_link sublink"
+            onclick="showPage('cemapng')"
+            >Mapping</a
+          >
+          {% if request.user|is_admin %}
+          <a
+            href="{% url 'admin_interface' %}"
+            class="nav_link sublink"
+            onclick="showPage('')"
+            >User Administration</a
+          >
+          <a href="" class="nav_link sublink" onclick="showPage('')">Roles</a>
+          {% endif %}
+        </ul>
+      </li>
+      <li class="item">
+        <div href="#" class="nav_link submenu_item">
+          <span class="navlink_icon">
+            <i class="bx bx-grid-alt"></i>
+          </span>
+          <span class="navlink">Jobs</span>
+          <i class="bx bx-chevron-right arrow-left"></i>
+        </div>
+        <ul class="menu_items submenu">
+          <li>
+            <a class="nav_link sublink">Active Jobs </a>
+          </li>
+          <li>
+            <a class="nav_link sublink">Completed Jobs </a>
+          </li>
+        </ul>
+      </li>
+      <li class="item">
+        <a href="#" class="nav_link submenu_item" id="logoutLink">
+          <span class="navlink_icon">
+            <i class="bx bx-log-out-circle"></i>
+          </span>
+          <span class="navlink">Logout</span>
+        </a>
+      </li>
+      <script>
+        document
+          .getElementById("logoutLink")
+          .addEventListener("click", function (event) {
+            event.preventDefault(); // Prevent the default action of clicking a link
+            window.location.href = "{% url 'logout_button' %}"; // Redirect to the logout URL
+          });
+      </script>
+    
+      <div class="bottom_content">
+        <div class="bottom expand_sidebar">
+          <span> Expand</span>
+          <i class="bx bx-log-in"></i>
+        </div>
+        <div class="bottom collapse_sidebar">
+          <span> Collapse</span>
+          <i class="bx bx-log-out"></i>
+        </div>
+      </div>
+    </ul>
+  </div>
+</nav> -->
+
+{% load is_admin %}
+
+<nav class="sidebar border-bottom border-body" data-bs-theme="dark">
+  <div class="menu_content">
+    <ul class="menu_items">
+      <!-- Home -->
+      <li class="item">
+        <div class="nav_link submenu_item" id="homeLink">
+          <span class="navlink_icon">
+            <i class="bx bx-home"></i>
+          </span>
+          <a
+            id="hidehome"
+            href="{% url 'landingpage' %}"
+            class="nav_link sublink"
+            >Home</a
+          >
+        </div>
+      </li>
+      <!-- <script>
+        function toggleDropdown(id) {
+          var element = document.getElementById(id);
+          element.classList.toggle("show");
+        }
+
+        function toggleSubOptions(id) {
+          var element = document.getElementById(id);
+          element.classList.toggle("show");
+        }
+        document
+          .getElementById("homeLink")
+          .addEventListener("click", function () {
+            window.location.href = "/sources/landingpage";
+          });
+        function toggleDropdown(id) {
+          var element = document.getElementById(id);
+          element.classList.toggle("show");
+        }
+      </script> -->
+
+      <!-- Data Entry -->
+      <li class="item">
+        <div
+          class="nav_link submenu_item"
+          onclick="toggleDropdown('dataEntryDropdown')"
+        >
+          <span class="navlink_icon">
+            <i class="bx bx-upload"></i>
+          </span>
+          <span class="navlink">Data Entry</span>
+          <i class="bx bx-chevron-right arrow-left"></i>
+        </div>
+        <ul class="menu_items submenu" id="dataEntryDropdown">
+          <!-- Data Entry/Upload -->
+          <li class="dropdown_option nav_link">
+            <span class="navlink_icon">
+              <i class="bx bx-up-arrow"></i>
+            </span>
+            <a href="#" onclick="showPage('upload')" class="nav_link"
+              >Data Entry/Upload</a
+            >
+          </li>
+
+          <!-- Adjustment Entry/Upload -->
+          <li>
+            <div
+              class="nav_link submenu_item pad_adj"
+              onclick="toggleDropdown('adjustmentDropdown')"
+            >
+              <span class="navlink_icon">
+                <i class="bx bx-edit"></i>
+              </span>
+              <span class="navlink">Adjustment Entry/Upload</span>
+              <i class="bx bx-chevron-right arrow-left"></i>
+            </div>
+            <ul class="menu_items submenu" id="adjustmentDropdown">
+              <!-- Entity Level -->
+              <li>
+                <div
+                  class="nav_link submenu_item pad_adj"
+                  onclick="toggleDropdown('entityLevelDropdown')"
+                >
+                  <span class="navlink_icon">
+                    <i class="bx bx-building"></i>
+                  </span>
+                  <span class="navlink">Entity Level</span>
+                  <i class="bx bx-chevron-right arrow-left"></i>
+                </div>
+                <ul class="menu_items submenu" id="entityLevelDropdown">
+                  <!-- Manual Data Entry -->
+                  <li>
+                    <div
+                      class="nav_link submenu_item pad_adj"
+                      onclick="toggleDropdown('manualDataEntryDropdown')"
+                    >
+                      <span class="navlink_icon">
+                        <i class="bx bx-edit"></i>
+                      </span>
+                      <span class="navlink">Manual Data Entry</span>
+                      <i class="bx bx-chevron-right arrow-left"></i>
+                    </div>
+                    <ul class="menu_items submenu" id="manualDataEntryDropdown">
+                      <li>
+                        <a
+                          href="{% url 'anythinga' %}"
+                          class="nav_link sublink"
+                          onclick="showPage('ge_drp')"
+                          >Georgian</a
+                        >
+                      </li>
+                      <li>
+                        <a
+                          href="{% url 'anything_ru' %}"
+                          class="nav_link sublink"
+                          onclick="showPage('ru_drp')"
+                          >Rusian</a
+                        >
+                      </li>
+                    </ul>
+                  </li>
+
+                  <!-- Upload -->
+                  <li>
+                    <div
+                      class="nav_link submenu_item pad_adj"
+                      onclick="toggleDropdown('uploadDropdown')"
+                    >
+                      <span class="navlink_icon">
+                        <i class="bx bx-upload"></i>
+                      </span>
+                      <span class="navlink">Upload</span>
+                      <i class="bx bx-chevron-right arrow-left"></i>
+                    </div>
+                    <ul class="menu_items submenu" id="uploadDropdown">
+                      <li class="dropdown_option nav_link sublink">
+                        <a
+                          href="{% url 'upload' %}"
+                          id="loader"
+                          class="nav_link"
+                          onclick="showPage('loader_upload')"
+                          >Georgian Entities</a
+                        >
+                      </li>
+                      <li class="dropdown_option nav_link sublink">
+                        <a
+                          href="{% url 'upload' %}"
+                          id="loader"
+                          class="nav_link"
+                          onclick="showPage('loader_upload')"
+                          >Rusian Entities</a
+                        >
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+
+              <!-- Cluster Level -->
+              <li>
+                <div
+                  class="nav_link submenu_item pad_adj"
+                  onclick="toggleDropdown('clusterLevelDropdown')"
+                >
+                  <span class="navlink_icon">
+                    <i class="bx bx-box"></i>
+                  </span>
+                  <span class="navlink">Cluster Level</span>
+                  <i class="bx bx-chevron-right arrow-left"></i>
+                </div>
+                <ul class="menu_items submenu" id="clusterLevelDropdown">
+                  <li class="dropdown_option nav_link sublink">
+                    <a
+                      href="#"
+                      onclick="showPage('georgian_cluster')"
+                      class="nav_link"
+                      >Georgian</a
+                    >
+                  </li>
+                  <li class="dropdown_option nav_link sublink">
+                    <a href="#" onclick="showPage('')" class="nav_link"
+                      >Russian</a
+                    >
+                  </li>
+                </ul>
+              </li>
+
+              <!-- Group Level -->
+              <li>
+                <div
+                  class="nav_link submenu_item pad_adj"
+                  onclick="toggleDropdown('groupLevelDropdown')"
+                >
+                  <span class="navlink_icon">
+                    <i class="bx bx-group"></i>
+                  </span>
+                  <span class="navlink">Group Level</span>
+                  <i class="bx bx-chevron-right arrow-left"></i>
+                </div>
+                <ul class="menu_items submenu" id="groupLevelDropdown">
+                  <!-- Manual Data Entries -->
+                  <li class="dropdown_option nav_link sublink">
+                    <a
+                      href="#"
+                      onclick="showPage('group_level_manual_entries')"
+                      class="nav_link"
+                      >Manual Data Entries</a
+                    >
+                  </li>
+
+                  <!-- Upload Entries -->
+                  <li class="dropdown_option nav_link sublink">
+                    <a
+                      href="{% url 'upload' %}"
+                      id="loader"
+                      onclick="showPage('loader_upload')"
+                      class="nav_link"
+                      >Upload Entities</a
+                    >
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+
+          <!-- Discount Entry/Upload -->
+          <li>
+            <div
+              class="nav_link submenu_item pad_adj"
+              onclick="toggleDropdown('discountDropdown')"
+            >
+              <span class="navlink_icon">
+                <i class="bx bx-circle"></i>
+              </span>
+              <span class="navlink">Discount Entry/Upload</span>
+              <i class="bx bx-chevron-right arrow-left"></i>
+            </div>
+            <ul class="menu_items submenu" id="discountDropdown">
+              <!-- ON Discount -->
+              <li>
+                <div
+                  class="nav_link submenu_item pad_adj"
+                  onclick="toggleDropdown('onDiscountDropdown')"
+                >
+                  <span class="navlink_icon">
+                    <i class="bx bx-plus-circle"></i>
+                  </span>
+                  <span class="navlink">ON Discount</span>
+                  <i class="bx bx-chevron-right arrow-left"></i>
+                </div>
+                <ul class="menu_items submenu" id="onDiscountDropdown">
+                  <li class="dropdown_option nav_link sublink">
+                    <a
+                      href="#"
+                      onclick="showPage('on_discount_entity')"
+                      class="nav_link"
+                      >Entity Level</a
+                    >
+                  </li>
+                  <li class="dropdown_option nav_link sublink">
+                    <a
+                      href="#"
+                      onclick="showPage('on_discount_cluster')"
+                      class="nav_link"
+                      >Cluster Level</a
+                    >
+                  </li>
+                  <li class="dropdown_option nav_link sublink">
+                    <a
+                      href="#"
+                      onclick="showPage('on_discount_group')"
+                      class="nav_link"
+                      >Group</a
+                    >
+                  </li>
+                </ul>
+              </li>
+
+              <!-- OFF Discount -->
+              <li>
+                <div
+                  class="nav_link submenu_item pad_adj"
+                  onclick="toggleDropdown('offDiscountDropdown')"
+                >
+                  <span class="navlink_icon">
+                    <i class="bx bx-minus-circle"></i>
+                  </span>
+                  <span class="navlink">OFF Discount</span>
+                  <i class="bx bx-chevron-right arrow-left"></i>
+                </div>
+                <ul class="menu_items submenu" id="offDiscountDropdown">
+                  <li class="dropdown_option nav_link sublink">
+                    <a
+                      href="#"
+                      onclick="showPage('off_discount_entity')"
+                      class="nav_link"
+                      >Entity Level</a
+                    >
+                  </li>
+                  <li class="dropdown_option nav_link sublink">
+                    <a
+                      href="#"
+                      onclick="showPage('off_discount_cluster')"
+                      class="nav_link"
+                      >Cluster Level</a
+                    >
+                  </li>
+                  <li class="dropdown_option nav_link sublink">
+                    <a
+                      href="#"
+                      onclick="showPage('off_discount_group')"
+                      class="nav_link"
+                      >Group</a
+                    >
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+
+          <!-- Processing -->
+          <li>
+            <div
+              class="nav_link submenu_item pad_adj"
+              onclick="toggleDropdown('processingDropdown')"
+            >
+              <span class="navlink_icon">
+                <i class="bx bx-cog"></i>
+              </span>
+              <span class="navlink">Processing</span>
+              <i class="bx bx-chevron-right arrow-left"></i>
+            </div>
+            <ul class="menu_items submenu" id="processingDropdown">
+              <!-- Data Mapping -->
+              <li class="dropdown_option nav_link sublink">
+                <a
+                  href="{% url 'cemapng' %}"
+                  class="nav_link"
+                  onclick="showPage('cemapng')"
+                  >Data Mapping</a
+                >
+              </li>
+
+              <!-- Cluster Consolidation -->
+              <li>
+                <div
+                  class="nav_link submenu_item pad_adj"
+                  onclick="toggleDropdown('clusterConsolidationDropdown')"
+                >
+                  <span class="navlink sublink">Cluster Consolidation</span>
+                  <i class="bx bx-chevron-right arrow-left"></i>
+                </div>
+                <ul
+                  class="menu_items submenu"
+                  id="clusterConsolidationDropdown"
+                >
+                  <li class="dropdown_option nav_link sublink">
+                    <a
+                      href="#"
+                      class="nav_link"
+                      onclick="showPage('georgian_cluster_consolidation')"
+                      >Georgian</a
+                    >
+                  </li>
+                  <li class="dropdown_option nav_link sublink">
+                    <a
+                      href="#"
+                      class="nav_link"
+                      onclick="showPage('russian_cluster_consolidation')"
+                      >Russian</a
+                    >
+                  </li>
+                </ul>
+              </li>
+
+              <!-- Group Consolidation -->
+              <li class="dropdown_option nav_link sublink">
+                <a
+                  href="#"
+                  onclick="showPage('group_consolidation')"
+                  class="nav_link"
+                  >Group Consolidation</a
+                >
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+
+      <!-- Reports -->
+      <li class="item">
+        <div
+          class="nav_link submenu_item"
+          onclick="toggleDropdown('reportsDropdown')"
+        >
+          <span class="navlink_icon">
+            <i class="bx bx-file"></i>
+          </span>
+          <span class="navlink">Reports</span>
+          <i class="bx bx-chevron-right arrow-left"></i>
+        </div>
+        <ul class="menu_items submenu" id="reportsDropdown">
+          <!-- Stand Alone Reports -->
+          <li>
+            <div
+              class="nav_link submenu_item pad_adj"
+              onclick="toggleDropdown('standAloneReportsDropdown')"
+            >
+              <span class="navlink_icon">
+                <i class="bx bx-file"></i>
+              </span>
+              <span class="navlink">Stand Alone Reports</span>
+              <i class="bx bx-chevron-right arrow-left"></i>
+            </div>
+            <ul class="menu_items submenu" id="standAloneReportsDropdown">
+              <li>
+                <div
+                  class="nav_link submenu_item pad_adj"
+                  onclick="toggleDropdown('georgianDropDown')"
+                >
+                  <span class="navlink_icon">
+                    <i class="bx bx-file"></i>
+                  </span>
+                  <span class="navlink">Georgian</span>
+                  <i class="bx bx-chevron-right arrow-left"></i>
+                </div>
+                <ul class="menu_items submenu" id="georgianDropDown">
+                  <li class="dropdown_option nav_link sublink">
+                    Borjomi Waters Ltd
+                  </li>
+                  <li class="dropdown_option nav_link sublink">
+                    IDS Borjomi Tbilisi
+                  </li>
+                  <li class="dropdown_option nav_link sublink">
+                    UAB IDS Borjomi Europe
+                  </li>
+                  <li
+                    class="dropdown_option nav_link"
+                    onclick="showSubmenu('Us')"
+                    style="padding: 0px"
+                  >
+                    <a
+                      href="{% url 'usa_guide_list' %}"
+                      onclick="showPage('us_guide_table')"
+                      class="nav_link sublink"
+                      >Borjomi America Inc</a
+                    >
+                  </li>
+                  <li class="dropdown_option nav_link sublink">
+                    IDS Borjomi Azerbaijan LLC
+                  </li>
+                  <li class="dropdown_option nav_link sublink">
+                    IDS Borjomi Kazakhstan
+                  </li>
+                  <li class="dropdown_option nav_link sublink">IDS Borjomi</li>
+                  <li class="dropdown_option nav_link sublink">Curacao</li>
+                  <li class="dropdown_option nav_link sublink">
+                    IDS Borjomi Beverages Branch
+                  </li>
+                  <li class="dropdown_option nav_link sublink">
+                    Borjomi Mineral Waters
+                  </li>
+                  <li class="dropdown_option nav_link sublink">
+                    IDS Borjomi Georgia
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <div
+                  class="nav_link submenu_item pad_adj"
+                  onclick="toggleDropdown('rusianDropDown')"
+                >
+                  <span class="navlink_icon">
+                    <i class="bx bx-file"></i>
+                  </span>
+                  <span class="navlink">Rusian</span>
+                  <i class="bx bx-chevron-right arrow-left"></i>
+                </div>
+                <ul class="menu_items submenu" id="rusianDropDown">
+                  <!-- <li class="dropdown_option nav_link sublink">
+                    <a
+                      href="{% url 'sql_query_1' %}"
+                      onclick="showPage('query1')"
+                      class="nav_link"
+                      >Query 1</a
+                    >
+                  </li>
+                  <li class="dropdown_option nav_link sublink">
+                    <a
+                      href="{% url 'sql_query_2' %}"
+                      onclick="showPage('query2')"
+                      class="nav_link"
+                      >Query 2</a
+                    >
+                  </li> -->
+                  <li class="dropdown_option nav_link sublink">
+                    <a href="{% url 'highroad' %}" class="nav_link"
+                      >Highroad Holdings Limited</a
+                    >
+                  </li>
+                  <li class="dropdown_option nav_link sublink">
+                    <a href="{% url 'edw' %}" class="nav_link"
+                      >Edelweis L LLC</a
+                    >
+                  </li>
+                  <li class="dropdown_option nav_link sublink">
+                    <a href="{% url 'edlab' %}" class="nav_link"
+                      >LLC Edel Lab</a
+                    >
+                  </li>
+                  <li class="dropdown_option nav_link sublink">
+                    <a href="{% url 'as' %}" class="nav_link">LLC Aqua Star</a>
+                  </li>
+                  <li class="dropdown_option nav_link sublink">
+                    <a href="{% url 'mwb' %}" class="nav_link"
+                      >LLC Mineral Waters Borjomi</a
+                    >
+                  </li>
+                  <li class="dropdown_option nav_link sublink">
+                    <a href="{% url 'bel' %}" class="nav_link">
+                      IDS Borjomi Bel</a
+                    >
+                  </li>
+                  <li class="dropdown_option nav_link sublink">
+                    <a href="{% url 'ids' %}" class="nav_link"
+                      >IDS Borjomi LLC</a
+                    >
+                  </li>
+                  <li class="dropdown_option nav_link sublink">
+                    <a href="{% url 'lkr' %}" class="nav_link">
+                      LLC Lipetskkurortresoursy</a
+                    >
+                  </li>
+                  <li class="dropdown_option nav_link sublink">
+                    <a href="{% url 'ssp' %}" class="nav_link"
+                      >LLC Zavod Svyatoy Istochnik
+                    </a>
+                  </li>
+                  <li class="dropdown_option nav_link sublink">
+                    <a href="{% url 'cwc' %}" class="nav_link">
+                      LLC Kompaniya Chistaya Voda
+                    </a>
+                  </li>
+                  <li class="dropdown_option nav_link sublink">
+                    <a href="{% url 'bt' %}" class="nav_link">
+                      LLC Borjomi Tech</a
+                    >
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <div
+                  class="nav_link submenu_item pad_adj"
+                  onclick="toggleDropdown('risaDropDown')"
+                >
+                  <span class="navlink_icon">
+                    <i class="bx bx-file"></i>
+                  </span>
+                  <span class="navlink">Risa</span>
+                  <i class="bx bx-chevron-right arrow-left"></i>
+                </div>
+                <ul class="menu_items submenu" id="risaDropDown">
+                  <li class="dropdown_option nav_link sublink">
+                    Rissa investments Limited
+                  </li>
+                  <li class="dropdown_option nav_link sublink">
+                    International Distribution Systems Limited
+                  </li>
+                  <li class="dropdown_option nav_link sublink">
+                    LLC Borjomi Finance
+                  </li>
+                  <li class="dropdown_option nav_link sublink">
+                    Rissa investments Limited
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+
+          <!-- Cluster Reports -->
+          <li>
+            <div
+              class="nav_link submenu_item pad_adj"
+              onclick="toggleDropdown('clusterReportsDropdown')"
+            >
+              <span class="navlink_icon">
+                <i class="bx bx-file"></i>
+              </span>
+              <span class="navlink">Cluster Reports</span>
+              <i class="bx bx-chevron-right arrow-left"></i>
+            </div>
+            <ul class="menu_items submenu" id="clusterReportsDropdown">
+              <li class="dropdown_option nav_link sublink">
+                <a
+                  href="#"
+                  onclick="showPage('georgian_cluster_reports')"
+                  class="nav_link"
+                  >Georgian</a
+                >
+              </li>
+
+              <li>
+                <div
+                  class="nav_link submenu_item pad_adj"
+                  onclick="toggleDropdown('russianClusterDropdown')"
+                >
+                  <span class="navlink_icon">
+                    <i class="bx bx-file"></i>
+                  </span>
+                  <span class="navlink">Russian</span>
+                  <i class="bx bx-chevron-right arrow-left"></i>
+                </div>
+                <ul class="menu_items submenu" id="russianClusterDropdown">
+                  <li class="dropdown_option nav_link sublink">
+                    <a
+                      href="{% url 'PnLByEntity' %}"
+                      onclick="showPage('pnlReport')"
+                      class="nav_link"
+                      >PNL</a
+                    >
+                  </li>
+                </ul>
+              </li>
+
+              <li class="dropdown_option nav_link sublink">
+                <a href="#" onclick="showPage('rissa_reports')" class="nav_link"
+                  >Rissa</a
+                >
+              </li>
+            </ul>
+          </li>
+
+          <!-- Group Reports -->
+          <li class="dropdown_option nav_link">
+            <span class="navlink_icon">
+              <i class="bx bx-file"></i>
+            </span>
+            <a href="#" onclick="showPage('group_reports')" class="nav_link"
+              >Group Reports</a
+            >
+          </li>
+        </ul>
+      </li>
+
+      <!-- Settings -->
+      <li class="item">
+        <div
+          class="nav_link submenu_item"
+          onclick="toggleDropdown('settingsDropdown')"
+        >
+          <span class="navlink_icon">
+            <i class="bx bx-cog"></i>
+          </span>
+          <span class="navlink">Settings</span>
+          <i class="bx bx-chevron-right arrow-left"></i>
+        </div>
+        <ul class="menu_items submenu" id="settingsDropdown">
+          <!-- User Administration -->
+          <li class="item">
+            <div
+              class="nav_link submenu_item"
+              onclick="toggleDropdown('userAdministrationDropdown')"
+            >
+              <span class="navlink sublink">User Administration</span>
+              <i class="bx bx-chevron-right arrow-left"></i>
+            </div>
+            <ul class="menu_items submenu" id="userAdministrationDropdown">
+              <!-- User Management -->
+              <li class="item">
+                <div
+                  class="nav_link submenu_item"
+                  onclick="toggleDropdown('userManagementDropdown')"
+                >
+                  <span class="navlink sublink">User Management</span>
+                  <i class="bx bx-chevron-right arrow-left"></i>
+                </div>
+                <ul class="menu_items submenu" id="userManagementDropdown">
+                  <li class="dropdown_option nav_link sublink">
+                    <a
+                      href="{% url 'create' %}"
+                      onclick="showPage('signupModal')"
+                      class="nav_link" 
+                      >Create</a
+                    >
+                  </li>
+                  <li class="dropdown_option nav_link sublink">
+                    <a
+                      href="{% url 'view' %}"
+                      onclick="showPage('user_list')"
+                      class="nav_link"
+                      >View</a
+                    >
+                  </li>
+                </ul>
+              </li>
+
+              <!-- Permission Management -->
+              <li class="item">
+                <div
+                  class="nav_link submenu_item"
+                  onclick="toggleDropdown('manualAdjustmentsDropdown')"
+                >
+                  <span class="navlink sublink">Permission Management</span>
+                  <i class="bx bx-chevron-right arrow-left"></i>
+                </div>
+                <ul class="menu_items submenu" id="manualAdjustmentsDropdown">
+                  <li class="dropdown_option nav_link sublink">
+                    <a href="" onclick="showPage('')" class="nav_link"
+                      >Permissions</a
+                    >
+                  </li>
+                  <li class="dropdown_option nav_link sublink">
+                    <a
+                      href="{% url 'useractivity' %}"
+                      onclick="showPage('user_activity_logs')"
+                      class="nav_link"
+                      >Permission History</a
+                    >
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+
+          <!-- Data Source Connection -->
+          <li class="dropdown_option nav_link sublink">
+            <a
+              href="{% url 'fetch_sourceConn' %}"
+              onclick="showPage('fetch_sourceConn')"
+              class="nav_link"
+              >Data Source Connection</a
+            >
+          </li>
+
+          <!-- Source Table -->
+          <li class="dropdown_option nav_link sublink">
+            <a
+              href="{% url 'juri_table' %}"
+              class="nav_link"
+              onclick="showPage('juri_table')"
+              >Source Tables
+            </a>
+          </li>
+
+          <!-- Source Column -->
+          <li class="dropdown_option nav_link sublink">
+            <a
+              href="{% url 'juri_col' %}"
+              class="nav_link"
+              onclick="showPage('juri_col')"
+              >Source Columns</a
+            >
+          </li>
+
+          <!-- ERP (To be discussed) -->
+          <li class="dropdown_option nav_link sublink">
+            <a href="#" onclick="showPage('erp')" class="nav_link"
+              >ERP (Need to discuss)</a
+            >
+          </li>
+
+          <!-- Roles -->
+          <li class="dropdown_option nav_link">
+            <a href="#" class="nav_link sublink" onclick="showPage('')"
+              >Roles</a
+            >
+          </li>
+        </ul>
+      </li>
+
+      <!-- Jobs -->
+      <li class="item">
+        <div
+          class="nav_link submenu_item"
+          onclick="toggleDropdown('jobsDropdown')"
+        >
+          <span class="navlink_icon">
+            <i class="bx bx-briefcase"></i>
+          </span>
+          <span class="navlink">Jobs</span>
+          <i class="bx bx-chevron-right arrow-left"></i>
+        </div>
+        <ul class="menu_items submenu" id="jobsDropdown">
+          <!-- Manual Job -->
+          <li class="dropdown_option nav_link sublink">
+            <a href="#" onclick="showPage('manual_job')" class="nav_link"
+              >Manual Job</a
+            >
+          </li>
+
+          <!-- Scheduled Job -->
+          <li class="dropdown_option nav_link sublink">
+            <a href="#" onclick="showPage('scheduled_job')" class="nav_link"
+              >Scheduled Job</a
+            >
+          </li>
+
+          <!-- Job History -->
+          <li class="dropdown_option nav_link sublink">
+            <a href="#" onclick="showPage('job_history')" class="nav_link"
+              >Job History</a
+            >
+          </li>
+        </ul>
+      </li>
+
+      <div class="bottom_content">
+        <div class="bottom expand_sidebar">
+          <span> Expand</span>
+          <i class="bx bx-log-in"></i>
+        </div>
+        <div class="bottom collapse_sidebar">
+          <span> Collapse</span>
+          <i class="bx bx-log-out"></i>
+        </div>
+      </div>
+    </ul>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Get references to the sidebar and buttons
+    const sidebar = document.querySelector(".sidebar");
+    const expandButton = document.querySelector(".bottom.expand_sidebar");
+    const collapseButton = document.querySelector(".bottom.collapse_sidebar");
+
+    // Event listener for the expand button
+    expandButton.addEventListener("click", function () {
+      sidebar.classList.remove("collapsed");
+    });
+
+    // Event listener for the collapse button
+    collapseButton.addEventListener("click", function () {
+      sidebar.classList.add("collapsed");
+    });
+  });
+</script>

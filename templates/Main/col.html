@@ -1,0 +1,88 @@
+<div id="juri_col" class="page hidden">
+
+    <form method="post" id="myForm" >
+      {% csrf_token %}
+      <!-- Jurisdiction select -->
+      <label for="jurisdiction">Select Jurisdiction:</label>
+      <select id="jurisdiction" name="jurisdiction">
+          {% for jurisdiction in juri %}
+              <option value="{{ jurisdiction }}">{{ jurisdiction }}</option>
+          {% endfor %}
+      </select> 
+ 
+      <button type="submit" id="submitBtn">Submit</button>
+  </form>
+
+  <form method="post" class="mt-3">
+      {% csrf_token %}
+      <!-- Action select and table selection --> 
+      <div class="form-group">
+          <label for="action">Select Action:</label>
+          <select class="form-control" id="action" name="action">
+              <option value="tables">Tables</option>
+              <option value="api">API</option>
+              <option value="file">File</option>
+          </select>
+      </div>
+      <div class="form-group" id="tables-div">
+          <label for="table">Select Table:</label>
+          <select class="form-control" id="table" name="table">
+              {% for table in tables %}
+                  <option value="{{ table }}">{{ table }}</option>
+              {% endfor %}
+          </select>
+      </div>
+      <div class="form-group" id="api-div" style="display: none;">
+          <label for="api">Enter API:</label>
+          <input type="text" class="form-control" id="api" name="tables[]">
+      </div>
+      <div class="form-group" id="file-div" style="display: none;">
+          <label for="file">Upload File:</label>
+          <input type="file" class="form-control-file" id="file" name="tables[]">
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+     
+  </form>
+
+  <!-- Display columns for the selected table -->
+  {% if fetched_cols %}
+  <form method="post" class="mt-3">
+      {% csrf_token %}
+      <div class="form-group">
+          <label for="columns">Select Columns:</label>
+          <select class="form-control" id="columns" name="columns[]" multiple>
+              {% for column in fetched_cols %}
+                  <option value="{{ column }}">{{ column }}</option>
+              {% endfor %}
+          </select>
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+  {% endif %}
+  <script>
+  document.getElementById('action').addEventListener('change', function() {
+      var action = this.value;
+      if (action === 'tables') {
+          // Only display the tables dropdown if it's not already displayed
+          if (document.getElementById('table-div').style.display !== 'block') {
+              document.getElementById('table-div').style.display = 'block';
+              document.getElementById('api-div').style.display = 'none';
+              document.getElementById('file-div').style.display = 'none';
+          }
+      } else if (action === 'api') {
+          document.getElementById('table-div').style.display = 'none';
+          document.getElementById('api-div').style.display = 'block';
+          document.getElementById('file-div').style.display = 'none';
+      } else if (action === 'file') {
+          document.getElementById('table-div').style.display = 'none';
+          document.getElementById('api-div').style.display = 'none';
+          document.getElementById('file-div').style.display = 'block';
+      }
+  });
+  </script>
+<script>
+  $(document).ready(function() {
+      // Initialize Select2
+      $('#jurisdiction,  #columns').select2();
+  });
+</script>

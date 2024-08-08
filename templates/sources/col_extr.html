@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
+    <!-- Include Select2 CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+
+    <!-- Include Select2 JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Column ExtractionCol</title>
+</head>
+<body>
+
+
+<form method="post" id="myForm" >
+    {% csrf_token %}
+    <!-- Jurisdiction select -->
+    <label for="jurisdictionCol">Select Jurisdiction:</label>
+    <select id="jurisdictionCol" name="jurisdictionCol">
+        {% for jurisdictionCol in juri %}
+            <option value="{{ jurisdictionCol }}">{{ jurisdictionCol }}</option>
+        {% endfor %}
+    </select> 
+
+    <button type="submit" id="submitBtnCol">Submit</button>
+</form>
+
+    <form method="post" class="mt-3">
+        {% csrf_token %}
+
+        <!-- actionCol select and table selection -->
+        
+        <div class="form-group">
+            <label for="actionCol">Select actionCol:</label>
+            <select class="form-control" id="actionCol" name="actionCol">
+                <option value="table">Tables</option>
+                <option value="api">API</option>
+                <option value="file">File</option>
+            </select>
+        </div>
+        <div class="form-group" id="tablesCol-div">
+            <label for="table">Select Table:</label>
+            <select class="form-control" id="table" name="table">
+                {% for table in tablescls %}
+                    <option value="{{ table }}">{{ table }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group" id="api-div" style="display: none;">
+            <label for="api">Enter API:</label>
+            <input type="text" class="form-control" id="api" name="tablesCol[]">
+        </div>
+        <div class="form-group" id="file-div" style="display: none;">
+            <label for="file">Upload File:</label>
+            <input type="file" class="form-control-file" id="file" name="tablesCol[]">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+       
+    </form>
+
+    <!-- Display columns for the selected table -->
+    {% if fetched_cols %}
+    <form method="post" class="mt-3">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="columns">Select Columns:</label>
+            <select class="form-control" id="columns" name="columns[]" multiple>
+                {% for column in fetched_cols %}
+                    <option value="{{ column }}">{{ column }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    {% endif %}
+    <script>
+    document.getElementById('actionCol').addEventListener('change', function() {
+        var actionCol = this.value;
+        if (actionCol === 'tablesCol') {
+            // Only display the tablesCol dropdown if it's not already displayed
+            if (document.getElementById('table-div').style.display !== 'block') {
+                document.getElementById('table-div').style.display = 'block';
+                document.getElementById('api-div').style.display = 'none';
+                document.getElementById('file-div').style.display = 'none';
+            }
+        } else if (actionCol === 'api') {
+            document.getElementById('table-div').style.display = 'none';
+            document.getElementById('api-div').style.display = 'block';
+            document.getElementById('file-div').style.display = 'none';
+        } else if (actionCol === 'file') {
+            document.getElementById('table-div').style.display = 'none';
+            document.getElementById('api-div').style.display = 'none';
+            document.getElementById('file-div').style.display = 'block';
+        }
+    });
+    </script>
+<script>
+    $(document).ready(function() {
+        // Initialize Select2
+        $('#jurisdictionCol,  #columns').select2();
+    });
+</script>
+</body>
+</html>

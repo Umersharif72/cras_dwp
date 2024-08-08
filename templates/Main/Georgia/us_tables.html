@@ -1,0 +1,5257 @@
+<!-- Content Sections for inventory -->
+
+<div id="inventory" class="page hidden">
+  <div class="select-date">
+    <label for="label-date">Select Period: </label>
+    <input type="month" name="month_year" id="dateinput_inv">
+  </div>
+  
+  <div id="back_to_original_inv" style="display: none;">
+    <!-- Button to go back to original table -->
+    <button class="btn btn-secondary" id="back_to_originalinv_btn">Back to Original Table</button>
+  </div>
+
+  <div id="filter_div" style="display: none;">
+    <form method="get" id="filter_form">
+        {{ filter.form.month }} <!-- Ensure this aligns with your filter's month field -->
+        <input type="hidden" id="selectedMonth" name="month">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+  </div>
+
+  <div class="container-fluid">
+    <div class="heading-wrapper">
+      <img src="/static/images/logo.png" alt="" />
+      <h1>inventory</h1>
+    </div>
+    <div class="wrap-buttons">
+      <button type="button" class="btn btn-primary download-button" id="downloadReportButtonInventrory">
+        Download Report
+      </button>
+
+      <button type="button" class="btn btn-success">Proceed Next</button>
+    </div>
+    <div id="dropdownWrapper" style="display: none">
+      <div class="axis-selectors">
+        <!-- <label for="xAxis">X-Axis:</label> -->
+        <select id="xAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+        <!-- <label for="yAxis">Y-Axis:</label> -->
+        <select id="yAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="button_wrapper" style="display: none">
+      <!-- <button type="button" id="showBarChartButton">Bar Chart</button> -->
+      <!-- <button type="button" id="showLineChartButton">Line Chart</button> -->
+      <!-- <button type="button" id="showPieButton">Pie Chart</button> -->
+      <!-- <button type="button" id="showRadarButton">Radar Chart</button> -->
+    </div>
+    <!-- Select dropdowns for choosing X-axis and Y-axis columns -->
+    <div class="graph_wrapper" style="display: none">
+      <!-- Canvas for each type of graph -->
+      <canvas id="chartCanvas" style="display: none"></canvas>
+    </div>
+    <div class="table-responsive table-wrapper">
+      <table class="table table-striped table-dark" style="background-color: #d3e2f4">
+        <thead class="table-header">
+          <tr>
+            {% for heading in headings %}
+            <th>{{ heading.verbose_name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for record in records %}
+          <tr>
+            <td class="table-data">{{ record.Year }}</td>
+            <td class="table-data">{{ record.month }}</td>
+            <td class="table-data">{{ record.GLAccount }}</td>
+            <td class="table-data">{{ record.Actual }}</td>
+            <td class="table-data">{{ record.Quantity }}</td>
+            <td class="table-data">{{ record.sku }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="chartContainer" style="display: none">
+    <canvas id="myBarChart"></canvas>
+  </div>
+</div>
+
+<script>
+
+  // Function to show the back to original table button
+  function showBackToOriginalButton() {
+    document.getElementById('back_to_original_inv').style.display = 'block';
+    localStorage.setItem('backToOriginalVisible', 'true');
+  }
+
+  // Function to hide the back to original table button
+  function hideBackToOriginalButton() {
+    document.getElementById('back_to_original_inv').style.display = 'none';
+    localStorage.removeItem('backToOriginalVisible');
+  }
+
+  // Get the date input element
+  var dateInput = document.getElementById('dateinput_inv');
+
+  // Check if the button should be visible on page load
+  if (localStorage.getItem('backToOriginalVisible')) {
+    showBackToOriginalButton();
+  } else {
+    hideBackToOriginalButton();
+  }
+
+  // Add an event listener for when the date input value changes
+  dateInput.addEventListener('change', function() {
+    // Get the selected date value
+    const dateStr = this.value;
+
+    // Extract the month as an integer from the selected date
+    const selectedDate = new Date(dateStr + '-01');
+    const month = selectedDate.getMonth() + 1; // Months are 0-indexed, so add 1
+
+    // Set the extracted month as an integer to the hidden input field
+    document.getElementById('selectedMonth').value = month;
+
+    // Submit the form
+    document.getElementById('filter_form').submit();
+
+    // Show the back to original table option after filtering
+    showBackToOriginalButton();
+  });
+
+  // Function to handle going back to the original table
+  document.getElementById('back_to_originalinv_btn').addEventListener('click', function() {
+    
+    document.getElementById('filter_form').submit();
+
+    // Hide the back to original table option again
+    hideBackToOriginalButton();
+  });
+
+  // Function to handle going back to the original table
+  document.getElementById('back_to_originalinv_btn').addEventListener('click', function() {
+    
+    document.getElementById('filter_form').submit();
+
+    // Hide the back to original table option again
+    hideBackToOriginalButton();
+  });
+</script>
+
+<!-- Add Bootstrap JS (optional) -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+      document
+        .getElementById("showChartButton")
+        .addEventListener("click", function () {
+          document.getElementById("chartContainer").style.display = "block";
+          createBarChart();
+        });
+
+      function createBarChart() {
+        var ctx = document.getElementById("myBarChart").getContext("2d");
+        var myBarChart = new Chart(ctx, {
+          type: "bar",
+          data: {
+            labels: ["January", "February", "March", "April", "May"],
+            datasets: [
+              {
+                label: "Sales",
+                data: [12, 19, 3, 5, 2],
+                backgroundColor: [
+                  "rgba(255, 99, 132, 0.2)",
+                  "rgba(54, 162, 235, 0.2)",
+                  "rgba(255, 206, 86, 0.2)",
+                  "rgba(75, 192, 192, 0.2)",
+                  "rgba(153, 102, 255, 0.2)",
+                ],
+                borderColor: [
+                  "rgba(255, 99, 132, 1)",
+                  "rgba(54, 162, 235, 1)",
+                  "rgba(255, 206, 86, 1)",
+                  "rgba(75, 192, 192, 1)",
+                  "rgba(153, 102, 255, 1)",
+                ],
+                borderWidth: 1,
+              },
+            ],
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true,
+              },
+            },
+          },
+        });
+      }
+    </script> -->
+
+<!-- Content Sections for balance -->
+<div id="balance" class="page hidden">
+  <div class="select-date">
+    <label for="label-date">Select Period: </label>
+    <input type="month" name="month_year" id="dateinput_bal">
+  </div>
+  
+  <div id="back_to_original_bal" style="display: none;">
+    <!-- Button to go back to original table -->
+    <button class="btn btn-secondary" id="back_to_originalbal_btn">Back to Original Table</button>
+  </div>
+
+  <div id="filter_div" style="display: none;">
+    <form method="get" id="filter_form">
+        {{ filter.form.month }} <!-- Ensure this aligns with your filter's month field -->
+        <input type="hidden" id="selectedMonth" name="month">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+  </div>
+  <div class="container-fluid">
+    <div class="heading-wrapper">
+      <img src="/static/images/logo.png" alt="" />
+      <h1>Balance</h1>
+    </div>
+    <div class="wrap-buttons">
+      <button type="button" class="btn btn-primary download-button" id="downloadReportButtonBalance">
+        Download Report
+      </button>
+      <button type="button" class="btn btn-success">Proceed Next</button>
+    </div>
+    <div id="dropdownWrapper" style="display: none">
+      <div class="axis-selectors">
+        <!-- <label for="xAxis">X-Axis:</label> -->
+        <select id="xAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+        <!-- <label for="yAxis">Y-Axis:</label> -->
+        <select id="yAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="button_wrapper" style="display: none">
+      <!-- <button type="button" id="showBarChartButton">Bar Chart</button> -->
+      <!-- <button type="button" id="showLineChartButton">Line Chart</button> -->
+      <!-- <button type="button" id="showPieButton">Pie Chart</button> -->
+      <!-- <button type="button" id="showRadarButton">Radar Chart</button> -->
+    </div>
+    <!-- Select dropdowns for choosing X-axis and Y-axis columns -->
+    <div class="graph_wrapper" style="display: none">
+      <!-- Canvas for each type of graph -->
+      <canvas id="chartCanvas" style="display: none"></canvas>
+    </div>
+    <div class="table-responsive table-wrapper">
+      <table class="table table-striped table-dark" style="background-color: #d3e2f4">
+        <thead class="table-header">
+          <tr>
+            {% for heading in headings %}
+            <th>{{ heading.verbose_name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody id="lazyBody">
+          <!-- Initially load first few records -->
+          {% for record in records %}
+          <tr>
+            <!-- Table Data -->
+            <td class="table-data">{{ record.month }}</td>
+            <td class="table-data">{{ record.ledger_Account }}</td>
+            <td class="table-data">{{ record.val }}</td>
+            <td class="table-data">{{ record.Corection }}</td>
+            <td class="table-data">{{ record.Total }}</td>
+            <td class="table-data">{{ record.Mapping }}</td>
+            <td class="table-data">{{ record.fsline }}</td>
+            <td class="table-data">{{ record.GA_Group }}</td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  // Function to show the back to original table button
+  function showBackToOriginalButton() {
+    document.getElementById('back_to_original_bal').style.display = 'block';
+    localStorage.setItem('backToOriginalVisible', 'true');
+  }
+
+  // Function to hide the back to original table button
+  function hideBackToOriginalButton() {
+    document.getElementById('back_to_original_bal').style.display = 'none';
+    localStorage.removeItem('backToOriginalVisible');
+  }
+
+  // Get the date input element
+  var dateInput = document.getElementById('dateinput_bal');
+
+  // Check if the button should be visible on page load
+  if (localStorage.getItem('backToOriginalVisible')) {
+    showBackToOriginalButton();
+  } else {
+    hideBackToOriginalButton();
+  }
+
+  // Add an event listener for when the date input value changes
+  dateInput.addEventListener('change', function() {
+    // Get the selected date value
+    const dateStr = this.value;
+
+    // Extract the month as an integer from the selected date
+    const selectedDate = new Date(dateStr + '-01');
+    const month = selectedDate.getMonth() + 1; // Months are 0-indexed, so add 1
+
+    // Set the extracted month as an integer to the hidden input field
+    document.getElementById('selectedMonth').value = month;
+
+    // Submit the form
+    document.getElementById('filter_form').submit();
+
+    // Show the back to original table option after filtering
+    showBackToOriginalButton();
+  });
+
+  // Function to handle going back to the original table
+  document.getElementById('back_to_originalbal_btn').addEventListener('click', function() {
+    
+    document.getElementById('filter_form').submit();
+
+    // Hide the back to original table option again
+    hideBackToOriginalButton();
+  });
+
+  </script>
+
+<!-- content for COGS-------------------------------------------- -->
+<div id="COGS" class="page hidden">
+  <div class="select-date">
+    <label for="label-date">Select Period: </label>
+    <input type="month" name="month_year" id="dateinput_cog">
+  </div>
+  
+  <div id="back_to_original_cog" style="display: none;">
+    <!-- Button to go back to original table -->
+    <button class="btn btn-secondary" id="back_to_originalcog_btn">Back to Original Table</button>
+  </div>
+
+  <div id="filter_div" style="display: none;">
+    <form method="get" id="filter_form">
+        {{ filter.form.month }} <!-- Ensure this aligns with your filter's month field -->
+        <input type="hidden" id="selectedMonth" name="month">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+  </div>
+  <div class="container-fluid">
+    <div class="heading-wrapper">
+      <img src="/static/images/logo.png" alt="" />
+      <h1>COGS</h1>
+    </div>
+    <div class="wrap-buttons">
+      <button type="button" class="btn btn-primary download-button" id="downloadReportButtonCogs">
+        Download Report
+      </button>
+      <button type="button" class="btn btn-success">Proceed Next</button>
+    </div>
+    <div id="dropdownWrapper" style="display: none">
+      <div class="axis-selectors">
+        <!-- <label for="xAxis">X-Axis:</label> -->
+        <select id="xAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+        <!-- <label for="yAxis">Y-Axis:</label> -->
+        <select id="yAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="button_wrapper" style="display: none">
+      <!-- <button type="button" id="showBarChartButton">Bar Chart</button> -->
+      <!-- <button type="button" id="showLineChartButton">Line Chart</button> -->
+      <!-- <button type="button" id="showPieButton">Pie Chart</button> -->
+      <!-- <button type="button" id="showRadarButton">Radar Chart</button> -->
+    </div>
+    <!-- Select dropdowns for choosing X-axis and Y-axis columns -->
+    <div class="graph_wrapper" style="display: none">
+      <!-- Canvas for each type of graph -->
+      <canvas id="chartCanvas" style="display: none"></canvas>
+    </div>
+    <div class="table-responsive table-wrapper">
+      <table class="table table-striped table-dark" style="background-color: #d3e2f4">
+        <thead class="table-header">
+          <tr>
+            {% for heading in headings %}
+            <th>{{ heading.verbose_name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody id="lazyBodyCOGS">
+          <!-- Initially load first few records -->
+          {% for record in records %}
+          <tr>
+            <!-- Table Data -->
+            <td class="table-data">{{ record.month }}</td>
+            <td class="table-data">{{ record.credit}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  // Function to show the back to original table button
+  function showBackToOriginalButton() {
+    document.getElementById('back_to_original_cog').style.display = 'block';
+    localStorage.setItem('backToOriginalVisible', 'true');
+  }
+
+  // Function to hide the back to original table button
+  function hideBackToOriginalButton() {
+    document.getElementById('back_to_original_cog').style.display = 'none';
+    localStorage.removeItem('backToOriginalVisible');
+  }
+
+  // Get the date input element
+  var dateInput = document.getElementById('dateinput_cog');
+
+  // Check if the button should be visible on page load
+  if (localStorage.getItem('backToOriginalVisible')) {
+    showBackToOriginalButton();
+  } else {
+    hideBackToOriginalButton();
+  }
+
+  // Add an event listener for when the date input value changes
+  dateInput.addEventListener('change', function() {
+    // Get the selected date value
+    const dateStr = this.value;
+
+    // Extract the month as an integer from the selected date
+    const selectedDate = new Date(dateStr + '-01');
+    const month = selectedDate.getMonth() + 1; // Months are 0-indexed, so add 1
+
+    // Set the extracted month as an integer to the hidden input field
+    document.getElementById('selectedMonth').value = month;
+
+    // Submit the form
+    document.getElementById('filter_form').submit();
+
+    // Show the back to original table option after filtering
+    showBackToOriginalButton();
+  });
+
+  // Function to handle going back to the original table
+  document.getElementById('back_to_originalcog_btn').addEventListener('click', function() {
+    
+    document.getElementById('filter_form').submit();
+
+    // Hide the back to original table option again
+    hideBackToOriginalButton();
+  });
+</script>
+
+<!-- contetn for the info1------------------- -->
+<div id="INFO1" class="page hidden">
+  <div class="container-fluid">
+    <div class="heading-wrapper">
+      <img src="/static/images/logo.png" alt="" />
+      <h1>INFO1</h1>
+    </div>
+    <div class="wrap-buttons">
+      <button type="button" class="btn btn-primary download-button" id="downloadReportButtonInfo">
+        Download Report
+      </button>
+      <button type="button" class="btn btn-success">Proceed Next</button>
+    </div>
+    <div id="dropdownWrapper" style="display: none">
+      <div class="axis-selectors">
+        <!-- <label for="xAxis">X-Axis:</label> -->
+        <select id="xAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+        <!-- <label for="yAxis">Y-Axis:</label> -->
+        <select id="yAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="button_wrapper" style="display: none">
+      <!-- <button type="button" id="showBarChartButton">Bar Chart</button> -->
+      <!-- <button type="button" id="showLineChartButton">Line Chart</button> -->
+      <!-- <button type="button" id="showPieButton">Pie Chart</button> -->
+      <!-- <button type="button" id="showRadarButton">Radar Chart</button> -->
+    </div>
+    <!-- Select dropdowns for choosing X-axis and Y-axis columns -->
+    <div class="graph_wrapper" style="display: none">
+      <!-- Canvas for each type of graph -->
+      <canvas id="chartCanvas" style="display: none"></canvas>
+    </div>
+    <div class="table-responsive table-wrapper">
+      <table class="table table-striped table-dark" style="background-color: #d3e2f4">
+        <thead class="table-header">
+          <tr>
+            {% for heading in headings %}
+            <th>{{ heading.verbose_name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody id="lazyBodyINFO1">
+          <!-- Initially load first few records -->
+          {% for record in records %}
+          <tr>
+            <!-- Table Data -->
+            <td class="table-data">{{ record.SKU }}</td>
+            <td class="table-data">{{ record.RevGL}}</td>
+            <td class="table-data">{{ record.COGSGL}}</td>
+            <td class="table-data">{{ record.InvGL}}</td>
+            <td class="table-data">{{ record.BrandGroup}}</td>
+            <td class="table-data">{{ record.Vol}}</td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- contetn for the info2------------------- -->
+<div id="INFO2" class="page hidden">
+  <div class="container-fluid">
+    <div class="heading-wrapper">
+      <img src="/static/images/logo.png" alt="" />
+      <h1>INFO2</h1>
+    </div>
+    <div class="wrap-buttons">
+      <button type="button" class="btn btn-primary download-button" id="downloadReportButtonInfo2">
+        Download Report
+      </button>
+      <button type="button" class="btn btn-success">Proceed Next</button>
+    </div>
+    <div id="dropdownWrapper" style="display: none">
+      <div class="axis-selectors">
+        <!-- <label for="xAxis">X-Axis:</label> -->
+        <select id="xAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+        <!-- <label for="yAxis">Y-Axis:</label> -->
+        <select id="yAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="button_wrapper" style="display: none">
+      <!-- <button type="button" id="showBarChartButton">Bar Chart</button> -->
+      <!-- <button type="button" id="showLineChartButton">Line Chart</button> -->
+      <!-- <button type="button" id="showPieButton">Pie Chart</button> -->
+      <!-- <button type="button" id="showRadarButton">Radar Chart</button> -->
+    </div>
+    <!-- Select dropdowns for choosing X-axis and Y-axis columns -->
+    <div class="graph_wrapper" style="display: none">
+      <!-- Canvas for each type of graph -->
+      <canvas id="chartCanvas" style="display: none"></canvas>
+    </div>
+    <div class="table-responsive table-wrapper">
+      <table class="table table-striped table-dark" style="background-color: #d3e2f4">
+        <thead class="table-header">
+          <tr>
+            {% for heading in headings %}
+            <th>{{ heading.verbose_name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody id="lazyBodyINFO2">
+          <!-- Initially load first few records -->
+          {% for record in records %}
+          <!--  , , ,  -->
+          <tr>
+            <!-- Table Data -->
+            <td class="table-data">{{ record.Code }}</td>
+            <td class="table-data">{{ record.Groups}}</td>
+            <td class="table-data">{{ record.Item}}</td>
+            <td class="table-data">{{ record.FS_line}}</td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- contetn for the marketing------------------- -->
+<div id="marketing" class="page hidden">
+  <div class="select-date">
+    <label for="label-date">Select Period: </label>
+    <input type="month" name="month_year" id="dateinput_mark">
+  </div>
+  
+  <div id="back_to_original_mark" style="display: none;">
+    <!-- Button to go back to original table -->
+    <button class="btn btn-secondary" id="back_to_originalmark_btn">Back to Original Table</button>
+  </div>
+
+  <div id="filter_div" style="display: none;">
+    <form method="get" id="filter_form">
+        {{ filter.form.date }} 
+        <input type="hidden" id="selectedDate" name="date">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+  </div>
+  <div class="container-fluid">
+    <div class="heading-wrapper">
+      <img src="/static/images/logo.png" alt="" />
+      <h1>Marketing</h1>
+    </div>
+    <div class="wrap-buttons">
+      <button type="button" class="btn btn-primary download-button" id="downloadReportButtonMarketing">
+        Download Report
+      </button>
+      <button type="button" class="btn btn-success">Proceed Next</button>
+    </div>
+    <div id="dropdownWrapper" style="display: none">
+      <div class="axis-selectors">
+        <!-- <label for="xAxis">X-Axis:</label> -->
+        <select id="xAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+        <!-- <label for="yAxis">Y-Axis:</label> -->
+        <select id="yAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="button_wrapper" style="display: none">
+      <!-- <button type="button" id="showBarChartButton">Bar Chart</button> -->
+      <!-- <button type="button" id="showLineChartButton">Line Chart</button> -->
+      <!-- <button type="button" id="showPieButton">Pie Chart</button> -->
+      <!-- <button type="button" id="showRadarButton">Radar Chart</button> -->
+    </div>
+    <!-- Select dropdowns for choosing X-axis and Y-axis columns -->
+    <div class="graph_wrapper" style="display: none">
+      <!-- Canvas for each type of graph -->
+      <canvas id="chartCanvas" style="display: none"></canvas>
+    </div>
+    <div class="table-responsive table-wrapper">
+      <table class="table table-striped table-dark" style="background-color: #d3e2f4">
+        <thead class="table-header">
+          <tr>
+            {% for heading in headings %}
+            <th>{{ heading.verbose_name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody id="lazyBodyMARKETING">
+          <!-- Initially load first few records -->
+          {% for record in records %}
+          <tr>
+            <!-- Table Data -->
+            <td class="table-data">{{ record.month }}</td>
+            <td class="table-data">{{ record.cost_unit}}</td>
+            <td class="table-data">{{ record.value}}</td>
+            <td class="table-data">{{ record.item}}</td>
+            <td class="table-data">{{ record.fS_line}}</td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  // Function to show the back to original table button
+  function showBackToOriginalButton() {
+    document.getElementById('back_to_original_cog').style.display = 'block';
+    localStorage.setItem('backToOriginalVisible', 'true');
+  }
+
+  // Function to hide the back to original table button
+  function hideBackToOriginalButton() {
+    document.getElementById('back_to_original_cog').style.display = 'none';
+    localStorage.removeItem('backToOriginalVisible');
+  }
+
+  // Get the date input element
+  var dateInput = document.getElementById('dateinput_mark');
+
+  // Check if the button should be visible on page load
+  if (localStorage.getItem('backToOriginalVisible')) {
+    showBackToOriginalButton();
+  } else {
+    hideBackToOriginalButton();
+  }
+
+  // Add an event listener for when the date input value changes
+  dateInput.addEventListener('change', function() {
+    // Get the selected date value
+    const dateStr = this.value;
+
+    // Extract the month as an integer from the selected date
+    const selectedDate = new Date(dateStr + '-01');
+    const month = selectedDate.getMonth() + 1; // Months are 0-indexed, so add 1
+
+    // Set the extracted month as an integer to the hidden input field
+    document.getElementById('selectedMonth').value = month;
+
+    // Submit the form
+    document.getElementById('filter_form').submit();
+
+    // Show the back to original table option after filtering
+    showBackToOriginalButton();
+  });
+
+  // Function to handle going back to the original table
+  document.getElementById('back_to_originalcog_btn').addEventListener('click', function() {
+    
+    document.getElementById('filter_form').submit();
+
+    // Hide the back to original table option again
+    hideBackToOriginalButton();
+  });
+</script>
+
+
+<!-- contetn for the reclass------------------- -->
+<div id="reclass" class="page hidden">
+  <div class="container-fluid">
+    <div class="heading-wrapper">
+      <img src="/static/images/logo.png" alt="" />
+      <h1>Reclass</h1>
+    </div>
+    <div class="wrap-buttons">
+      <button type="button" class="btn btn-primary download-button" id="downloadReportButtonReport">
+        Download Report
+      </button>
+      <button type="button" class="btn btn-success">Proceed Next</button>
+    </div>
+    <div id="dropdownWrapper" style="display: none">
+      <div class="axis-selectors">
+        <!-- <label for="xAxis">X-Axis:</label> -->
+        <select id="xAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+        <!-- <label for="yAxis">Y-Axis:</label> -->
+        <select id="yAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="button_wrapper" style="display: none">
+      <!-- <button type="button" id="showBarChartButton">Bar Chart</button> -->
+      <!-- <button type="button" id="showLineChartButton">Line Chart</button> -->
+      <!-- <button type="button" id="showPieButton">Pie Chart</button> -->
+      <!-- <button type="button" id="showRadarButton">Radar Chart</button> -->
+    </div>
+    <!-- Select dropdowns for choosing X-axis and Y-axis columns -->
+    <div class="graph_wrapper" style="display: none">
+      <!-- Canvas for each type of graph -->
+      <canvas id="chartCanvas" style="display: none"></canvas>
+    </div>
+    <div class="table-responsive table-wrapper">
+      <table class="table table-striped table-dark" style="background-color: #d3e2f4">
+        <thead class="table-header">
+          <tr>
+            {% for heading in headings %}
+            <th>{{ heading.verbose_name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody id="lazyBodyreclass">
+          <!-- Initially load first few records -->
+          {% for record in records %}
+          <tr>
+            <!-- , , , ,  -->
+            <!-- Table Data -->
+            <td class="table-data">{{ record.reknr }}</td>
+            <td class="table-data">{{ record.GLDesc}}</td>
+            <td class="table-data">{{ record.Account}}</td>
+            <td class="table-data">{{ record.value}}</td>
+            <td class="table-data">{{ record.ReclassGL}}</td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- contetn for the purchases------------------- -->
+
+<div id="purchases" class="page hidden">
+  <div class="select-date">
+    <label for="label-date">Select Period: </label>
+    <input type="month" name="month_year" id="dateinput_pur">
+  </div>
+  
+  <div id="back_to_original_pu" style="display: none;">
+    <!-- Button to go back to original table -->
+    <button class="btn btn-secondary" id="back_to_originalpu_btn">Back to Original Table</button>
+  </div>
+
+  <div id="filter_div" style="display: none;">
+    <form method="get" id="filter_form">
+        {{ filter.form.date }} <!-- Ensure this aligns with your filter's month field -->
+        <input type="hidden" id="selectedDate" name="date" value="">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+  </div>
+  <div class="container-fluid">
+    <div class="heading-wrapper">
+      <img src="/static/images/logo.png" alt="" />
+      <h1>Purchases</h1>
+    </div>
+    <div class="wrap-buttons">
+      <button type="button" class="btn btn-primary download-button" id="downloadReportButtonPurchase">
+        Download Report
+      </button>
+      <button type="button" class="btn btn-success">Proceed Next</button>
+    </div>
+    <div id="dropdownWrapper" style="display: none">
+      <div class="axis-selectors">
+        <!-- <label for="xAxis">X-Axis:</label> -->
+        <select id="xAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+        <!-- <label for="yAxis">Y-Axis:</label> -->
+        <select id="yAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="button_wrapper" style="display: none">
+      <!-- <button type="button" id="showBarChartButton">Bar Chart</button> -->
+      <!-- <button type="button" id="showLineChartButton">Line Chart</button> -->
+      <!-- <button type="button" id="showPieButton">Pie Chart</button> -->
+      <!-- <button type="button" id="showRadarButton">Radar Chart</button> -->
+    </div>
+    <!-- Select dropdowns for choosing X-axis and Y-axis columns -->
+    <div class="graph_wrapper" style="display: none">
+      <!-- Canvas for each type of graph -->
+      <canvas id="chartCanvas" style="display: none"></canvas>
+    </div>
+    <div class="table-responsive table-wrapper">
+      <table class="table table-striped table-dark" style="background-color: #d3e2f4">
+        <thead class="table-header">
+          <tr>
+            {% for heading in headings %}
+            <th>{{ heading.verbose_name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody id="lazyBodypurchases">
+          <!-- Initially load first few records -->
+          {% for record in records %}
+          <tr>
+            <!-- Table Data -->
+            <td class="table-data">{{ record.month }}</td>
+            <td class="table-data">{{ record.SKU}}</td>
+            <td class="table-data">{{ record.bottles}}</td>
+            <td class="table-data">{{ record.Liters}}</td>
+            <td class="table-data">{{ record.Amount}}</td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  // Function to show the back to original table button
+  function showBackToOriginalButton() {
+    document.getElementById('back_to_original_pu').style.display = 'block';
+    localStorage.setItem('backToOriginalVisible', 'true');
+  }
+
+  // Function to hide the back to original table button
+  function hideBackToOriginalButton() {
+    document.getElementById('back_to_original_pu').style.display = 'none';
+    localStorage.removeItem('backToOriginalVisible');
+  }
+
+  // Get the date input element
+  var dateInput = document.getElementById('dateinput_pur');
+
+  // Check if the button should be visible on page load
+  if (localStorage.getItem('backToOriginalVisible')) {
+    showBackToOriginalButton();
+  } else {
+    hideBackToOriginalButton();
+  }
+
+  // Add an event listener for when the date input value changes
+  dateInput.addEventListener('change', function() {
+    // Get the selected date value
+    const dateStr = this.value;
+
+    // Extract the month as an integer from the selected date
+    const selectedDate = new Date(dateStr + '-01');
+    const month = selectedDate.getMonth() + 1; // Months are 0-indexed, so add 1
+
+    // Set the extracted month as an integer to the hidden input field
+    document.getElementById('selectedMonth').value = month;
+
+    // Submit the form
+    document.getElementById('filter_form').submit();
+
+    // Show the back to original table option after filtering
+    showBackToOriginalButton();
+  });
+
+  // Function to handle going back to the original table
+  document.getElementById('back_to_originalpu_btn').addEventListener('click', function() {
+    
+    document.getElementById('filter_form').submit();
+
+    // Hide the back to original table option again
+    hideBackToOriginalButton();
+  });
+</script>
+
+<!-- contetn for the sales------------------- -->
+
+<div id="sales" class="page hidden">
+  <div class="select-date">
+    <label for="label-date">Select Period: </label>
+    <input type="month" name="month_year" id="dateinputs">
+  </div>
+
+  <div id="back_to_original_sa" style="display: none;">
+    <!-- Button to go back to original table -->
+    <button class="btn btn-secondary" id="back_to_originalsa_btn">Back to Original Table</button>
+  </div>
+
+  <div id="filter_div" style="display: none;">
+    <form method="get" id="filter_form">
+        {{ filter.form.month }} <!-- Ensure this aligns with your filter's month field -->
+        <input type="hidden" id="selectedMonth" name="month">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+  </div>
+  <div class="container-fluid">
+    <div class="heading-wrapper">
+      <img src="/static/images/logo.png" alt="" />
+      <h1>Sales</h1>
+    </div>
+    <div class="wrap-buttons">
+      <button type="button" class="btn btn-primary download-button" id="downloadReportButtonSales">
+        Download Report
+      </button>
+      <button type="button" class="btn btn-success">Proceed Next</button>
+    </div>
+    <div id="dropdownWrapper" style="display: none">
+      <div class="axis-selectors">
+        <!-- <label for="xAxis">X-Axis:</label> -->
+        <select id="xAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+        <!-- <label for="yAxis">Y-Axis:</label> -->
+        <select id="yAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="button_wrapper" style="display: none">
+      <!-- <button type="button" id="showBarChartButton">Bar Chart</button> -->
+      <!-- <button type="button" id="showLineChartButton">Line Chart</button> -->
+      <!-- <button type="button" id="showPieButton">Pie Chart</button> -->
+      <!-- <button type="button" id="showRadarButton">Radar Chart</button> -->
+    </div>
+    <!-- Select dropdowns for choosing X-axis and Y-axis columns -->
+    <div class="graph_wrapper" style="display: none">
+      <!-- Canvas for each type of graph -->
+      <canvas id="chartCanvas" style="display: none"></canvas>
+    </div>
+    <div class="table-responsive table-wrapper">
+      <table class="table table-striped table-dark" style="background-color: #d3e2f4">
+        <thead class="table-header">
+          <tr>
+            {% for heading in headings %}
+            <th>{{ heading.verbose_name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody id="lazyBodysales">
+          <!-- Initially load first few records -->
+          {% for record in records %}
+          <tr>
+            <!-- , , , , , , , , , , 
+-->
+            <!-- Table Data -->
+            <td class="table-data">{{ record.month }}</td>
+            <td class="table-data">{{ record.reknr}}</td>
+            <td class="table-data">{{ record.GLAccount}}</td>
+            <td class="table-data">{{ record.Gross_Revenue}}</td>
+            <td class="table-data">{{ record.Bottles}}</td>
+            <td class="table-data">{{ record.SKU}}</td>
+            <td class="table-data">{{ record.Liters}}</td>
+            <td class="table-data">{{ record.COGS}}</td>
+            <td class="table-data">{{ record.cogs_customs}}</td>
+            <td class="table-data">{{ record.cogs_logistics}}</td>
+            <td class="table-data">{{ record.Gross_discount}}</td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  // Function to show the back to original table button
+  function showBackToOriginalButton() {
+    document.getElementById('back_to_original_sa').style.display = 'block';
+    localStorage.setItem('backToOriginalVisible', 'true');
+  }
+
+  // Function to hide the back to original table button
+  function hideBackToOriginalButton() {
+    document.getElementById('back_to_original_sa').style.display = 'none';
+    localStorage.removeItem('backToOriginalVisible');
+  }
+
+  // Get the date input element
+  var dateInput = document.getElementById('dateinputs');
+
+  // Check if the button should be visible on page load
+  if (localStorage.getItem('backToOriginalVisible')) {
+    showBackToOriginalButton();
+  } else {
+    hideBackToOriginalButton();
+  }
+
+  // Add an event listener for when the date input value changes
+  dateInput.addEventListener('change', function() {
+    // Get the selected date value
+    const dateStr = this.value;
+
+    // Extract the month as an integer from the selected date
+    const selectedDate = new Date(dateStr + '-01');
+    const month = selectedDate.getMonth() + 1; // Months are 0-indexed, so add 1
+
+    // Set the extracted month as an integer to the hidden input field
+    document.getElementById('selectedMonth').value = month;
+
+    // Submit the form
+    document.getElementById('filter_form').submit();
+
+    // Show the back to original table option after filtering
+    showBackToOriginalButton();
+  });
+
+  // Function to handle going back to the original table
+  document.getElementById('back_to_originalsa_btn').addEventListener('click', function() {
+    
+    document.getElementById('filter_form').submit();
+
+    // Hide the back to original table option again
+    hideBackToOriginalButton();
+  });
+</script>
+
+
+<!-- content for inventory balance purchase -->
+
+<div id="invbalpur" class="page hidden">
+  <div class="select-date">
+    <label for="label-date">Select Period: </label>
+    <input type="month" name="month_year" id="dateinput_inbal">
+  </div>
+  
+  <div id="back_to_original_inbal" style="display: none;">
+    <!-- Button to go back to original table -->
+    <button class="btn btn-secondary" id="back_to_originalinbal_btn">Back to Original Table</button>
+  </div>
+
+  <div id="filter_div" style="display: none;">
+    <form method="get" id="filter_form">
+        {{ filter.form.month }} <!-- Ensure this aligns with your filter's month field -->
+        <input type="hidden" id="selectedMonth" name="month">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+  </div>
+  <div class="container-fluid">
+    <div class="heading-wrapper">
+      <img src="/static/images/logo.png" alt="" />
+      <h1>Inventory Balance Purchase</h1>
+    </div>
+    <div class="wrap-buttons">
+      <button type="button" class="btn btn-primary download-button" id="downloadReportButtonIBPurchase">
+        Download Report
+      </button>
+      <button type="button" class="btn btn-success">Proceed Next</button>
+    </div>
+    <div id="dropdownWrapper" style="display: none">
+      <div class="axis-selectors">
+        <!-- <label for="xAxis">X-Axis:</label> -->
+        <select id="xAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+        <!-- <label for="yAxis">Y-Axis:</label> -->
+        <select id="yAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="button_wrapper" style="display: none">
+      <!-- <button type="button" id="showBarChartButton">Bar Chart</button> -->
+      <!-- <button type="button" id="showLineChartButton">Line Chart</button> -->
+      <!-- <button type="button" id="showPieButton">Pie Chart</button> -->
+      <!-- <button type="button" id="showRadarButton">Radar Chart</button> -->
+    </div>
+    <!-- Select dropdowns for choosing X-axis and Y-axis columns -->
+    <div class="graph_wrapper" style="display: none">
+      <!-- Canvas for each type of graph -->
+      <canvas id="chartCanvas" style="display: none"></canvas>
+    </div>
+    <!-- Table to display data -->
+    <div class="table-responsive table-wrapper">
+      <table class="table table-striped table-dark" style="background-color: #d3e2f4">
+        <thead class="table-header">
+          <tr>
+            {% for heading in headings %}
+            <th>{{ heading.verbose_name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody id="lazyBodysales">
+          {% for record in records %}
+          <tr>
+            <td class="table-data">{{ record.val}}</td>
+            <td class="table-data">{{ record.bottles}}</td>
+            <td class="table-data">{{ record.month}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  // Function to show the back to original table button
+  function showBackToOriginalButton() {
+    document.getElementById('back_to_original_inbal').style.display = 'block';
+    localStorage.setItem('backToOriginalVisible', 'true');
+  }
+
+  // Function to hide the back to original table button
+  function hideBackToOriginalButton() {
+    document.getElementById('back_to_original_inbal').style.display = 'none';
+    localStorage.removeItem('backToOriginalVisible');
+  }
+
+  // Get the date input element
+  var dateInput = document.getElementById('dateinput_inbal');
+
+  // Check if the button should be visible on page load
+  if (localStorage.getItem('backToOriginalVisible')) {
+    showBackToOriginalButton();
+  } else {
+    hideBackToOriginalButton();
+  }
+
+  // Add an event listener for when the date input value changes
+  dateInput.addEventListener('change', function() {
+    // Get the selected date value
+    const dateStr = this.value;
+
+    // Extract the month as an integer from the selected date
+    const selectedDate = new Date(dateStr + '-01');
+    const month = selectedDate.getMonth() + 1; // Months are 0-indexed, so add 1
+
+    // Set the extracted month as an integer to the hidden input field
+    document.getElementById('selectedMonth').value = month;
+
+    // Submit the form
+    document.getElementById('filter_form').submit();
+
+    // Show the back to original table option after filtering
+    showBackToOriginalButton();
+  });
+
+  // Function to handle going back to the original table
+  document.getElementById('back_to_originalinbal_btn').addEventListener('click', function() {
+    
+    document.getElementById('filter_form').submit();
+
+    // Hide the back to original table option again
+    hideBackToOriginalButton();
+  });
+</script>
+
+<!-- content for balance sheet -->
+
+<div id="balance_sheet" class="page hidden">
+  <div class="select-date">
+    <label for="label-date">Select Period: </label>
+    <input type="month" name="month_year" id="dateinput_inv">
+  </div>
+  
+  <div id="back_to_original_bs" style="display: none;">
+    <!-- Button to go back to original table -->
+    <button class="btn btn-secondary" id="back_to_originalbs_btn">Back to Original Table</button>
+  </div>
+
+  <div id="filter_div" style="display: none;">
+    <form method="get" id="filter_form">
+        {{ filter.form.month }} <!-- Ensure this aligns with your filter's month field -->
+        <input type="hidden" id="selectedMonth" name="month">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+  </div>
+  <div class="container-fluid">
+    <div class="heading-wrapper">
+      <img src="/static/images/logo.png" alt="" />
+      <h1>Other Asset Liabilities</h1>
+    </div>
+    <div class="wrap-buttons">
+      <button type="button" class="btn btn-primary download-button" id="downloadReportButtonOALiabilities">
+        Download Report
+      </button>
+      <button type="button" class="btn btn-success">Proceed Next</button>
+    </div>
+    <div id="dropdownWrapper" style="display: none">
+      <div class="axis-selectors">
+        <!-- <label for="xAxis">X-Axis:</label> -->
+        <select id="xAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+        <!-- <label for="yAxis">Y-Axis:</label> -->
+        <select id="yAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="button_wrapper" style="display: none">
+      <!-- <button type="button" id="showBarChartButton">Bar Chart</button> -->
+      <!-- <button type="button" id="showLineChartButton">Line Chart</button> -->
+      <!-- <button type="button" id="showPieButton">Pie Chart</button> -->
+      <!-- <button type="button" id="showRadarButton">Radar Chart</button> -->
+    </div>
+    <!-- Select dropdowns for choosing X-axis and Y-axis columns -->
+    <div class="graph_wrapper" style="display: none">
+      <!-- Canvas for each type of graph -->
+      <canvas id="chartCanvas" style="display: none"></canvas>
+    </div>
+    <div class="table-responsive table-wrapper">
+      <table class="table table-striped table-dark" style="background-color: #d3e2f4">
+        <thead class="table-header">
+          <tr>
+            {% for heading in headings %}
+            <th>{{ heading.verbose_name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody id="lazyBodysales">
+          {% for record in records %}
+          <tr>
+            <!-- Table Data -->
+            <td class="table-data">{{ record.category }}</td>
+            <td class="table-data">{{ record.subcategory}}</td>
+            <td class="table-data">{{ record.monyy}}</td>
+            <td class="table-data">{{ record.runningtotal}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- content for leaserollforward -->
+
+<div id="leaserollforward" class="page hidden">
+  <div class="select-date">
+    <label for="label-date">Select Period: </label>
+    <input type="month" name="month_year" id="dateinput_inv">
+  </div>
+  
+  <div id="back_to_original" style="display: none;">
+    <!-- Button to go back to original table -->
+    <button class="btn btn-secondary" id="back_to_original_btn">Back to Original Table</button>
+  </div>
+
+  <div id="filter_div" style="display: none;">
+    <form method="get" id="filter_form">
+        {{ filter.form.month }} <!-- Ensure this aligns with your filter's month field -->
+        <input type="hidden" id="selectedMonth" name="month">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+  </div>
+  <div class="container-fluid">
+    <div class="heading-wrapper">
+      <img src="/static/images/logo.png" alt="" />
+      <h1>Lease Roll Forward</h1>
+    </div>
+    <div class="wrap-buttons">
+      <button type="button" class="btn btn-primary download-button" id="downloadReportButtonLRForward">
+        Download Report
+      </button>
+      <button type="button" class="btn btn-success">Proceed Next</button>
+    </div>
+    <div id="dropdownWrapper" style="display: none">
+      <div class="axis-selectors">
+        <!-- <label for="xAxis">X-Axis:</label> -->
+        <select id="xAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+        <!-- <label for="yAxis">Y-Axis:</label> -->
+        <select id="yAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="button_wrapper" style="display: none">
+      <!-- <button type="button" id="showBarChartButton">Bar Chart</button> -->
+      <!-- <button type="button" id="showLineChartButton">Line Chart</button> -->
+      <!-- <button type="button" id="showPieButton">Pie Chart</button> -->
+      <!-- <button type="button" id="showRadarButton">Radar Chart</button> -->
+    </div>
+    <!-- Select dropdowns for choosing X-axis and Y-axis columns -->
+    <div class="graph_wrapper" style="display: none">
+      <!-- Canvas for each type of graph -->
+      <canvas id="chartCanvas" style="display: none"></canvas>
+    </div>
+    <div class="table-responsive table-wrapper">
+      <table class="table table-striped table-dark" style="background-color: #d3e2f4">
+        <thead class="table-header">
+          <tr>
+            {% for heading in headings %}
+            <th>{{ heading.verbose_name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody id="lazyBodysales">
+          {% for record in records %}
+          <tr>
+            <!-- Table Data -->
+            <td class="table-data">{{ record.category }}</td>
+            <td class="table-data">{{ record.subcategory}}</td>
+            <td class="table-data">{{ record.total}}</td>
+            <td class="table-data">{{ record.monyy}}</td>
+            <td class="table-data">{{ record.date2}}</td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- content for capex 1 -->
+
+<div id="capex_1" class="page hidden">
+  <div class="select-date">
+    <label for="label-date">Select Period: </label>
+    <input type="month" name="month_year" id="dateinput_cap1">
+  </div>
+  
+  <div id="back_to_original_cap1" style="display: none;">
+    <!-- Button to go back to original table -->
+    <button class="btn btn-secondary" id="back_to_originalcap1_btn">Back to Original Table</button>
+  </div>
+
+  <div id="filter_div" style="display: none;">
+    <form method="get" id="filter_form">
+        {{ filter.form.month }} <!-- Ensure this aligns with your filter's month field -->
+        <input type="hidden" id="selectedMonth" name="month">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+  </div>
+  <div class="container-fluid">
+    <div class="heading-wrapper">
+      <img src="/static/images/logo.png" alt="" />
+      <h1>Capex 1</h1>
+    </div>
+    <div class="wrap-buttons">
+      <button type="button" class="btn btn-primary download-button" id="downloadReportButtonCapex1">
+        Download Report
+      </button>
+      <button type="button" class="btn btn-success">Proceed Next</button>
+    </div>
+    <div id="dropdownWrapper" style="display: none">
+      <div class="axis-selectors">
+        <!-- <label for="xAxis">X-Axis:</label> -->
+        <select id="xAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+        <!-- <label for="yAxis">Y-Axis:</label> -->
+        <select id="yAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="button_wrapper" style="display: none">
+      <!-- <button type="button" id="showBarChartButton">Bar Chart</button> -->
+      <!-- <button type="button" id="showLineChartButton">Line Chart</button> -->
+      <!-- <button type="button" id="showPieButton">Pie Chart</button> -->
+      <!-- <button type="button" id="showRadarButton">Radar Chart</button> -->
+    </div>
+    <!-- Select dropdowns for choosing X-axis and Y-axis columns -->
+    <div class="graph_wrapper" style="display: none">
+      <!-- Canvas for each type of graph -->
+      <canvas id="chartCanvas" style="display: none"></canvas>
+    </div>
+    <div class="table-responsive table-wrapper">
+      <table class="table table-striped table-dark" style="background-color: #d3e2f4">
+        <thead class="table-header">
+          <tr>
+            {% for heading in headings %}
+            <th>{{ heading.verbose_name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody id="lazyBodysales">
+          {% for record in records %}
+          <tr>
+            <!-- Table Data -->
+            <td class="table-data">{{ record.category }}</td>
+            <td class="table-data">{{ record.month}}</td>
+            <td class="table-data">{{ record.date2}}</td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  // Function to show the back to original table button
+  function showBackToOriginalButton() {
+    document.getElementById('back_to_original_cap1').style.display = 'block';
+    localStorage.setItem('backToOriginalVisible', 'true');
+  }
+
+  // Function to hide the back to original table button
+  function hideBackToOriginalButton() {
+    document.getElementById('back_to_original_cap1').style.display = 'none';
+    localStorage.removeItem('backToOriginalVisible');
+  }
+
+  // Get the date input element
+  var dateInput = document.getElementById('dateinput_cap1');
+
+  // Check if the button should be visible on page load
+  if (localStorage.getItem('backToOriginalVisible')) {
+    showBackToOriginalButton();
+  } else {
+    hideBackToOriginalButton();
+  }
+
+  // Add an event listener for when the date input value changes
+  dateInput.addEventListener('change', function() {
+    // Get the selected date value
+    const dateStr = this.value;
+
+    // Extract the month as an integer from the selected date
+    const selectedDate = new Date(dateStr + '-01');
+    const month = selectedDate.getMonth() + 1; // Months are 0-indexed, so add 1
+
+    // Set the extracted month as an integer to the hidden input field
+    document.getElementById('selectedMonth').value = month;
+
+    // Submit the form
+    document.getElementById('filter_form').submit();
+
+    // Show the back to original table option after filtering
+    showBackToOriginalButton();
+  });
+
+  // Function to handle going back to the original table
+  document.getElementById('back_to_originalcap1_btn').addEventListener('click', function() {
+    
+    document.getElementById('filter_form').submit();
+
+    // Hide the back to original table option again
+    hideBackToOriginalButton();
+  });
+</script>
+
+<!-- content for inventory balance purchase -->
+
+<div id="capex_2" class="page hidden">
+  <div class="select-date">
+    <label for="label-date">Select Period: </label>
+    <input type="month" name="month_year" id="dateinput_cap2">
+  </div>
+  
+  <div id="back_to_original_cap2" style="display: none;">
+    <!-- Button to go back to original table -->
+    <button class="btn btn-secondary" id="back_to_originalcap2_btn">Back to Original Table</button>
+  </div>
+
+  <div id="filter_div" style="display: none;">
+    <form method="get" id="filter_form">
+        {{ filter.form.month }} <!-- Ensure this aligns with your filter's month field -->
+        <input type="hidden" id="selectedMonth" name="month">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+  </div>
+  <div class="container-fluid">
+    <div class="heading-wrapper">
+      <img src="/static/images/logo.png" alt="" />
+      <h1>Capex 2</h1>
+    </div>
+    <div class="wrap-buttons">
+      <button type="button" class="btn btn-primary download-button" id="downloadReportButtonCapex2">
+        Download Report
+      </button>
+      <button type="button" class="btn btn-success">Proceed Next</button>
+    </div>
+    <div id="dropdownWrapper" style="display: none">
+      <div class="axis-selectors">
+        <!-- <label for="xAxis">X-Axis:</label> -->
+        <select id="xAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+        <!-- <label for="yAxis">Y-Axis:</label> -->
+        <select id="yAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="button_wrapper" style="display: none">
+      <!-- <button type="button" id="showBarChartButton">Bar Chart</button> -->
+      <!-- <button type="button" id="showLineChartButton">Line Chart</button> -->
+      <!-- <button type="button" id="showPieButton">Pie Chart</button> -->
+      <!-- <button type="button" id="showRadarButton">Radar Chart</button> -->
+    </div>
+    <!-- Select dropdowns for choosing X-axis and Y-axis columns -->
+    <div class="graph_wrapper" style="display: none">
+      <!-- Canvas for each type of graph -->
+      <canvas id="chartCanvas" style="display: none"></canvas>
+    </div>
+    <div class="table-responsive table-wrapper">
+      <table class="table table-striped table-dark" style="background-color: #d3e2f4">
+        <thead class="table-header">
+          <tr>
+            {% for heading in headings %}
+            <th>{{ heading.verbose_name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody id="lazyBodysales">
+          {% for record in records %}
+          <tr>
+            <!-- Table Data -->
+            <td class="table-data">{{ record.category }}</td>
+            <td class="table-data">{{ record.month}}</td>
+            <td class="table-data">{{ record.date2}}</td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  // Function to show the back to original table button
+  function showBackToOriginalButton() {
+    document.getElementById('back_to_original_cap2').style.display = 'block';
+    localStorage.setItem('backToOriginalVisible', 'true');
+  }
+
+  // Function to hide the back to original table button
+  function hideBackToOriginalButton() {
+    document.getElementById('back_to_original_cap2').style.display = 'none';
+    localStorage.removeItem('backToOriginalVisible');
+  }
+
+  // Get the date input element
+  var dateInput = document.getElementById('dateinput_cap2');
+
+  // Check if the button should be visible on page load
+  if (localStorage.getItem('backToOriginalVisible')) {
+    showBackToOriginalButton();
+  } else {
+    hideBackToOriginalButton();
+  }
+
+  // Add an event listener for when the date input value changes
+  dateInput.addEventListener('change', function() {
+    // Get the selected date value
+    const dateStr = this.value;
+
+    // Extract the month as an integer from the selected date
+    const selectedDate = new Date(dateStr + '-01');
+    const month = selectedDate.getMonth() + 1; // Months are 0-indexed, so add 1
+
+    // Set the extracted month as an integer to the hidden input field
+    document.getElementById('selectedMonth').value = month;
+
+    // Submit the form
+    document.getElementById('filter_form').submit();
+
+    // Show the back to original table option after filtering
+    showBackToOriginalButton();
+  });
+
+  // Function to handle going back to the original table
+  document.getElementById('back_to_originalcap2_btn').addEventListener('click', function() {
+    
+    document.getElementById('filter_form').submit();
+
+    // Hide the back to original table option again
+    hideBackToOriginalButton();
+  });
+
+</script>
+
+<!-- content for inventory balance purchase -->
+
+<div id="finance_costs" class="page hidden">
+  <div class="select-date">
+    <label for="label-date">Select Period: </label>
+    <input type="month" name="month_year" id="dateinput_inv">
+  </div>
+  
+  <div id="back_to_original" style="display: none;">
+    <!-- Button to go back to original table -->
+    <button class="btn btn-secondary" id="back_to_original_btn">Back to Original Table</button>
+  </div>
+
+  <div id="filter_div" style="display: none;">
+    <form method="get" id="filter_form">
+        {{ filter.form.month }} <!-- Ensure this aligns with your filter's month field -->
+        <input type="hidden" id="selectedMonth" name="month">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+  </div>
+  <div class="container-fluid">
+    <div class="heading-wrapper">
+      <img src="/static/images/logo.png" alt="" />
+      <h1>Finance Costs</h1>
+    </div>
+    <div class="wrap-buttons">
+      <button type="button" class="btn btn-primary download-button" id="downloadReportButtonFinanceCosts">
+        Download Report
+      </button>
+      <button type="button" class="btn btn-success">Proceed Next</button>
+    </div>
+    <div id="dropdownWrapper" style="display: none">
+      <div class="axis-selectors">
+        <!-- <label for="xAxis">X-Axis:</label> -->
+        <select id="xAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+        <!-- <label for="yAxis">Y-Axis:</label> -->
+        <select id="yAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="button_wrapper" style="display: none">
+      <!-- <button type="button" id="showBarChartButton">Bar Chart</button> -->
+      <!-- <button type="button" id="showLineChartButton">Line Chart</button> -->
+      <!-- <button type="button" id="showPieButton">Pie Chart</button> -->
+      <!-- <button type="button" id="showRadarButton">Radar Chart</button> -->
+    </div>
+    <!-- Select dropdowns for choosing X-axis and Y-axis columns -->
+    <div class="graph_wrapper" style="display: none">
+      <!-- Canvas for each type of graph -->
+      <canvas id="chartCanvas" style="display: none"></canvas>
+    </div>
+    <div class="table-responsive table-wrapper">
+      <table class="table table-striped table-dark" style="background-color: #d3e2f4">
+        <thead class="table-header">
+          <tr>
+            {% for heading in headings %}
+            <th>{{ heading.verbose_name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody id="lazyBodysales">
+          {% for record in records %}
+          <tr>
+            <!-- Table Data -->
+            <td class="table-data">{{ record.fin_cost_heads }}</td>
+            <td class="table-data">{{ record.monyy}}</td>
+            <td class="table-data">{{ record.total}}</td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<!-- content for inventory balance purchase -->
+
+<div id="section_01" class="page hidden">
+  <div class="select-date">
+    <label for="label-date">Select Period: </label>
+    <input type="month" name="month_year" id="dateinput_sec">
+  </div>
+  
+  <div id="back_to_original_sec" style="display: none;">
+    <!-- Button to go back to original table -->
+    <button class="btn btn-secondary" id="back_to_originalsec_btn">Back to Original Table</button>
+  </div>
+
+  <div id="filter_div" style="display: none;">
+    <form method="get" id="filter_form">
+        {{ filter.form.month }} <!-- Ensure this aligns with your filter's month field -->
+        <input type="hidden" id="selectedMonth" name="month">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+  </div>
+  <div class="container-fluid">
+    <div class="heading-wrapper">
+      <img src="/static/images/logo.png" alt="" />
+      <h1>Section 01</h1>
+    </div>
+    <div class="wrap-buttons">
+      <button type="button" class="btn btn-primary download-button" id="downloadReportButtonSection01">
+        Download Report
+      </button>
+      <button type="button" class="btn btn-success">Proceed Next</button>
+    </div>
+    <div id="dropdownWrapper" style="display: none">
+      <div class="axis-selectors">
+        <!-- <label for="xAxis">X-Axis:</label> -->
+        <select id="xAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+        <!-- <label for="yAxis">Y-Axis:</label> -->
+        <select id="yAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="button_wrapper" style="display: none">
+      <!-- <button type="button" id="showBarChartButton">Bar Chart</button> -->
+      <!-- <button type="button" id="showLineChartButton">Line Chart</button> -->
+      <!-- <button type="button" id="showPieButton">Pie Chart</button> -->
+      <!-- <button type="button" id="showRadarButton">Radar Chart</button> -->
+    </div>
+    <!-- Select dropdowns for choosing X-axis and Y-axis columns -->
+    <div class="graph_wrapper" style="display: none">
+      <!-- Canvas for each type of graph -->
+      <canvas id="chartCanvas" style="display: none"></canvas>
+    </div>
+    <div class="table-responsive table-wrapper">
+      <table class="table table-striped table-dark" style="background-color: #d3e2f4">
+        <thead class="table-header">
+          <tr>
+            {% for heading in headings %}
+            <th>{{ heading.verbose_name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody id="lazyBodysales">
+          {% for record in records %}
+          <tr>
+            <!-- Table Data -->
+            <td class="table-data">{{ record.category }}</td>
+            <td class="table-data">{{ record.subcategory}}</td>
+            <td class="table-data">{{ record.monyy}}</td>
+            <td class="table-data">{{ record.total}}</td>
+            <td class="table-data">{{ record.month}}</td>
+            <td class="table-data">{{ record.runningtotal}}</td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  // Function to show the back to original table button
+  function showBackToOriginalButton() {
+    document.getElementById('back_to_original_sec').style.display = 'block';
+    localStorage.setItem('backToOriginalVisible', 'true');
+  }
+
+  // Function to hide the back to original table button
+  function hideBackToOriginalButton() {
+    document.getElementById('back_to_original_sec').style.display = 'none';
+    localStorage.removeItem('backToOriginalVisible');
+  }
+
+  // Get the date input element
+  var dateInput = document.getElementById('dateinput_sec');
+
+  // Check if the button should be visible on page load
+  if (localStorage.getItem('backToOriginalVisible')) {
+    showBackToOriginalButton();
+  } else {
+    hideBackToOriginalButton();
+  }
+
+  // Add an event listener for when the date input value changes
+  dateInput.addEventListener('change', function() {
+    // Get the selected date value
+    const dateStr = this.value;
+
+    // Extract the month as an integer from the selected date
+    const selectedDate = new Date(dateStr + '-01');
+    const month = selectedDate.getMonth() + 1; // Months are 0-indexed, so add 1
+
+    // Set the extracted month as an integer to the hidden input field
+    document.getElementById('selectedMonth').value = month;
+
+    // Submit the form
+    document.getElementById('filter_form').submit();
+
+    // Show the back to original table option after filtering
+    showBackToOriginalButton();
+  });
+
+  // Function to handle going back to the original table
+  document.getElementById('back_to_originalsec_btn').addEventListener('click', function() {
+    
+    document.getElementById('filter_form').submit();
+
+    // Hide the back to original table option again
+    hideBackToOriginalButton();
+  });
+
+</script>
+
+<!-- content for inventory balance purchase -->
+
+<div id="taxes_header" class="page hidden">
+  <div class="select-date">
+    <label for="label-date">Select Period: </label>
+    <input type="month" name="month_year" id="dateinput_tax">
+  </div>
+  
+  <div id="back_to_original_tax" style="display: none;">
+    <!-- Button to go back to original table -->
+    <button class="btn btn-secondary" id="back_to_originaltax_btn">Back to Original Table</button>
+  </div>
+
+  <div id="filter_div" style="display: none;">
+    <form method="get" id="filter_form">
+        {{ filter.form.month }} <!-- Ensure this aligns with your filter's month field -->
+        <input type="hidden" id="selectedMonth" name="month">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+  </div>
+  <div class="container-fluid">
+    <div class="heading-wrapper">
+      <img src="/static/images/logo.png" alt="" />
+      <h1>Taxes Head</h1>
+    </div>
+    <div class="wrap-buttons">
+      <button type="button" class="btn btn-primary download-button" id="downloadReportButtonTexasHead">
+        Download Report
+      </button>
+      <button type="button" class="btn btn-success">Proceed Next</button>
+    </div>
+    <div id="dropdownWrapper" style="display: none">
+      <div class="axis-selectors">
+        <!-- <label for="xAxis">X-Axis:</label> -->
+        <select id="xAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+        <!-- <label for="yAxis">Y-Axis:</label> -->
+        <select id="yAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="button_wrapper" style="display: none">
+      <!-- <button type="button" id="showBarChartButton">Bar Chart</button> -->
+      <!-- <button type="button" id="showLineChartButton">Line Chart</button> -->
+      <!-- <button type="button" id="showPieButton">Pie Chart</button> -->
+      <!-- <button type="button" id="showRadarButton">Radar Chart</button> -->
+    </div>
+    <!-- Select dropdowns for choosing X-axis and Y-axis columns -->
+    <div class="graph_wrapper" style="display: none">
+      <!-- Canvas for each type of graph -->
+      <canvas id="chartCanvas" style="display: none"></canvas>
+    </div>
+    <div class="table-responsive table-wrapper">
+      <table class="table table-striped table-dark" style="background-color: #d3e2f4">
+        <thead class="table-header">
+          <tr>
+            {% for heading in headings %}
+            <th>{{ heading.verbose_name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody id="lazyBodysales">
+          {% for record in records %}
+          <tr>
+            <!-- Table Data -->
+            <td class="table-data">{{ record.category }}</td>
+            <td class="table-data">{{ record.subcategory}}</td>
+            <td class="table-data">{{ record.monyy}}</td>
+            <td class="table-data">{{ record.month}}</td>
+            <td class="table-data">{{ record.date2}}</td>
+            <td class="table-data">{{ record.total}}</td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  // Function to show the back to original table button
+  function showBackToOriginalButton() {
+    document.getElementById('back_to_original_tax').style.display = 'block';
+    localStorage.setItem('backToOriginalVisible', 'true');
+  }
+
+  // Function to hide the back to original table button
+  function hideBackToOriginalButton() {
+    document.getElementById('back_to_original_tax').style.display = 'none';
+    localStorage.removeItem('backToOriginalVisible');
+  }
+
+  // Get the date input element
+  var dateInput = document.getElementById('dateinput_tax');
+
+  // Check if the button should be visible on page load
+  if (localStorage.getItem('backToOriginalVisible')) {
+    showBackToOriginalButton();
+  } else {
+    hideBackToOriginalButton();
+  }
+
+  // Add an event listener for when the date input value changes
+  dateInput.addEventListener('change', function() {
+    // Get the selected date value
+    const dateStr = this.value;
+
+    // Extract the month as an integer from the selected date
+    const selectedDate = new Date(dateStr + '-01');
+    const month = selectedDate.getMonth() + 1; // Months are 0-indexed, so add 1
+
+    // Set the extracted month as an integer to the hidden input field
+    document.getElementById('selectedMonth').value = month;
+
+    // Submit the form
+    document.getElementById('filter_form').submit();
+
+    // Show the back to original table option after filtering
+    showBackToOriginalButton();
+  });
+
+  // Function to handle going back to the original table
+  document.getElementById('back_to_originaltax_btn').addEventListener('click', function() {
+    
+    document.getElementById('filter_form').submit();
+
+    // Hide the back to original table option again
+    hideBackToOriginalButton();
+  });
+</script>
+
+<!-- content for inventory balance purchase -->
+
+<div id="business_cash_value" class="page hidden">
+  <div class="select-date">
+    <label for="label-date">Select Period: </label>
+    <input type="month" name="month_year" id="dateinput_inv">
+  </div>
+  
+  <div id="back_to_original" style="display: none;">
+    <!-- Button to go back to original table -->
+    <button class="btn btn-secondary" id="back_to_original_btn">Back to Original Table</button>
+  </div>
+
+  <div id="filter_div" style="display: none;">
+    <form method="get" id="filter_form">
+        {{ filter.form.month }} <!-- Ensure this aligns with your filter's month field -->
+        <input type="hidden" id="selectedMonth" name="month">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+  </div>
+  <div class="container-fluid">
+    <div class="heading-wrapper">
+      <img src="/static/images/logo.png" alt="" />
+      <h1>Business Cash Value</h1>
+    </div>
+    <div class="wrap-buttons">
+      <button type="button" class="btn btn-primary download-button" id="downloadReportButtonBCashValue">
+        Download Report
+      </button>
+      <button type="button" class="btn btn-success">Proceed Next</button>
+    </div>
+    <div id="dropdownWrapper" style="display: none">
+      <div class="axis-selectors">
+        <!-- <label for="xAxis">X-Axis:</label> -->
+        <select id="xAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+        <!-- <label for="yAxis">Y-Axis:</label> -->
+        <select id="yAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="button_wrapper" style="display: none">
+      <!-- <button type="button" id="showBarChartButton">Bar Chart</button> -->
+      <!-- <button type="button" id="showLineChartButton">Line Chart</button> -->
+      <!-- <button type="button" id="showPieButton">Pie Chart</button> -->
+      <!-- <button type="button" id="showRadarButton">Radar Chart</button> -->
+    </div>
+    <!-- Select dropdowns for choosing X-axis and Y-axis columns -->
+    <div class="graph_wrapper" style="display: none">
+      <!-- Canvas for each type of graph -->
+      <canvas id="chartCanvas" style="display: none"></canvas>
+    </div>
+    <div class="table-responsive table-wrapper">
+      <table class="table table-striped table-dark" style="background-color: #d3e2f4">
+        <thead class="table-header">
+          <tr>
+            {% for heading in headings %}
+            <th>{{ heading.verbose_name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody id="lazyBodysales">
+          {% for record in records %}
+          <tr>
+            <!-- Table Data -->
+            <td class="table-data">{{ record.dpt_name }}</td>
+            <td class="table-data">{{ record.monyy}}</td>
+            <td class="table-data">{{ record.total}}</td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- content for inventory balance purchase -->
+
+<div id="consultation" class="page hidden">
+  <div class="select-date">
+    <label for="label-date">Select Period: </label>
+    <input type="month" name="month_year" id="dateinput_inv">
+  </div>
+  
+  <div id="back_to_original" style="display: none;">
+    <!-- Button to go back to original table -->
+    <button class="btn btn-secondary" id="back_to_original_btn">Back to Original Table</button>
+  </div>
+
+  <div id="filter_div" style="display: none;">
+    <form method="get" id="filter_form">
+        {{ filter.form.month }} <!-- Ensure this aligns with your filter's month field -->
+        <input type="hidden" id="selectedMonth" name="month">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+  </div>
+  <div class="container-fluid">
+    <div class="heading-wrapper">
+      <img src="/static/images/logo.png" alt="" />
+      <h1>consult</h1>
+    </div>
+    <div class="wrap-buttons">
+      <button type="button" class="btn btn-primary download-button" id="downloadReportButtonConsult">
+        Download Report
+      </button>
+      <button type="button" class="btn btn-success">Proceed Next</button>
+    </div>
+    <div id="dropdownWrapper" style="display: none">
+      <div class="axis-selectors">
+        <!-- <label for="xAxis">X-Axis:</label> -->
+        <select id="xAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+        <!-- <label for="yAxis">Y-Axis:</label> -->
+        <select id="yAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="button_wrapper" style="display: none">
+      <!-- <button type="button" id="showBarChartButton">Bar Chart</button> -->
+      <!-- <button type="button" id="showLineChartButton">Line Chart</button> -->
+      <!-- <button type="button" id="showPieButton">Pie Chart</button> -->
+      <!-- <button type="button" id="showRadarButton">Radar Chart</button> -->
+    </div>
+    <!-- Select dropdowns for choosing X-axis and Y-axis columns -->
+    <div class="graph_wrapper" style="display: none">
+      <!-- Canvas for each type of graph -->
+      <canvas id="chartCanvas" style="display: none"></canvas>
+    </div>
+    <div class="table-responsive table-wrapper">
+      <table class="table table-striped table-dark" style="background-color: #d3e2f4">
+        <thead class="table-header">
+          <tr>
+            {% for heading in headings %}
+            <th>{{ heading.verbose_name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody id="lazyBodysales">
+          {% for record in records %}
+          <tr>
+            <!-- Table Data -->
+            <td class="table-data">{{ record.dpt_name }}</td>
+            <td class="table-data">{{ record.monyy}}</td>
+            <td class="table-data">{{ record.total}}</td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- content for inventory balance purchase -->
+
+<div id="zero_equity_value" class="page hidden">
+  <div class="select-date">
+    <label for="label-date">Select Period: </label>
+    <input type="month" name="month_year" id="dateinput_inv">
+  </div>
+  
+  <div id="back_to_original" style="display: none;">
+    <!-- Button to go back to original table -->
+    <button class="btn btn-secondary" id="back_to_original_btn">Back to Original Table</button>
+  </div>
+
+  <div id="filter_div" style="display: none;">
+    <form method="get" id="filter_form">
+        {{ filter.form.month }} <!-- Ensure this aligns with your filter's month field -->
+        <input type="hidden" id="selectedMonth" name="month">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+  </div>
+  <div class="container-fluid">
+    <div class="heading-wrapper">
+      <img src="/static/images/logo.png" alt="" />
+      <h1>Zero Equity Value</h1>
+    </div>
+    <div class="wrap-buttons">
+      <button type="button" class="btn btn-primary download-button" id="downloadReportButtonZEValue">
+        Download Report
+      </button>
+      <button type="button" class="btn btn-success">Proceed Next</button>
+    </div>
+    <div id="dropdownWrapper" style="display: none">
+      <div class="axis-selectors">
+        <!-- <label for="xAxis">X-Axis:</label> -->
+        <select id="xAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+        <!-- <label for="yAxis">Y-Axis:</label> -->
+        <select id="yAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="button_wrapper" style="display: none">
+      <!-- <button type="button" id="showBarChartButton">Bar Chart</button> -->
+      <!-- <button type="button" id="showLineChartButton">Line Chart</button> -->
+      <!-- <button type="button" id="showPieButton">Pie Chart</button> -->
+      <!-- <button type="button" id="showRadarButton">Radar Chart</button> -->
+    </div>
+    <!-- Select dropdowns for choosing X-axis and Y-axis columns -->
+    <div class="graph_wrapper" style="display: none">
+      <!-- Canvas for each type of graph -->
+      <canvas id="chartCanvas" style="display: none"></canvas>
+    </div>
+    <div class="table-responsive table-wrapper">
+      <table class="table table-striped table-dark" style="background-color: #d3e2f4">
+        <thead class="table-header">
+          <tr>
+            {% for heading in headings %}
+            <th>{{ heading.verbose_name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody id="lazyBodysales">
+          {% for record in records %}
+          <tr>
+            <!-- Table Data -->
+            <td class="table-data">{{ record.dpt_name }}</td>
+            <td class="table-data">{{ record.monyy}}</td>
+            <td class="table-data">{{ record.total}}</td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- content for inventory balance purchase -->
+
+<div id="sustainable_finance_value" class="page hidden">
+  <div class="select-date">
+    <label for="label-date">Select Period: </label>
+    <input type="month" name="month_year" id="dateinput_inv">
+  </div>
+  
+  <div id="back_to_original" style="display: none;">
+    <!-- Button to go back to original table -->
+    <button class="btn btn-secondary" id="back_to_original_btn">Back to Original Table</button>
+  </div>
+
+  <div id="filter_div" style="display: none;">
+    <form method="get" id="filter_form">
+        {{ filter.form.month }} <!-- Ensure this aligns with your filter's month field -->
+        <input type="hidden" id="selectedMonth" name="month">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+  </div>
+  <div class="container-fluid">
+    <div class="heading-wrapper">
+      <img src="/static/images/logo.png" alt="" />
+      <h1>Sustainable Finance Value</h1>
+    </div>
+    <div class="wrap-buttons">
+      <button type="button" class="btn btn-primary download-button" id="downloadReportButtonSFValue">
+        Download Report
+      </button>
+      <button type="button" class="btn btn-success">Proceed Next</button>
+    </div>
+    <div id="dropdownWrapper" style="display: none">
+      <div class="axis-selectors">
+        <!-- <label for="xAxis">X-Axis:</label> -->
+        <select id="xAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+        <!-- <label for="yAxis">Y-Axis:</label> -->
+        <select id="yAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="button_wrapper" style="display: none">
+      <!-- <button type="button" id="showBarChartButton">Bar Chart</button> -->
+      <!-- <button type="button" id="showLineChartButton">Line Chart</button> -->
+      <!-- <button type="button" id="showPieButton">Pie Chart</button> -->
+      <!-- <button type="button" id="showRadarButton">Radar Chart</button> -->
+    </div>
+    <!-- Select dropdowns for choosing X-axis and Y-axis columns -->
+    <div class="graph_wrapper" style="display: none">
+      <!-- Canvas for each type of graph -->
+      <canvas id="chartCanvas" style="display: none"></canvas>
+    </div>
+    <div class="table-responsive table-wrapper">
+      <table class="table table-striped table-dark" style="background-color: #d3e2f4">
+        <thead class="table-header">
+          <tr>
+            {% for heading in headings %}
+            <th>{{ heading.verbose_name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody id="lazyBodysales">
+          {% for record in records %}
+          <tr>
+            <!-- Table Data -->
+            <td class="table-data">{{ record.dpt_name }}</td>
+            <td class="table-data">{{ record.monyy}}</td>
+            <td class="table-data">{{ record.total}}</td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- content for inventory balance purchase -->
+
+<div id="total_capital_value" class="page hidden">
+  <div class="select-date">
+    <label for="label-date">Select Period: </label>
+    <input type="month" name="month_year" id="dateinput_tcv">
+  </div>
+  
+  <div id="back_to_original_tcv" style="display: none;">
+    <!-- Button to go back to original table -->
+    <button class="btn btn-secondary" id="back_to_originaltcv_btn">Back to Original Table</button>
+  </div>
+
+  <div id="filter_div" style="display: none;">
+    <form method="get" id="filter_form">
+        {{ filter.form.month }} <!-- Ensure this aligns with your filter's month field -->
+        <input type="hidden" id="selectedMonth" name="month">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+  </div>
+  <div class="container-fluid">
+    <div class="heading-wrapper">
+      <img src="/static/images/logo.png" alt="" />
+      <h1>Total Capital Value</h1>
+    </div>
+    <div class="wrap-buttons">
+      <button type="button" class="btn btn-primary download-button" id="downloadReportButtonTCValue">
+        Download Report
+      </button>
+      <button type="button" class="btn btn-success">Proceed Next</button>
+    </div>
+    <div id="dropdownWrapper" style="display: none">
+      <div class="axis-selectors">
+        <!-- <label for="xAxis">X-Axis:</label> -->
+        <select id="xAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+        <!-- <label for="yAxis">Y-Axis:</label> -->
+        <select id="yAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="button_wrapper" style="display: none">
+      <!-- <button type="button" id="showBarChartButton">Bar Chart</button> -->
+      <!-- <button type="button" id="showLineChartButton">Line Chart</button> -->
+      <!-- <button type="button" id="showPieButton">Pie Chart</button> -->
+      <!-- <button type="button" id="showRadarButton">Radar Chart</button> -->
+    </div>
+    <!-- Select dropdowns for choosing X-axis and Y-axis columns -->
+    <div class="graph_wrapper" style="display: none">
+      <!-- Canvas for each type of graph -->
+      <canvas id="chartCanvas" style="display: none"></canvas>
+    </div>
+    <div class="table-responsive table-wrapper">
+      <table class="table table-striped table-dark" style="background-color: #d3e2f4">
+        <thead class="table-header">
+          <tr>
+            {% for heading in headings %}
+            <th>{{ heading.verbose_name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody id="lazyBodysales">
+          {% for record in records %}
+          <tr>
+            <!-- Table Data -->
+            <td class="table-data">{{ record.dpt_name }}</td>
+            <td class="table-data">{{ record.month}}</td>
+            <td class="table-data">{{ record.total}}</td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  // Function to show the back to original table button
+  function showBackToOriginalButton() {
+    document.getElementById('back_to_original_tcv').style.display = 'block';
+    localStorage.setItem('backToOriginalVisible', 'true');
+  }
+
+  // Function to hide the back to original table button
+  function hideBackToOriginalButton() {
+    document.getElementById('back_to_original_tcv').style.display = 'none';
+    localStorage.removeItem('backToOriginalVisible');
+  }
+
+  // Get the date input element
+  var dateInput = document.getElementById('dateinput_tcv');
+
+  // Check if the button should be visible on page load
+  if (localStorage.getItem('backToOriginalVisible')) {
+    showBackToOriginalButton();
+  } else {
+    hideBackToOriginalButton();
+  }
+
+  // Add an event listener for when the date input value changes
+  dateInput.addEventListener('change', function() {
+    // Get the selected date value
+    const dateStr = this.value;
+
+    // Extract the month as an integer from the selected date
+    const selectedDate = new Date(dateStr + '-01');
+    const month = selectedDate.getMonth() + 1; // Months are 0-indexed, so add 1
+
+    // Set the extracted month as an integer to the hidden input field
+    document.getElementById('selectedMonth').value = month;
+
+    // Submit the form
+    document.getElementById('filter_form').submit();
+
+    // Show the back to original table option after filtering
+    showBackToOriginalButton();
+  });
+
+  // Function to handle going back to the original table
+  document.getElementById('back_to_originaltcv_btn').addEventListener('click', function() {
+    
+    document.getElementById('filter_form').submit();
+
+    // Hide the back to original table option again
+    hideBackToOriginalButton();
+  });
+</script>
+
+<!-- content for inventory balance purchase -->
+
+<div id="total_inventory_value" class="page hidden">
+  <div class="select-date">
+    <label for="label-date">Select Period: </label>
+    <input type="month" name="month_year" id="dateinput_inv">
+  </div>
+  
+  <div id="back_to_original" style="display: none;">
+    <!-- Button to go back to original table -->
+    <button class="btn btn-secondary" id="back_to_original_btn">Back to Original Table</button>
+  </div>
+
+  <div id="filter_div" style="display: none;">
+    <form method="get" id="filter_form">
+        {{ filter.form.month }} <!-- Ensure this aligns with your filter's month field -->
+        <input type="hidden" id="selectedMonth" name="month">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+  </div>
+  <div class="container-fluid">
+    <div class="heading-wrapper">
+      <img src="/static/images/logo.png" alt="" />
+      <h1>Total Inventory Value</h1>
+    </div>
+    <div class="wrap-buttons">
+      <button type="button" class="btn btn-primary download-button" id="downloadReportButtonTIValue">
+        Download Report
+      </button>
+      <button type="button" class="btn btn-success">Proceed Next</button>
+    </div>
+    <div id="dropdownWrapper" style="display: none">
+      <div class="axis-selectors">
+        <!-- <label for="xAxis">X-Axis:</label> -->
+        <select id="xAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+        <!-- <label for="yAxis">Y-Axis:</label> -->
+        <select id="yAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="button_wrapper" style="display: none">
+      <!-- <button type="button" id="showBarChartButton">Bar Chart</button> -->
+      <!-- <button type="button" id="showLineChartButton">Line Chart</button> -->
+      <!-- <button type="button" id="showPieButton">Pie Chart</button> -->
+      <!-- <button type="button" id="showRadarButton">Radar Chart</button> -->
+    </div>
+    <!-- Select dropdowns for choosing X-axis and Y-axis columns -->
+    <div class="graph_wrapper" style="display: none">
+      <!-- Canvas for each type of graph -->
+      <canvas id="chartCanvas" style="display: none"></canvas>
+    </div>
+    <div class="table-responsive table-wrapper">
+      <table class="table table-striped table-dark" style="background-color: #d3e2f4">
+        <thead class="table-header">
+          <tr>
+            {% for heading in headings %}
+            <th>{{ heading.verbose_name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody id="lazyBodysales">
+          {% for record in records %}
+          <tr>
+            <!-- Table Data -->
+            <td class="table-data">{{ record.dpt_name }}</td>
+            <td class="table-data">{{ record.monyy}}</td>
+            <td class="table-data">{{ record.total}}</td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- content for inventory balance purchase -->
+
+<div id="level_0_v12" class="page hidden">
+  <div class="select-date">
+    <label for="label-date">Select Period: </label>
+    <input type="month" name="month_year" id="dateinput_v12">
+  </div>
+  
+  <div id="back_to_original_v12" style="display: none;">
+    <!-- Button to go back to original table -->
+    <button class="btn btn-secondary" id="back_to_originalv12_btn">Back to Original Table</button>
+  </div>
+
+  <div id="filter_div" style="display: none;">
+    <form method="get" id="filter_form">
+        {{ filter.form.month }} <!-- Ensure this aligns with your filter's month field -->
+        <input type="hidden" id="selectedMonth" name="month">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+  </div>
+  <div class="container-fluid">
+    <div class="heading-wrapper">
+      <img src="/static/images/logo.png" alt="" />
+      <h1>Level 0 v12</h1>
+    </div>
+    <div class="wrap-buttons">
+      <button type="button" class="btn btn-primary download-button" id="downloadReportButtonLevel0V12">
+        Download Report
+      </button>
+      <button type="button" class="btn btn-success">Proceed Next</button>
+    </div>
+    <div id="dropdownWrapper" style="display: none">
+      <div class="axis-selectors">
+        <!-- <label for="xAxis">X-Axis:</label> -->
+        <select id="xAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+        <!-- <label for="yAxis">Y-Axis:</label> -->
+        <select id="yAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="button_wrapper" style="display: none">
+      <!-- <button type="button" id="showBarChartButton">Bar Chart</button> -->
+      <!-- <button type="button" id="showLineChartButton">Line Chart</button> -->
+      <!-- <button type="button" id="showPieButton">Pie Chart</button> -->
+      <!-- <button type="button" id="showRadarButton">Radar Chart</button> -->
+    </div>
+    <!-- Select dropdowns for choosing X-axis and Y-axis columns -->
+    <div class="graph_wrapper" style="display: none">
+      <!-- Canvas for each type of graph -->
+      <canvas id="chartCanvas" style="display: none"></canvas>
+    </div>
+    <div class="table-responsive table-wrapper">
+      <table class="table table-striped table-dark" style="background-color: #d3e2f4">
+        <thead class="table-header">
+          <tr>
+            {% for heading in headings %}
+            <th>{{ heading.verbose_name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody id="lazyBodysales">
+          {% for record in records %}
+          <tr>
+            <!-- Table Data -->
+            <td class="table-data">{{ record.group }}</td>
+            <td class="table-data">{{ record.cluster}}</td>
+            <td class="table-data">{{ record.entity}}</td>
+            <td class="table-data">{{ record.month}}</td>
+            <td class="table-data">{{ record.date2 }}</td>
+            <td class="table-data">{{ record.cat}}</td>
+            <td class="table-data">{{ record.sub_cat}}</td>
+            <td class="table-data">{{ record.val}}</td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  // Function to show the back to original table button
+  function showBackToOriginalButton() {
+    document.getElementById('back_to_original_v12').style.display = 'block';
+    localStorage.setItem('backToOriginalVisible', 'true');
+  }
+
+  // Function to hide the back to original table button
+  function hideBackToOriginalButton() {
+    document.getElementById('back_to_original_v12').style.display = 'none';
+    localStorage.removeItem('backToOriginalVisible');
+  }
+
+  // Get the date input element
+  var dateInput = document.getElementById('dateinput_v12');
+
+  // Check if the button should be visible on page load
+  if (localStorage.getItem('backToOriginalVisible')) {
+    showBackToOriginalButton();
+  } else {
+    hideBackToOriginalButton();
+  }
+
+  // Add an event listener for when the date input value changes
+  dateInput.addEventListener('change', function() {
+    // Get the selected date value
+    const dateStr = this.value;
+
+    // Extract the month as an integer from the selected date
+    const selectedDate = new Date(dateStr + '-01');
+    const month = selectedDate.getMonth() + 1; // Months are 0-indexed, so add 1
+
+    // Set the extracted month as an integer to the hidden input field
+    document.getElementById('selectedMonth').value = month;
+
+    // Submit the form
+    document.getElementById('filter_form').submit();
+
+    // Show the back to original table option after filtering
+    showBackToOriginalButton();
+  });
+
+  // Function to handle going back to the original table
+  document.getElementById('back_to_originalv12_btn').addEventListener('click', function() {
+    
+    document.getElementById('filter_form').submit();
+
+    // Hide the back to original table option again
+    hideBackToOriginalButton();
+  });
+
+</script>
+
+<!-- content for inventory balance purchase -->
+
+<div id="monthly_reports" class="page hidden">
+  <div class="select-date">
+    <label for="label-date">Select Period: </label>
+    <input type="month" name="month_year" id="dateinput_inv">
+  </div>
+  
+  <div id="back_to_original" style="display: none;">
+    <!-- Button to go back to original table -->
+    <button class="btn btn-secondary" id="back_to_original_btn">Back to Original Table</button>
+  </div>
+
+  <div id="filter_div" style="display: none;">
+    <form method="get" id="filter_form">
+        {{ filter.form.month }} <!-- Ensure this aligns with your filter's month field -->
+        <input type="hidden" id="selectedMonth" name="month">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+  </div>
+  <div class="container-fluid">
+    <div class="heading-wrapper">
+      <img src="/static/images/logo.png" alt="" />
+      <h1>Monthly Reports</h1>
+    </div>
+    <div class="wrap-buttons">
+      <button type="button" class="btn btn-primary download-button" id="downloadReportButtonMonthlyReport">
+        Download Report
+      </button>
+      <button type="button" class="btn btn-success">Proceed Next</button>
+    </div>
+    <div id="dropdownWrapper" style="display: none">
+      <div class="axis-selectors">
+        <!-- <label for="xAxis">X-Axis:</label> -->
+        <select id="xAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+        <!-- <label for="yAxis">Y-Axis:</label> -->
+        <select id="yAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="button_wrapper" style="display: none">
+      <!-- <button type="button" id="showBarChartButton">Bar Chart</button> -->
+      <!-- <button type="button" id="showLineChartButton">Line Chart</button> -->
+      <!-- <button type="button" id="showPieButton">Pie Chart</button> -->
+      <!-- <button type="button" id="showRadarButton">Radar Chart</button> -->
+    </div>
+    <!-- Select dropdowns for choosing X-axis and Y-axis columns -->
+    <div class="graph_wrapper" style="display: none">
+      <!-- Canvas for each type of graph -->
+      <canvas id="chartCanvas" style="display: none"></canvas>
+    </div>
+    <div class="table-responsive table-wrapper">
+      <table class="table table-striped table-dark" style="background-color: #d3e2f4">
+        <thead class="table-header">
+          <tr>
+            {% for heading in headings %}
+            <th>{{ heading.verbose_name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody id="lazyBodysales">
+          {% for record in records %}
+          <tr>
+            <!-- Table Data -->
+            <td class="table-data">{{ record.expense_type }}</td>
+            <td class="table-data">{{ record.monyy}}</td>
+            <td class="table-data">{{ record.total}}</td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- content for inventory balance purchase -->
+
+<div id="section_11_ic_v1" class="page hidden">
+  <div class="select-date">
+    <label for="label-date">Select Period: </label>
+    <input type="month" name="month_year" id="dateinput_inv">
+  </div>
+  
+  <div id="back_to_original" style="display: none;">
+    <!-- Button to go back to original table -->
+    <button class="btn btn-secondary" id="back_to_original_btn">Back to Original Table</button>
+  </div>
+
+  <div id="filter_div" style="display: none;">
+    <form method="get" id="filter_form">
+        {{ filter.form.month }} <!-- Ensure this aligns with your filter's month field -->
+        <input type="hidden" id="selectedMonth" name="month">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+  </div>
+  <div class="container-fluid">
+    <div class="heading-wrapper">
+      <img src="/static/images/logo.png" alt="" />
+      <h1>Section 1l ic v1</h1>
+    </div>
+    <div class="wrap-buttons">
+      <button type="button" class="btn btn-primary download-button" id="downloadReportButtonSection1licv1">
+        Download Report
+      </button>
+      <button type="button" class="btn btn-success">Proceed Next</button>
+    </div>
+    <div id="dropdownWrapper" style="display: none">
+      <div class="axis-selectors">
+        <!-- <label for="xAxis">X-Axis:</label> -->
+        <select id="xAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+        <!-- <label for="yAxis">Y-Axis:</label> -->
+        <select id="yAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="button_wrapper" style="display: none">
+      <!-- <button type="button" id="showBarChartButton">Bar Chart</button> -->
+      <!-- <button type="button" id="showLineChartButton">Line Chart</button> -->
+      <!-- <button type="button" id="showPieButton">Pie Chart</button> -->
+      <!-- <button type="button" id="showRadarButton">Radar Chart</button> -->
+    </div>
+    <!-- Select dropdowns for choosing X-axis and Y-axis columns -->
+    <div class="graph_wrapper" style="display: none">
+      <!-- Canvas for each type of graph -->
+      <canvas id="chartCanvas" style="display: none"></canvas>
+    </div>
+    <div class="table-responsive table-wrapper">
+      <table class="table table-striped table-dark" style="background-color: #d3e2f4">
+        <thead class="table-header">
+          <tr>
+            {% for heading in headings %}
+            <th>{{ heading.verbose_name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody id="lazyBodysales">
+          {% for record in records %}
+          <tr>
+            <!-- Table Data -->
+            <td class="table-data">{{ record.category }}</td>
+            <td class="table-data">{{ record.subcategory}}</td>
+            <td class="table-data">{{ record.monyy}}</td>
+            <td class="table-data">{{ record.comp}}</td>
+            <td class="table-data">{{ record.total}}</td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- content for inventory balance purchase -->
+
+<div id="quantity_1" class="page hidden">
+  <div class="select-date">
+    <label for="label-date">Select Period: </label>
+    <input type="month" name="month_year" id="dateinput_q1">
+  </div>
+  
+  <div id="back_to_original_q1" style="display: none;">
+    <!-- Button to go back to original table -->
+    <button class="btn btn-secondary" id="back_to_originalq1_btn">Back to Original Table</button>
+  </div>
+
+  <div id="filter_div" style="display: none;">
+    <form method="get" id="filter_form">
+        {{ filter.form.month }} <!-- Ensure this aligns with your filter's month field -->
+        <input type="hidden" id="selectedMonth" name="month">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+  </div>
+  <div class="container-fluid">
+    <div class="heading-wrapper">
+      <img src="/static/images/logo.png" alt="" />
+      <h1>Quantity 1</h1>
+    </div>
+    <div class="wrap-buttons">
+      <button type="button" class="btn btn-primary download-button" id="downloadReportButtonQuantity1">
+        Download Report
+      </button>
+      <button type="button" class="btn btn-success">Proceed Next</button>
+    </div>
+    <div id="dropdownWrapper" style="display: none">
+      <div class="axis-selectors">
+        <!-- <label for="xAxis">X-Axis:</label> -->
+        <select id="xAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+        <!-- <label for="yAxis">Y-Axis:</label> -->
+        <select id="yAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="button_wrapper" style="display: none">
+      <!-- <button type="button" id="showBarChartButton">Bar Chart</button> -->
+      <!-- <button type="button" id="showLineChartButton">Line Chart</button> -->
+      <!-- <button type="button" id="showPieButton">Pie Chart</button> -->
+      <!-- <button type="button" id="showRadarButton">Radar Chart</button> -->
+    </div>
+    <!-- Select dropdowns for choosing X-axis and Y-axis columns -->
+    <div class="graph_wrapper" style="display: none">
+      <!-- Canvas for each type of graph -->
+      <canvas id="chartCanvas" style="display: none"></canvas>
+    </div>
+    <div class="table-responsive table-wrapper">
+      <table class="table table-striped table-dark" style="background-color: #d3e2f4">
+        <thead class="table-header">
+          <tr>
+            {% for heading in headings %}
+            <th>{{ heading.verbose_name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody id="lazyBodysales">
+          {% for record in records %}
+          <tr>
+            <!-- Table Data -->
+            <td class="table-data">{{ record.val }}</td>
+            <td class="table-data">{{ record.month}}</td>
+            <td class="table-data">{{ record.monyy}}</td>
+            <td class="table-data">{{ record.bottles}}</td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  // Function to show the back to original table button
+  function showBackToOriginalButton() {
+    document.getElementById('back_to_original_q1').style.display = 'block';
+    localStorage.setItem('backToOriginalVisible', 'true');
+  }
+
+  // Function to hide the back to original table button
+  function hideBackToOriginalButton() {
+    document.getElementById('back_to_original_q1').style.display = 'none';
+    localStorage.removeItem('backToOriginalVisible');
+  }
+
+  // Get the date input element
+  var dateInput = document.getElementById('dateinput_q1');
+
+  // Check if the button should be visible on page load
+  if (localStorage.getItem('backToOriginalVisible')) {
+    showBackToOriginalButton();
+  } else {
+    hideBackToOriginalButton();
+  }
+
+  // Add an event listener for when the date input value changes
+  dateInput.addEventListener('change', function() {
+    // Get the selected date value
+    const dateStr = this.value;
+
+    // Extract the month as an integer from the selected date
+    const selectedDate = new Date(dateStr + '-01');
+    const month = selectedDate.getMonth() + 1; // Months are 0-indexed, so add 1
+
+    // Set the extracted month as an integer to the hidden input field
+    document.getElementById('selectedMonth').value = month;
+
+    // Submit the form
+    document.getElementById('filter_form').submit();
+
+    // Show the back to original table option after filtering
+    showBackToOriginalButton();
+  });
+
+  // Function to handle going back to the original table
+  document.getElementById('back_to_originalq1_btn').addEventListener('click', function() {
+    
+    document.getElementById('filter_form').submit();
+
+    // Hide the back to original table option again
+    hideBackToOriginalButton();
+  });
+
+</script>
+
+<!-- content for inventory balance purchase -->
+
+<div id="quantity_2" class="page hidden">
+  <div class="select-date">
+    <label for="label-date">Select Period: </label>
+    <input type="month" name="month_year" id="dateinput_inv">
+  </div>
+  
+  <div id="back_to_original" style="display: none;">
+    <!-- Button to go back to original table -->
+    <button class="btn btn-secondary" id="back_to_original_btn">Back to Original Table</button>
+  </div>
+
+  <div id="filter_div" style="display: none;">
+    <form method="get" id="filter_form">
+        {{ filter.form.month }} <!-- Ensure this aligns with your filter's month field -->
+        <input type="hidden" id="selectedMonth" name="month">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+  </div>
+  <div class="container-fluid">
+    <div class="heading-wrapper">
+      <img src="/static/images/logo.png" alt="" />
+      <h1>Quantity 2</h1>
+    </div>
+    <div class="wrap-buttons">
+      <button type="button" class="btn btn-primary download-button" id="downloadReportButtonQuantity2">
+        Download Report
+      </button>
+      <button type="button" class="btn btn-success">Proceed Next</button>
+    </div>
+    <div id="dropdownWrapper" style="display: none">
+      <div class="axis-selectors">
+        <!-- <label for="xAxis">X-Axis:</label> -->
+        <select id="xAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+        <!-- <label for="yAxis">Y-Axis:</label> -->
+        <select id="yAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="button_wrapper" style="display: none">
+      <!-- <button type="button" id="showBarChartButton">Bar Chart</button> -->
+      <!-- <button type="button" id="showLineChartButton">Line Chart</button> -->
+      <!-- <button type="button" id="showPieButton">Pie Chart</button> -->
+      <!-- <button type="button" id="showRadarButton">Radar Chart</button> -->
+    </div>
+    <!-- Select dropdowns for choosing X-axis and Y-axis columns -->
+    <div class="graph_wrapper" style="display: none">
+      <!-- Canvas for each type of graph -->
+      <canvas id="chartCanvas" style="display: none"></canvas>
+    </div>
+    <div class="table-responsive table-wrapper">
+      <table class="table table-striped table-dark" style="background-color: #d3e2f4">
+        <thead class="table-header">
+          <tr>
+            {% for heading in headings %}
+            <th>{{ heading.verbose_name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody id="lazyBodysales">
+          {% for record in records %}
+          <tr>
+            <!-- Table Data -->
+            <td class="table-data">{{ record.entity }}</td>
+            <td class="table-data">{{ record.val}}</td>
+            <td class="table-data">{{ record.btls}}</td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- content for inventory balance purchase -->
+
+<div id="gross_discount_1" class="page hidden">
+  <div class="select-date">
+    <label for="label-date">Select Period: </label>
+    <input type="month" name="month_year" id="dateinput_gd1">
+  </div>
+  
+  <div id="back_to_original_gd1" style="display: none;">
+    <!-- Button to go back to original table -->
+    <button class="btn btn-secondary" id="back_to_originalgd1_btn">Back to Original Table</button>
+  </div>
+
+  <div id="filter_div" style="display: none;">
+    <form method="get" id="filter_form">
+        {{ filter.form.month }} <!-- Ensure this aligns with your filter's month field -->
+        <input type="hidden" id="selectedMonth" name="month">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+  </div>
+  <div class="container-fluid">
+    <div class="heading-wrapper">
+      <img src="/static/images/logo.png" alt="" />
+      <h1>Gross Discount 1</h1>
+    </div>
+    <div class="wrap-buttons">
+      <button type="button" class="btn btn-primary download-button" id="downloadReportButtonGrossDiscount1">
+        Download Report
+      </button>
+      <button type="button" class="btn btn-success">Proceed Next</button>
+    </div>
+    <div id="dropdownWrapper" style="display: none">
+      <div class="axis-selectors">
+        <!-- <label for="xAxis">X-Axis:</label> -->
+        <select id="xAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+        <!-- <label for="yAxis">Y-Axis:</label> -->
+        <select id="yAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="button_wrapper" style="display: none">
+      <!-- <button type="button" id="showBarChartButton">Bar Chart</button> -->
+      <!-- <button type="button" id="showLineChartButton">Line Chart</button> -->
+      <!-- <button type="button" id="showPieButton">Pie Chart</button> -->
+      <!-- <button type="button" id="showRadarButton">Radar Chart</button> -->
+    </div>
+    <!-- Select dropdowns for choosing X-axis and Y-axis columns -->
+    <div class="graph_wrapper" style="display: none">
+      <!-- Canvas for each type of graph -->
+      <canvas id="chartCanvas" style="display: none"></canvas>
+    </div>
+    <div class="table-responsive table-wrapper">
+      <table class="table table-striped table-dark" style="background-color: #d3e2f4">
+        <thead class="table-header">
+          <tr>
+            {% for heading in headings %}
+            <th>{{ heading.verbose_name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody id="lazyBodysales">
+          {% for record in records %}
+          <tr>
+            <!-- Table Data -->
+            <td class="table-data">{{ record.val }}</td>
+            <td class="table-data">{{ record.month}}</td>
+            <td class="table-data">{{ record.monyy}}</td>
+            <td class="table-data">{{ record.gross_discount}}</td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  // Function to show the back to original table button
+  function showBackToOriginalButton() {
+    document.getElementById('back_to_original_gd1').style.display = 'block';
+    localStorage.setItem('backToOriginalVisible', 'true');
+  }
+
+  // Function to hide the back to original table button
+  function hideBackToOriginalButton() {
+    document.getElementById('back_to_original_gd1').style.display = 'none';
+    localStorage.removeItem('backToOriginalVisible');
+  }
+
+  // Get the date input element
+  var dateInput = document.getElementById('dateinput_gd1');
+
+  // Check if the button should be visible on page load
+  if (localStorage.getItem('backToOriginalVisible')) {
+    showBackToOriginalButton();
+  } else {
+    hideBackToOriginalButton();
+  }
+
+  // Add an event listener for when the date input value changes
+  dateInput.addEventListener('change', function() {
+    // Get the selected date value
+    const dateStr = this.value;
+
+    // Extract the month as an integer from the selected date
+    const selectedDate = new Date(dateStr + '-01');
+    const month = selectedDate.getMonth() + 1; // Months are 0-indexed, so add 1
+
+    // Set the extracted month as an integer to the hidden input field
+    document.getElementById('selectedMonth').value = month;
+
+    // Submit the form
+    document.getElementById('filter_form').submit();
+
+    // Show the back to original table option after filtering
+    showBackToOriginalButton();
+  });
+
+  // Function to handle going back to the original table
+  document.getElementById('back_to_originalgd1_btn').addEventListener('click', function() {
+    
+    document.getElementById('filter_form').submit();
+
+    // Hide the back to original table option again
+    hideBackToOriginalButton();
+  });
+
+</script>
+
+<!-- content for inventory balance purchase -->
+
+<div id="gross_discount_2" class="page hidden">
+  <div class="select-date">
+    <label for="label-date">Select Period: </label>
+    <input type="month" name="month_year" id="dateinput_inv">
+  </div>
+  
+  <div id="back_to_original" style="display: none;">
+    <!-- Button to go back to original table -->
+    <button class="btn btn-secondary" id="back_to_original_btn">Back to Original Table</button>
+  </div>
+
+  <div id="filter_div" style="display: none;">
+    <form method="get" id="filter_form">
+        {{ filter.form.month }} <!-- Ensure this aligns with your filter's month field -->
+        <input type="hidden" id="selectedMonth" name="month">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+  </div>
+  <div class="container-fluid">
+    <div class="heading-wrapper">
+      <img src="/static/images/logo.png" alt="" />
+      <h1>Gross Discount 2</h1>
+    </div>
+    <div class="wrap-buttons">
+      <button type="button" class="btn btn-primary download-button" id="downloadReportButtonGrossDiscount2">
+        Download Report
+      </button>
+      <button type="button" class="btn btn-success">Proceed Next</button>
+    </div>
+    <div id="dropdownWrapper" style="display: none">
+      <div class="axis-selectors">
+        <!-- <label for="xAxis">X-Axis:</label> -->
+        <select id="xAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+        <!-- <label for="yAxis">Y-Axis:</label> -->
+        <select id="yAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="button_wrapper" style="display: none">
+      <!-- <button type="button" id="showBarChartButton">Bar Chart</button> -->
+      <!-- <button type="button" id="showLineChartButton">Line Chart</button> -->
+      <!-- <button type="button" id="showPieButton">Pie Chart</button> -->
+      <!-- <button type="button" id="showRadarButton">Radar Chart</button> -->
+    </div>
+    <!-- Select dropdowns for choosing X-axis and Y-axis columns -->
+    <div class="graph_wrapper" style="display: none">
+      <!-- Canvas for each type of graph -->
+      <canvas id="chartCanvas" style="display: none"></canvas>
+    </div>
+    <div class="table-responsive table-wrapper">
+      <table class="table table-striped table-dark" style="background-color: #d3e2f4">
+        <thead class="table-header">
+          <tr>
+            {% for heading in headings %}
+            <th>{{ heading.verbose_name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody id="lazyBodysales">
+          {% for record in records %}
+          <tr>
+            <!-- Table Data -->
+            <td class="table-data">{{ record.val }}</td>
+            <td class="table-data">{{ record.comp }}</td>
+            <td class="table-data">{{ record.grossdis }}</td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- content for inventory balance purchase -->
+
+<div id="gross_revenue_1" class="page hidden">
+  <div class="select-date">
+    <label for="label-date">Select Period: </label>
+    <input type="month" name="month_year" id="dateinput_gr1">
+  </div>
+  
+  <div id="back_to_original_gr1" style="display: none;">
+    <!-- Button to go back to original table -->
+    <button class="btn btn-secondary" id="back_to_originalgr1_btn">Back to Original Table</button>
+  </div>
+
+  <div id="filter_div" style="display: none;">
+    <form method="get" id="filter_form">
+        {{ filter.form.month }} <!-- Ensure this aligns with your filter's month field -->
+        <input type="hidden" id="selectedMonth" name="month">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+  </div>
+  <div class="container-fluid">
+    <div class="heading-wrapper">
+      <img src="/static/images/logo.png" alt="" />
+      <h1>Gross Revenue 1</h1>
+    </div>
+    <div class="wrap-buttons">
+      <button type="button" class="btn btn-primary download-button" id="downloadReportButtonGrossRevenue1">
+        Download Report
+      </button>
+      <button type="button" class="btn btn-success">Proceed Next</button>
+    </div>
+    <div id="dropdownWrapper" style="display: none">
+      <div class="axis-selectors">
+        <!-- <label for="xAxis">X-Axis:</label> -->
+        <select id="xAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+        <!-- <label for="yAxis">Y-Axis:</label> -->
+        <select id="yAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="button_wrapper" style="display: none">
+      <!-- <button type="button" id="showBarChartButton">Bar Chart</button> -->
+      <!-- <button type="button" id="showLineChartButton">Line Chart</button> -->
+      <!-- <button type="button" id="showPieButton">Pie Chart</button> -->
+      <!-- <button type="button" id="showRadarButton">Radar Chart</button> -->
+    </div>
+    <!-- Select dropdowns for choosing X-axis and Y-axis columns -->
+    <div class="graph_wrapper" style="display: none">
+      <!-- Canvas for each type of graph -->
+      <canvas id="chartCanvas" style="display: none"></canvas>
+    </div>
+    <div class="table-responsive table-wrapper">
+      <table class="table table-striped table-dark" style="background-color: #d3e2f4">
+        <thead class="table-header">
+          <tr>
+            {% for heading in headings %}
+            <th>{{ heading.verbose_name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody id="lazyBodysales">
+          {% for record in records %}
+          <tr>
+            <!-- Table Data -->
+            <td class="table-data">{{ record.val }}</td>
+            <td class="table-data">{{ record.month }}</td>
+            <td class="table-data">{{ record.monyy }}</td>
+            <td class="table-data">{{ record.gross_revenue }}</td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  // Function to show the back to original table button
+  function showBackToOriginalButton() {
+    document.getElementById('back_to_original_gr1').style.display = 'block';
+    localStorage.setItem('backToOriginalVisible', 'true');
+  }
+
+  // Function to hide the back to original table button
+  function hideBackToOriginalButton() {
+    document.getElementById('back_to_original_gr1').style.display = 'none';
+    localStorage.removeItem('backToOriginalVisible');
+  }
+
+  // Get the date input element
+  var dateInput = document.getElementById('dateinput_gr1');
+
+  // Check if the button should be visible on page load
+  if (localStorage.getItem('backToOriginalVisible')) {
+    showBackToOriginalButton();
+  } else {
+    hideBackToOriginalButton();
+  }
+
+  // Add an event listener for when the date input value changes
+  dateInput.addEventListener('change', function() {
+    // Get the selected date value
+    const dateStr = this.value;
+
+    // Extract the month as an integer from the selected date
+    const selectedDate = new Date(dateStr + '-01');
+    const month = selectedDate.getMonth() + 1; // Months are 0-indexed, so add 1
+
+    // Set the extracted month as an integer to the hidden input field
+    document.getElementById('selectedMonth').value = month;
+
+    // Submit the form
+    document.getElementById('filter_form').submit();
+
+    // Show the back to original table option after filtering
+    showBackToOriginalButton();
+  });
+
+  // Function to handle going back to the original table
+  document.getElementById('back_to_originalgr1_btn').addEventListener('click', function() {
+    
+    document.getElementById('filter_form').submit();
+
+    // Hide the back to original table option again
+    hideBackToOriginalButton();
+  });
+
+</script>
+
+<!-- content for inventory balance purchase -->
+
+<div id="gross_revenue_2" class="page hidden">
+  <div class="select-date">
+    <label for="label-date">Select Period: </label>
+    <input type="month" name="month_year" id="dateinput_inv">
+  </div>
+  
+  <div id="back_to_original" style="display: none;">
+    <!-- Button to go back to original table -->
+    <button class="btn btn-secondary" id="back_to_original_btn">Back to Original Table</button>
+  </div>
+
+  <div id="filter_div" style="display: none;">
+    <form method="get" id="filter_form">
+        {{ filter.form.month }} <!-- Ensure this aligns with your filter's month field -->
+        <input type="hidden" id="selectedMonth" name="month">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+  </div>
+  <div class="container-fluid">
+    <div class="heading-wrapper">
+      <img src="/static/images/logo.png" alt="" />
+      <h1>Gross Revenue 2</h1>
+    </div>
+    <div class="wrap-buttons">
+      <button type="button" class="btn btn-primary download-button" id="downloadReportButtonGrossRevenue2">
+        Download Report
+      </button>
+      <button type="button" class="btn btn-success">Proceed Next</button>
+    </div>
+    <div id="dropdownWrapper" style="display: none">
+      <div class="axis-selectors">
+        <!-- <label for="xAxis">X-Axis:</label> -->
+        <select id="xAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+        <!-- <label for="yAxis">Y-Axis:</label> -->
+        <select id="yAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="button_wrapper" style="display: none">
+      <!-- <button type="button" id="showBarChartButton">Bar Chart</button> -->
+      <!-- <button type="button" id="showLineChartButton">Line Chart</button> -->
+      <!-- <button type="button" id="showPieButton">Pie Chart</button> -->
+      <!-- <button type="button" id="showRadarButton">Radar Chart</button> -->
+    </div>
+    <!-- Select dropdowns for choosing X-axis and Y-axis columns -->
+    <div class="graph_wrapper" style="display: none">
+      <!-- Canvas for each type of graph -->
+      <canvas id="chartCanvas" style="display: none"></canvas>
+    </div>
+    <div class="table-responsive table-wrapper">
+      <table class="table table-striped table-dark" style="background-color: #d3e2f4">
+        <thead class="table-header">
+          <tr>
+            {% for heading in headings %}
+            <th>{{ heading.verbose_name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody id="lazyBodysales">
+          {% for record in records %}
+          <tr>
+            <!-- Table Data -->
+            <td class="table-data">{{ record.val }}</td>
+            <td class="table-data">{{ record.comp }}</td>
+            <td class="table-data">{{ record.btls }}</td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- content for inventory balance purchase -->
+
+<div id="COGS_1" class="page hidden">
+  <div class="select-date">
+    <label for="label-date">Select Period: </label>
+    <input type="month" name="month_year" id="dateinput_c1">
+  </div>
+  
+  <div id="back_to_original_c1" style="display: none;">
+    <!-- Button to go back to original table -->
+    <button class="btn btn-secondary" id="back_to_originalc1_btn">Back to Original Table</button>
+  </div>
+
+  <div id="filter_div" style="display: none;">
+    <form method="get" id="filter_form">
+        {{ filter.form.month }} <!-- Ensure this aligns with your filter's month field -->
+        <input type="hidden" id="selectedMonth" name="month">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+  </div>
+  <div class="container-fluid">
+    <div class="heading-wrapper">
+      <img src="/static/images/logo.png" alt="" />
+      <h1>COGS 1</h1>
+    </div>
+    <div class="wrap-buttons">
+      <button type="button" class="btn btn-primary download-button" id="downloadReportButtonCogs1">
+        Download Report
+      </button>
+      <button type="button" class="btn btn-success">Proceed Next</button>
+    </div>
+    <div id="dropdownWrapper" style="display: none">
+      <div class="axis-selectors">
+        <!-- <label for="xAxis">X-Axis:</label> -->
+        <select id="xAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+        <!-- <label for="yAxis">Y-Axis:</label> -->
+        <select id="yAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="button_wrapper" style="display: none">
+      <!-- <button type="button" id="showBarChartButton">Bar Chart</button> -->
+      <!-- <button type="button" id="showLineChartButton">Line Chart</button> -->
+      <!-- <button type="button" id="showPieButton">Pie Chart</button> -->
+      <!-- <button type="button" id="showRadarButton">Radar Chart</button> -->
+    </div>
+    <!-- Select dropdowns for choosing X-axis and Y-axis columns -->
+    <div class="graph_wrapper" style="display: none">
+      <!-- Canvas for each type of graph -->
+      <canvas id="chartCanvas" style="display: none"></canvas>
+    </div>
+    <div class="table-responsive table-wrapper">
+      <table class="table table-striped table-dark" style="background-color: #d3e2f4">
+        <thead class="table-header">
+          <tr>
+            {% for heading in headings %}
+            <th>{{ heading.verbose_name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody id="lazyBodysales">
+          {% for record in records %}
+          <tr>
+            <!-- Table Data -->
+            <td class="table-data">{{ record.val }}</td>
+            <td class="table-data">{{ record.month }}</td>
+            <td class="table-data">{{ record.monyy }}</td>
+            <td class="table-data">{{ record.cogs }}</td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  // Function to show the back to original table button
+  function showBackToOriginalButton() {
+    document.getElementById('back_to_original_c1').style.display = 'block';
+    localStorage.setItem('backToOriginalVisible', 'true');
+  }
+
+  // Function to hide the back to original table button
+  function hideBackToOriginalButton() {
+    document.getElementById('back_to_original_c1').style.display = 'none';
+    localStorage.removeItem('backToOriginalVisible');
+  }
+
+  // Get the date input element
+  var dateInput = document.getElementById('dateinput_c1');
+
+  // Check if the button should be visible on page load
+  if (localStorage.getItem('backToOriginalVisible')) {
+    showBackToOriginalButton();
+  } else {
+    hideBackToOriginalButton();
+  }
+
+  // Add an event listener for when the date input value changes
+  dateInput.addEventListener('change', function() {
+    // Get the selected date value
+    const dateStr = this.value;
+
+    // Extract the month as an integer from the selected date
+    const selectedDate = new Date(dateStr + '-01');
+    const month = selectedDate.getMonth() + 1; // Months are 0-indexed, so add 1
+
+    // Set the extracted month as an integer to the hidden input field
+    document.getElementById('selectedMonth').value = month;
+
+    // Submit the form
+    document.getElementById('filter_form').submit();
+
+    // Show the back to original table option after filtering
+    showBackToOriginalButton();
+  });
+
+  // Function to handle going back to the original table
+  document.getElementById('back_to_originalc1_btn').addEventListener('click', function() {
+    
+    document.getElementById('filter_form').submit();
+
+    // Hide the back to original table option again
+    hideBackToOriginalButton();
+  });
+</script>
+
+<!-- content for inventory balance purchase -->
+
+<div id="COGS_2" class="page hidden">
+  <div class="select-date">
+    <label for="label-date">Select Period: </label>
+    <input type="month" name="month_year" id="dateinput_inv">
+  </div>
+  
+  <div id="back_to_original" style="display: none;">
+    <!-- Button to go back to original table -->
+    <button class="btn btn-secondary" id="back_to_original_btn">Back to Original Table</button>
+  </div>
+
+  <div id="filter_div" style="display: none;">
+    <form method="get" id="filter_form">
+        {{ filter.form.month }} <!-- Ensure this aligns with your filter's month field -->
+        <input type="hidden" id="selectedMonth" name="month">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+  </div>
+  <div class="container-fluid">
+    <div class="heading-wrapper">
+      <img src="/static/images/logo.png" alt="" />
+      <h1>COGS 2</h1>
+    </div>
+    <div class="wrap-buttons">
+      <button type="button" class="btn btn-primary download-button" id="downloadReportButtonCogs2">
+        Download Report
+      </button>
+      <button type="button" class="btn btn-success">Proceed Next</button>
+    </div>
+    <div id="dropdownWrapper" style="display: none">
+      <div class="axis-selectors">
+        <!-- <label for="xAxis">X-Axis:</label> -->
+        <select id="xAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+        <!-- <label for="yAxis">Y-Axis:</label> -->
+        <select id="yAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="button_wrapper" style="display: none">
+      <!-- <button type="button" id="showBarChartButton">Bar Chart</button> -->
+      <!-- <button type="button" id="showLineChartButton">Line Chart</button> -->
+      <!-- <button type="button" id="showPieButton">Pie Chart</button> -->
+      <!-- <button type="button" id="showRadarButton">Radar Chart</button> -->
+    </div>
+    <!-- Select dropdowns for choosing X-axis and Y-axis columns -->
+    <div class="graph_wrapper" style="display: none">
+      <!-- Canvas for each type of graph -->
+      <canvas id="chartCanvas" style="display: none"></canvas>
+    </div>
+    <div class="table-responsive table-wrapper">
+      <table class="table table-striped table-dark" style="background-color: #d3e2f4">
+        <thead class="table-header">
+          <tr>
+            {% for heading in headings %}
+            <th>{{ heading.verbose_name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody id="lazyBodysales">
+          {% for record in records %}
+          <tr>
+            <!-- Table Data -->
+            <td class="table-data">{{ record.comp }}</td>
+            <td class="table-data">{{ record.fgid }}</td>
+            <td class="table-data">{{ record.val }}</td>
+            <td class="table-data">{{ record.cogs }}</td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- content for inventory balance purchase -->
+
+<div id="monthly_COGS" class="page hidden">
+  <div class="select-date">
+    <label for="label-date">Select Period: </label>
+    <input type="month" name="month_year" id="dateinput_cm">
+  </div>
+  
+  <div id="back_to_original_cm" style="display: none;">
+    <!-- Button to go back to original table -->
+    <button class="btn btn-secondary" id="back_to_originalcm_btn">Back to Original Table</button>
+  </div>
+
+  <div id="filter_div" style="display: none;">
+    <form method="get" id="filter_form">
+        {{ filter.form.month }} <!-- Ensure this aligns with your filter's month field -->
+        <input type="hidden" id="selectedMonth" name="month">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+  </div>
+  <div class="container-fluid">
+    <div class="heading-wrapper">
+      <img src="/static/images/logo.png" alt="" />
+      <h1>Monthly COGS</h1>
+    </div>
+    <div class="wrap-buttons">
+      <button type="button" class="btn btn-primary download-button" id="downloadReportButtonMonthlyCogs">
+        Download Report
+      </button>
+      <button type="button" class="btn btn-success">Proceed Next</button>
+    </div>
+    <div id="dropdownWrapper" style="display: none">
+      <div class="axis-selectors">
+        <!-- <label for="xAxis">X-Axis:</label> -->
+        <select id="xAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+        <!-- <label for="yAxis">Y-Axis:</label> -->
+        <select id="yAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="button_wrapper" style="display: none">
+      <!-- <button type="button" id="showBarChartButton">Bar Chart</button> -->
+      <!-- <button type="button" id="showLineChartButton">Line Chart</button> -->
+      <!-- <button type="button" id="showPieButton">Pie Chart</button> -->
+      <!-- <button type="button" id="showRadarButton">Radar Chart</button> -->
+    </div>
+    <!-- Select dropdowns for choosing X-axis and Y-axis columns -->
+    <div class="graph_wrapper" style="display: none">
+      <!-- Canvas for each type of graph -->
+      <canvas id="chartCanvas" style="display: none"></canvas>
+    </div>
+    <div class="table-responsive table-wrapper">
+      <table class="table table-striped table-dark" style="background-color: #d3e2f4">
+        <thead class="table-header">
+          <tr>
+            {% for heading in headings %}
+            <th>{{ heading.verbose_name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody id="lazyBodysales">
+          {% for record in records %}
+          <tr>
+            <!-- Table Data -->
+            <td class="table-data">{{ record.val }}</td>
+            <td class="table-data">{{ record.month }}</td>
+            <td class="table-data">{{ record.monyy }}</td>
+            <td class="table-data">{{ record.cogs }}</td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  // Function to show the back to original table button
+  function showBackToOriginalButton() {
+    document.getElementById('back_to_original_cm').style.display = 'block';
+    localStorage.setItem('backToOriginalVisible', 'true');
+  }
+
+  // Function to hide the back to original table button
+  function hideBackToOriginalButton() {
+    document.getElementById('back_to_original_cm').style.display = 'none';
+    localStorage.removeItem('backToOriginalVisible');
+  }
+
+  // Get the date input element
+  var dateInput = document.getElementById('dateinput_cm');
+
+  // Check if the button should be visible on page load
+  if (localStorage.getItem('backToOriginalVisible')) {
+    showBackToOriginalButton();
+  } else {
+    hideBackToOriginalButton();
+  }
+
+  // Add an event listener for when the date input value changes
+  dateInput.addEventListener('change', function() {
+    // Get the selected date value
+    const dateStr = this.value;
+
+    // Extract the month as an integer from the selected date
+    const selectedDate = new Date(dateStr + '-01');
+    const month = selectedDate.getMonth() + 1; // Months are 0-indexed, so add 1
+
+    // Set the extracted month as an integer to the hidden input field
+    document.getElementById('selectedMonth').value = month;
+
+    // Submit the form
+    document.getElementById('filter_form').submit();
+
+    // Show the back to original table option after filtering
+    showBackToOriginalButton();
+  });
+
+  // Function to handle going back to the original table
+  document.getElementById('back_to_originalcm_btn').addEventListener('click', function() {
+    
+    document.getElementById('filter_form').submit();
+
+    // Hide the back to original table option again
+    hideBackToOriginalButton();
+  });
+
+</script>
+
+<!-- content for inventory balance purchase -->
+
+<div id="custom_COGS" class="page hidden">
+  <div class="select-date">
+    <label for="label-date">Select Period: </label>
+    <input type="month" name="month_year" id="dateinput_cc">
+  </div>
+  
+  <div id="back_to_original_cc" style="display: none;">
+    <!-- Button to go back to original table -->
+    <button class="btn btn-secondary" id="back_to_originalcc_btn">Back to Original Table</button>
+  </div>
+
+  <div id="filter_div" style="display: none;">
+    <form method="get" id="filter_form">
+        {{ filter.form.month }} <!-- Ensure this aligns with your filter's month field -->
+        <input type="hidden" id="selectedMonth" name="month">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+  </div>
+  <div class="container-fluid">
+    <div class="heading-wrapper">
+      <img src="/static/images/logo.png" alt="" />
+      <h1>Custom COGS</h1>
+    </div>
+    <div class="wrap-buttons">
+      <button type="button" class="btn btn-primary download-button" id="downloadReportButtonCustomCogs">
+        Download Report
+      </button>
+      <button type="button" class="btn btn-success">Proceed Next</button>
+    </div>
+    <div id="dropdownWrapper" style="display: none">
+      <div class="axis-selectors">
+        <!-- <label for="xAxis">X-Axis:</label> -->
+        <select id="xAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+        <!-- <label for="yAxis">Y-Axis:</label> -->
+        <select id="yAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="button_wrapper" style="display: none">
+      <!-- <button type="button" id="showBarChartButton">Bar Chart</button> -->
+      <!-- <button type="button" id="showLineChartButton">Line Chart</button> -->
+      <!-- <button type="button" id="showPieButton">Pie Chart</button> -->
+      <!-- <button type="button" id="showRadarButton">Radar Chart</button> -->
+    </div>
+    <!-- Select dropdowns for choosing X-axis and Y-axis columns -->
+    <div class="graph_wrapper" style="display: none">
+      <!-- Canvas for each type of graph -->
+      <canvas id="chartCanvas" style="display: none"></canvas>
+    </div>
+    <div class="table-responsive table-wrapper">
+      <table class="table table-striped table-dark" style="background-color: #d3e2f4">
+        <thead class="table-header">
+          <tr>
+            {% for heading in headings %}
+            <th>{{ heading.verbose_name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody id="lazyBodysales">
+          {% for record in records %}
+          <tr>
+            <!-- Table Data -->
+            <td class="table-data">{{ record.val }}</td>
+            <td class="table-data">{{ record.month }}</td>
+            <td class="table-data">{{ record.monyy }}</td>
+            <td class="table-data">{{ record.cogs_customs }}</td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+<script>
+
+  // Function to show the back to original table button
+  function showBackToOriginalButton() {
+    document.getElementById('back_to_original_cc').style.display = 'block';
+    localStorage.setItem('backToOriginalVisible', 'true');
+  }
+
+  // Function to hide the back to original table button
+  function hideBackToOriginalButton() {
+    document.getElementById('back_to_original_cc').style.display = 'none';
+    localStorage.removeItem('backToOriginalVisible');
+  }
+
+  // Get the date input element
+  var dateInput = document.getElementById('dateinput_cc');
+
+  // Check if the button should be visible on page load
+  if (localStorage.getItem('backToOriginalVisible')) {
+    showBackToOriginalButton();
+  } else {
+    hideBackToOriginalButton();
+  }
+
+  // Add an event listener for when the date input value changes
+  dateInput.addEventListener('change', function() {
+    // Get the selected date value
+    const dateStr = this.value;
+
+    // Extract the month as an integer from the selected date
+    const selectedDate = new Date(dateStr + '-01');
+    const month = selectedDate.getMonth() + 1; // Months are 0-indexed, so add 1
+
+    // Set the extracted month as an integer to the hidden input field
+    document.getElementById('selectedMonth').value = month;
+
+    // Submit the form
+    document.getElementById('filter_form').submit();
+
+    // Show the back to original table option after filtering
+    showBackToOriginalButton();
+  });
+
+  // Function to handle going back to the original table
+  document.getElementById('back_to_originalcc_btn').addEventListener('click', function() {
+    
+    document.getElementById('filter_form').submit();
+
+    // Hide the back to original table option again
+    hideBackToOriginalButton();
+  });
+
+</script>
+
+<!-- content for inventory balance purchase -->
+
+<div id="COGS_log" class="page hidden">
+  <div class="select-date">
+    <label for="label-date">Select Period: </label>
+    <input type="month" name="month_year" id="dateinput_cl">
+  </div>
+  
+  <div id="back_to_original_cl" style="display: none;">
+    <!-- Button to go back to original table -->
+    <button class="btn btn-secondary" id="back_to_originalcl_btn">Back to Original Table</button>
+  </div>
+
+  <div id="filter_div" style="display: none;">
+    <form method="get" id="filter_form">
+        {{ filter.form.month }} <!-- Ensure this aligns with your filter's month field -->
+        <input type="hidden" id="selectedMonth" name="month">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+  </div>
+  <div class="container-fluid">
+    <div class="heading-wrapper">
+      <img src="/static/images/logo.png" alt="" />
+      <h1>Cog Logistics</h1>
+    </div>
+    <div class="wrap-buttons">
+      <button type="button" class="btn btn-primary download-button" id="downloadReportButtonCogLohistics">
+        Download Report
+      </button>
+      <button type="button" class="btn btn-success">Proceed Next</button>
+    </div>
+    <div id="dropdownWrapper" style="display: none">
+      <div class="axis-selectors">
+        <!-- <label for="xAxis">X-Axis:</label> -->
+        <select id="xAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+        <!-- <label for="yAxis">Y-Axis:</label> -->
+        <select id="yAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="button_wrapper" style="display: none">
+      <!-- <button type="button" id="showBarChartButton">Bar Chart</button> -->
+      <!-- <button type="button" id="showLineChartButton">Line Chart</button> -->
+      <!-- <button type="button" id="showPieButton">Pie Chart</button> -->
+      <!-- <button type="button" id="showRadarButton">Radar Chart</button> -->
+    </div>
+    <!-- Select dropdowns for choosing X-axis and Y-axis columns -->
+    <div class="graph_wrapper" style="display: none">
+      <!-- Canvas for each type of graph -->
+      <canvas id="chartCanvas" style="display: none"></canvas>
+    </div>
+    <div class="table-responsive table-wrapper">
+      <table class="table table-striped table-dark" style="background-color: #d3e2f4">
+        <thead class="table-header">
+          <tr>
+            {% for heading in headings %}
+            <th>{{ heading.verbose_name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody id="lazyBodysales">
+          {% for record in records %}
+          <tr>
+            <!-- Table Data -->
+            <td class="table-data">{{ record.val }}</td>
+            <td class="table-data">{{ record.month }}</td>
+            <td class="table-data">{{ record.monyy }}</td>
+            <td class="table-data">{{ record.cogs_logistics }}</td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  // Function to show the back to original table button
+  function showBackToOriginalButton() {
+    document.getElementById('back_to_original_cl').style.display = 'block';
+    localStorage.setItem('backToOriginalVisible', 'true');
+  }
+
+  // Function to hide the back to original table button
+  function hideBackToOriginalButton() {
+    document.getElementById('back_to_original_cl').style.display = 'none';
+    localStorage.removeItem('backToOriginalVisible');
+  }
+
+  // Get the date input element
+  var dateInput = document.getElementById('dateinput_cl');
+
+  // Check if the button should be visible on page load
+  if (localStorage.getItem('backToOriginalVisible')) {
+    showBackToOriginalButton();
+  } else {
+    hideBackToOriginalButton();
+  }
+
+  // Add an event listener for when the date input value changes
+  dateInput.addEventListener('change', function() {
+    // Get the selected date value
+    const dateStr = this.value;
+
+    // Extract the month as an integer from the selected date
+    const selectedDate = new Date(dateStr + '-01');
+    const month = selectedDate.getMonth() + 1; // Months are 0-indexed, so add 1
+
+    // Set the extracted month as an integer to the hidden input field
+    document.getElementById('selectedMonth').value = month;
+
+    // Submit the form
+    document.getElementById('filter_form').submit();
+
+    // Show the back to original table option after filtering
+    showBackToOriginalButton();
+  });
+
+  // Function to handle going back to the original table
+  document.getElementById('back_to_originalcl_btn').addEventListener('click', function() {
+    
+    document.getElementById('filter_form').submit();
+
+    // Hide the back to original table option again
+    hideBackToOriginalButton();
+  });
+
+</script>
+
+<!-- content for inventory balance purchase -->
+
+<div id="log1" class="page hidden">
+  <div class="select-date">
+    <label for="label-date">Select Period: </label>
+    <input type="month" name="month_year" id="dateinput_l1">
+  </div>
+  
+  <div id="back_to_original_l1" style="display: none;">
+    <!-- Button to go back to original table -->
+    <button class="btn btn-secondary" id="back_to_originall1_btn">Back to Original Table</button>
+  </div>
+
+  <div id="filter_div" style="display: none;">
+    <form method="get" id="filter_form">
+        {{ filter.form.month }} <!-- Ensure this aligns with your filter's month field -->
+        <input type="hidden" id="selectedMonth" name="month">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+  </div>
+  <div class="container-fluid">
+    <div class="heading-wrapper">
+      <img src="/static/images/logo.png" alt="" />
+      <h1>Log 1</h1>
+    </div>
+    <div class="wrap-buttons">
+      <button type="button" class="btn btn-primary download-button" id="downloadReportButtonLog1">
+        Download Report
+      </button>
+      <button type="button" class="btn btn-success">Proceed Next</button>
+    </div>
+    <div id="dropdownWrapper" style="display: none">
+      <div class="axis-selectors">
+        <!-- <label for="xAxis">X-Axis:</label> -->
+        <select id="xAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+        <!-- <label for="yAxis">Y-Axis:</label> -->
+        <select id="yAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="button_wrapper" style="display: none">
+      <!-- <button type="button" id="showBarChartButton">Bar Chart</button> -->
+      <!-- <button type="button" id="showLineChartButton">Line Chart</button> -->
+      <!-- <button type="button" id="showPieButton">Pie Chart</button> -->
+      <!-- <button type="button" id="showRadarButton">Radar Chart</button> -->
+    </div>
+    <!-- Select dropdowns for choosing X-axis and Y-axis columns -->
+    <div class="graph_wrapper" style="display: none">
+      <!-- Canvas for each type of graph -->
+      <canvas id="chartCanvas" style="display: none"></canvas>
+    </div>
+    <div class="table-responsive table-wrapper">
+      <table class="table table-striped table-dark" style="background-color: #d3e2f4">
+        <thead class="table-header">
+          <tr>
+            {% for heading in headings %}
+            <th>{{ heading.verbose_name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody id="lazyBodysales">
+          {% for record in records %}
+          <tr>
+            <!-- Table Data -->
+            <td class="table-data">{{ record.category }}</td>
+            <td class="table-data">{{ record.month }}</td>
+            <td class="table-data">{{ record.date2 }}</td>
+            <td class="table-data">{{ record.total }}</td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  // Function to show the back to original table button
+  function showBackToOriginalButton() {
+    document.getElementById('back_to_original_l1').style.display = 'block';
+    localStorage.setItem('backToOriginalVisible', 'true');
+  }
+
+  // Function to hide the back to original table button
+  function hideBackToOriginalButton() {
+    document.getElementById('back_to_original_l1').style.display = 'none';
+    localStorage.removeItem('backToOriginalVisible');
+  }
+
+  // Get the date input element
+  var dateInput = document.getElementById('dateinput_l1');
+
+  // Check if the button should be visible on page load
+  if (localStorage.getItem('backToOriginalVisible')) {
+    showBackToOriginalButton();
+  } else {
+    hideBackToOriginalButton();
+  }
+
+  // Add an event listener for when the date input value changes
+  dateInput.addEventListener('change', function() {
+    // Get the selected date value
+    const dateStr = this.value;
+
+    // Extract the month as an integer from the selected date
+    const selectedDate = new Date(dateStr + '-01');
+    const month = selectedDate.getMonth() + 1; // Months are 0-indexed, so add 1
+
+    // Set the extracted month as an integer to the hidden input field
+    document.getElementById('selectedMonth').value = month;
+
+    // Submit the form
+    document.getElementById('filter_form').submit();
+
+    // Show the back to original table option after filtering
+    showBackToOriginalButton();
+  });
+
+  // Function to handle going back to the original table
+  document.getElementById('back_to_originall1_btn').addEventListener('click', function() {
+    
+    document.getElementById('filter_form').submit();
+
+    // Hide the back to original table option again
+    hideBackToOriginalButton();
+  });
+
+
+</script>
+
+<!-- content for inventory balance purchase -->
+
+<div id="ct_us_pl_6_log_2" class="page hidden">
+  <div class="select-date">
+    <label for="label-date">Select Period: </label>
+    <input type="month" name="month_year" id="dateinput_inv">
+  </div>
+  
+  <div id="back_to_original" style="display: none;">
+    <!-- Button to go back to original table -->
+    <button class="btn btn-secondary" id="back_to_original_btn">Back to Original Table</button>
+  </div>
+
+  <div id="filter_div" style="display: none;">
+    <form method="get" id="filter_form">
+        {{ filter.form.month }} <!-- Ensure this aligns with your filter's month field -->
+        <input type="hidden" id="selectedMonth" name="month">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+  </div>
+  <div class="container-fluid">
+    <div class="heading-wrapper">
+      <img src="/static/images/logo.png" alt="" />
+      <h1>Log 2</h1>
+    </div>
+    <div class="wrap-buttons">
+      <button type="button" class="btn btn-primary download-button" id="downloadReportButtonLog2">
+        Download Report
+      </button>
+      <button type="button" class="btn btn-success">Proceed Next</button>
+    </div>
+    <div id="dropdownWrapper" style="display: none">
+      <div class="axis-selectors">
+        <!-- <label for="xAxis">X-Axis:</label> -->
+        <select id="xAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+        <!-- <label for="yAxis">Y-Axis:</label> -->
+        <select id="yAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="button_wrapper" style="display: none">
+      <!-- <button type="button" id="showBarChartButton">Bar Chart</button> -->
+      <!-- <button type="button" id="showLineChartButton">Line Chart</button> -->
+      <!-- <button type="button" id="showPieButton">Pie Chart</button> -->
+      <!-- <button type="button" id="showRadarButton">Radar Chart</button> -->
+    </div>
+    <!-- Select dropdowns for choosing X-axis and Y-axis columns -->
+    <div class="graph_wrapper" style="display: none">
+      <!-- Canvas for each type of graph -->
+      <canvas id="chartCanvas" style="display: none"></canvas>
+    </div>
+    <div class="table-responsive table-wrapper">
+      <table class="table table-striped table-dark" style="background-color: #d3e2f4">
+        <thead class="table-header">
+          <tr>
+            {% for heading in headings %}
+            <th>{{ heading.verbose_name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody id="lazyBodysales">
+          {% for record in records %}
+          <tr>
+            <!-- Table Data -->
+            <td class="table-data">{{ record.entity }}</td>
+            <td class="table-data">{{ record.category }}</td>
+            <td class="table-data">{{ record.total }}</td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div id="ct_us_pnl_9_forex_v" class="page hidden">
+  <div class="select-date">
+    <label for="label-date">Select Period: </label>
+    <input type="month" name="month_year" id="dateinput_inv">
+  </div>
+  
+  <div id="back_to_original" style="display: none;">
+    <!-- Button to go back to original table -->
+    <button class="btn btn-secondary" id="back_to_original_btn">Back to Original Table</button>
+  </div>
+
+  <div id="filter_div" style="display: none;">
+    <form method="get" id="filter_form">
+        {{ filter.form.month }} <!-- Ensure this aligns with your filter's month field -->
+        <input type="hidden" id="selectedMonth" name="month">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+  </div>
+  <div class="container-fluid">
+    <div class="heading-wrapper">
+      <img src="/static/images/logo.png" alt="" />
+      <h1>Forex V</h1>
+    </div>
+    <div class="wrap-buttons">
+      <button type="button" class="btn btn-primary download-button" id="downloadReportButtonForexV">
+        Download Report
+      </button>
+      <button type="button" class="btn btn-success">Proceed Next</button>
+    </div>
+    <div id="dropdownWrapper" style="display: none">
+      <div class="axis-selectors">
+        <!-- <label for="xAxis">X-Axis:</label> -->
+        <select id="xAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+        <!-- <label for="yAxis">Y-Axis:</label> -->
+        <select id="yAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="button_wrapper" style="display: none">
+      <!-- <button type="button" id="showBarChartButton">Bar Chart</button> -->
+      <!-- <button type="button" id="showLineChartButton">Line Chart</button> -->
+      <!-- <button type="button" id="showPieButton">Pie Chart</button> -->
+      <!-- <button type="button" id="showRadarButton">Radar Chart</button> -->
+    </div>
+    <!-- Select dropdowns for choosing X-axis and Y-axis columns -->
+    <div class="graph_wrapper" style="display: none">
+      <!-- Canvas for each type of graph -->
+      <canvas id="chartCanvas" style="display: none"></canvas>
+    </div>
+    <div class="table-responsive table-wrapper">
+      <table class="table table-striped table-dark" style="background-color: #d3e2f4">
+        <thead class="table-header">
+          <tr>
+            {% for heading in headings %}
+            <th>{{ heading.verbose_name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody id="lazyBodysales">
+          {% for record in records %}
+          <tr>
+            <!-- Table Data -->
+            <td class="table-data">{{ record.field_cost_heads }}</td>
+            <td class="table-data">{{ record.monyy }}</td>
+            <td class="table-data">{{ record.total }}</td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- content for inventory balance purchase -->
+
+<div id="ct_cwc_pl_0_v12" class="page hidden">
+  <div class="select-date">
+    <label for="label-date">Select Period: </label>
+    <input type="month" name="month_year" id="dateinput_pl">
+  </div>
+  
+  <div id="back_to_original_pl" style="display: none;">
+    <!-- Button to go back to original table -->
+    <button class="btn btn-secondary" id="back_to_originalpl_btn">Back to Original Table</button>
+  </div>
+
+  <div id="filter_div" style="display: none;">
+    <form method="get" id="filter_form">
+        {{ filter.form.month }} <!-- Ensure this aligns with your filter's month field -->
+        <input type="hidden" id="selectedMonth" name="month">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+  </div>
+  <div class="container-fluid">
+    <div class="heading-wrapper">
+      <img src="/static/images/logo.png" alt="" />
+      <h1>ct_cwc_pl_0_v12</h1>
+    </div>
+
+    <div class="wrap-buttons">
+      <button type="button" class="btn btn-primary download-button" id="downloadReportButtonCtCwcPl0v12">
+        Download Report
+      </button>
+      <button type="button" class="btn btn-success">Proceed Next</button>
+    </div>
+    <div id="dropdownWrapper" style="display: none">
+      <div class="axis-selectors">
+        <!-- <label for="xAxis">X-Axis:</label> -->
+        <select id="xAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+        <!-- <label for="yAxis">Y-Axis:</label> -->
+        <select id="yAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="button_wrapper" style="display: none">
+      <!-- <button type="button" id="showBarChartButton">Bar Chart</button> -->
+      <!-- <button type="button" id="showLineChartButton">Line Chart</button> -->
+      <!-- <button type="button" id="showPieButton">Pie Chart</button> -->
+      <!-- <button type="button" id="showRadarButton">Radar Chart</button> -->
+    </div>
+    <!-- Select dropdowns for choosing X-axis and Y-axis columns -->
+    <div class="graph_wrapper" style="display: none">
+      <!-- Canvas for each type of graph -->
+      <canvas id="chartCanvas" style="display: none"></canvas>
+    </div>
+    <div class="table-responsive table-wrapper">
+      <table class="table table-striped table-dark" style="background-color: #d3e2f4">
+        <thead class="table-header">
+          <tr>
+            {% for heading in headings %}
+            <th>{{ heading.verbose_name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody id="lazyBodysales">
+          {% for record in records %}
+          <tr>
+            <!-- Table Data -->
+            <td class="table-data">{{ record.group }}</td>
+            <td class="table-data">{{ record.cluster }}</td>
+            <td class="table-data">{{ record.entity }}</td>
+            <td class="table-data">{{ record.sid }}</td>
+            <td class="table-data">{{ record.month }}</td>
+            <td class="table-data">{{ record.date2 }}</td>
+            <td class="table-data">{{ record.monyy }}</td>
+            <td class="table-data">{{ record.cat }}</td>
+            <td class="table-data">{{ record.sub_cat }}</td>
+            <td class="table-data">{{ record.val }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  // Function to show the back to original table button
+  function showBackToOriginalButton() {
+    document.getElementById('back_to_original_pl').style.display = 'block';
+    localStorage.setItem('backToOriginalVisible', 'true');
+  }
+
+  // Function to hide the back to original table button
+  function hideBackToOriginalButton() {
+    document.getElementById('back_to_original_pl').style.display = 'none';
+    localStorage.removeItem('backToOriginalVisible');
+  }
+
+  // Get the date input element
+  var dateInput = document.getElementById('dateinput_pl');
+
+  // Check if the button should be visible on page load
+  if (localStorage.getItem('backToOriginalVisible')) {
+    showBackToOriginalButton();
+  } else {
+    hideBackToOriginalButton();
+  }
+
+  // Add an event listener for when the date input value changes
+  dateInput.addEventListener('change', function() {
+    // Get the selected date value
+    const dateStr = this.value;
+
+    // Extract the month as an integer from the selected date
+    const selectedDate = new Date(dateStr + '-01');
+    const month = selectedDate.getMonth() + 1; // Months are 0-indexed, so add 1
+
+    // Set the extracted month as an integer to the hidden input field
+    document.getElementById('selectedMonth').value = month;
+
+    // Submit the form
+    document.getElementById('filter_form').submit();
+
+    // Show the back to original table option after filtering
+    showBackToOriginalButton();
+  });
+
+  // Function to handle going back to the original table
+  document.getElementById('back_to_originalpl_btn').addEventListener('click', function() {
+    
+    document.getElementById('filter_form').submit();
+
+    // Hide the back to original table option again
+    hideBackToOriginalButton();
+  });
+
+</script>
+
+<!-- content for inventory balance purchase -->
+
+<div id="ct_us_bs_2_inv_balance_date_at_v" class="page hidden">
+  <div class="select-date">
+    <label for="label-date">Select Period: </label>
+    <input type="month" name="month_year" id="dateinput_invp">
+  </div>
+  
+  <div id="back_to_original_invp" style="display: none;">
+    <!-- Button to go back to original table -->
+    <button class="btn btn-secondary" id="back_to_originalinvp_btn">Back to Original Table</button>
+  </div>
+
+  <div id="filter_div" style="display: none;">
+    <form method="get" id="filter_form">
+        {{ filter.form.month }} <!-- Ensure this aligns with your filter's month field -->
+        <input type="hidden" id="selectedMonth" name="month">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+  </div>
+  <div class="container-fluid">
+    <div class="heading-wrapper">
+      <img src="/static/images/logo.png" alt="" />
+      <h1>Inventory Balance Date</h1>
+    </div>
+    <div class="wrap-buttons">
+      <button type="button" class="btn btn-primary download-button" id="downloadReportButtonIBDate">
+        Download Report
+      </button>
+      <button type="button" class="btn btn-success">Proceed Next</button>
+    </div>
+    <div id="dropdownWrapper" style="display: none">
+      <div class="axis-selectors">
+        <!-- <label for="xAxis">X-Axis:</label> -->
+        <select id="xAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+        <!-- <label for="yAxis">Y-Axis:</label> -->
+        <select id="yAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="button_wrapper" style="display: none">
+      <!-- <button type="button" id="showBarChartButton">Bar Chart</button> -->
+      <!-- <button type="button" id="showLineChartButton">Line Chart</button> -->
+      <!-- <button type="button" id="showPieButton">Pie Chart</button> -->
+      <!-- <button type="button" id="showRadarButton">Radar Chart</button> -->
+    </div>
+    <!-- Select dropdowns for choosing X-axis and Y-axis columns -->
+    <div class="graph_wrapper" style="display: none">
+      <!-- Canvas for each type of graph -->
+      <canvas id="chartCanvas" style="display: none"></canvas>
+    </div>
+    <div class="table-responsive table-wrapper">
+      <table class="table table-striped table-dark" style="background-color: #d3e2f4">
+        <thead class="table-header">
+          <tr>
+            {% for heading in headings %}
+            <th>{{ heading.verbose_name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody id="lazyBodysales">
+          {% for record in records %}
+          <tr>
+            <!-- Table Data -->
+            <td class="table-data">{{ record.sid }}</td>
+            <td class="table-data">{{ record.val }}</td>
+            <td class="table-data">{{ record.insrt_timestamp }}</td>
+            <td class="table-data">{{ record.year }}</td>
+            <td class="table-data">{{ record.month }}</td>
+            <td class="table-data">{{ record.glaccount }}</td>
+            <td class="table-data">{{ record.actual }}</td>
+            <td class="table-data">{{ record.quantity }}</td>
+            <td class="table-data">{{ record.sku }}</td>
+            <td class="table-data">{{ record.runningtotalquantity }}</td>
+            <td class="table-data">{{ record.runningtotalactual }}</td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  // Function to show the back to original table button
+  function showBackToOriginalButton() {
+    document.getElementById('back_to_original_invp').style.display = 'block';
+    localStorage.setItem('backToOriginalVisible', 'true');
+  }
+
+  // Function to hide the back to original table button
+  function hideBackToOriginalButton() {
+    document.getElementById('back_to_original_invp').style.display = 'none';
+    localStorage.removeItem('backToOriginalVisible');
+  }
+
+  // Get the date input element
+  var dateInput = document.getElementById('dateinput_invp');
+
+  // Check if the button should be visible on page load
+  if (localStorage.getItem('backToOriginalVisible')) {
+    showBackToOriginalButton();
+  } else {
+    hideBackToOriginalButton();
+  }
+
+  // Add an event listener for when the date input value changes
+  dateInput.addEventListener('change', function() {
+    // Get the selected date value
+    const dateStr = this.value;
+
+    // Extract the month as an integer from the selected date
+    const selectedDate = new Date(dateStr + '-01');
+    const month = selectedDate.getMonth() + 1; // Months are 0-indexed, so add 1
+
+    // Set the extracted month as an integer to the hidden input field
+    document.getElementById('selectedMonth').value = month;
+
+    // Submit the form
+    document.getElementById('filter_form').submit();
+
+    // Show the back to original table option after filtering
+    showBackToOriginalButton();
+  });
+
+  // Function to handle going back to the original table
+  document.getElementById('back_to_originalinvp_btn').addEventListener('click', function() {
+    
+    document.getElementById('filter_form').submit();
+
+    // Hide the back to original table option again
+    hideBackToOriginalButton();
+  });
+
+</script>
+
+<!-- content for inventory balance purchase -->
+
+<div id="ctuspnl0v" class="page hidden">
+  <div class="select-date">
+    <label for="label-date">Select Period: </label>
+    <input type="month" name="month_year" id="dateinput_pnl">
+  </div>
+  
+  <div id="back_to_original_pnl" style="display: none;">
+    <!-- Button to go back to original table -->
+    <button class="btn btn-secondary" id="back_to_originalpnl_btn">Back to Original Table</button>
+  </div>
+
+  <div id="filter_div" style="display: none;">
+    <form method="get" id="filter_form">
+        {{ filter.form.month }} <!-- Ensure this aligns with your filter's month field -->
+        <input type="hidden" id="selectedMonth" name="month">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+  </div>
+  <div class="container-fluid">
+    <div class="heading-wrapper">
+      <img src="/static/images/logo.png" alt="" />
+      <h1>ctuspnl0v</h1>
+    </div>
+    <div class="wrap-buttons">
+      <button type="button" class="btn btn-primary download-button" id="downloadReportButtonCtuspnl0v">
+        Download Report
+      </button>
+      <button type="button" class="btn btn-success">Proceed Next</button>
+    </div>
+    <div id="dropdownWrapper" style="display: none">
+      <div class="axis-selectors">
+        <!-- <label for="xAxis">X-Axis:</label> -->
+        <select id="xAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+        <!-- <label for="yAxis">Y-Axis:</label> -->
+        <select id="yAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="button_wrapper" style="display: none">
+      <!-- <button type="button" id="showBarChartButton">Bar Chart</button> -->
+      <!-- <button type="button" id="showLineChartButton">Line Chart</button> -->
+      <!-- <button type="button" id="showPieButton">Pie Chart</button> -->
+      <!-- <button type="button" id="showRadarButton">Radar Chart</button> -->
+    </div>
+    <!-- Select dropdowns for choosing X-axis and Y-axis columns -->
+    <div class="graph_wrapper" style="display: none">
+      <!-- Canvas for each type of graph -->
+      <canvas id="chartCanvas" style="display: none"></canvas>
+    </div>
+    <div class="table-responsive table-wrapper">
+      <table class="table table-striped table-dark" style="background-color: #d3e2f4">
+        <thead class="table-header">
+          <tr>
+            {% for heading in headings %}
+            <th>{{ heading.verbose_name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody id="lazyBodysales">
+          {% for record in records %}
+          <tr>
+            <!-- Table Data -->
+            <td class="table-data">{{ record.cat }}</td>
+            <td class="table-data">{{ record.sub_cat }}</td>
+            <td class="table-data">{{ record.month }}</td>
+            <td class="table-data">{{ record.monyy }}</td>
+            <td class="table-data">{{ record.val }}</td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  // Function to show the back to original table button
+  function showBackToOriginalButton() {
+    document.getElementById('back_to_original_pnl').style.display = 'block';
+    localStorage.setItem('backToOriginalVisible', 'true');
+  }
+
+  // Function to hide the back to original table button
+  function hideBackToOriginalButton() {
+    document.getElementById('back_to_original_pnl').style.display = 'none';
+    localStorage.removeItem('backToOriginalVisible');
+  }
+
+  // Get the date input element
+  var dateInput = document.getElementById('dateinput_pnl');
+
+  // Check if the button should be visible on page load
+  if (localStorage.getItem('backToOriginalVisible')) {
+    showBackToOriginalButton();
+  } else {
+    hideBackToOriginalButton();
+  }
+
+  // Add an event listener for when the date input value changes
+  dateInput.addEventListener('change', function() {
+    // Get the selected date value
+    const dateStr = this.value;
+
+    // Extract the month as an integer from the selected date
+    const selectedDate = new Date(dateStr + '-01');
+    const month = selectedDate.getMonth() + 1; // Months are 0-indexed, so add 1
+
+    // Set the extracted month as an integer to the hidden input field
+    document.getElementById('selectedMonth').value = month;
+
+    // Submit the form
+    document.getElementById('filter_form').submit();
+
+    // Show the back to original table option after filtering
+    showBackToOriginalButton();
+  });
+
+  // Function to handle going back to the original table
+  document.getElementById('back_to_originalpnl_btn').addEventListener('click', function() {
+    
+    document.getElementById('filter_form').submit();
+
+    // Hide the back to original table option again
+    hideBackToOriginalButton();
+  });
+
+  // Function to handle going back to the original table
+  document.getElementById('back_to_original_btn').addEventListener('click', function() {
+    
+    document.getElementById('filter_form').submit();
+
+    // Hide the back to original table option again
+    hideBackToOriginalButton();
+  });
+</script>
+
+<!-- content for inventory balance purchase -->
+
+<div id="ct_us_bs_2_inv_balance_purchase" class="page hidden">
+  <div class="select-date">
+    <label for="label-date">Select Period: </label>
+    <input type="month" name="month_year" id="dateinput_invpp">
+  </div>
+  
+  <div id="back_to_original_invpp" style="display: none;">
+    <!-- Button to go back to original table -->
+    <button class="btn btn-secondary" id="back_to_originalinp_btn">Back to Original Table</button>
+  </div>
+
+  <div id="filter_div" style="display: none;">
+    <form method="get" id="filter_form">
+        {{ filter.form.month }} <!-- Ensure this aligns with your filter's month field -->
+        <input type="hidden" id="selectedMonth" name="month">
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+  </div>
+  <div class="container-fluid">
+    <div class="heading-wrapper">
+      <img src="/static/images/logo.png" alt="" />
+      <h1>inventory balance purchase</h1>
+    </div>
+    <div class="wrap-buttons">
+      <button type="button" class="btn btn-primary download-button" id="downloadReportButtonIBPurchase1">
+        Download Report
+      </button>
+      <button type="button" class="btn btn-success">Proceed Next</button>
+    </div>
+    <div id="dropdownWrapper" style="display: none">
+      <div class="axis-selectors">
+        <!-- <label for="xAxis">X-Axis:</label> -->
+        <select id="xAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+        <!-- <label for="yAxis">Y-Axis:</label> -->
+        <select id="yAxis">
+          {% for heading in headings %}
+          <option value="{{ heading.verbose_name }}">
+            {{ heading.verbose_name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="button_wrapper" style="display: none">
+      <!-- <button type="button" id="showBarChartButton">Bar Chart</button> -->
+      <!-- <button type="button" id="showLineChartButton">Line Chart</button> -->
+      <!-- <button type="button" id="showPieButton">Pie Chart</button> -->
+      <!-- <button type="button" id="showRadarButton">Radar Chart</button> -->
+    </div>
+    <!-- Select dropdowns for choosing X-axis and Y-axis columns -->
+    <div class="graph_wrapper" style="display: none">
+      <!-- Canvas for each type of graph -->
+      <canvas id="chartCanvas" style="display: none"></canvas>
+    </div>
+    <div class="table-responsive table-wrapper">
+      <table class="table table-striped table-dark" style="background-color: #d3e2f4">
+        <thead class="table-header">
+          <tr>
+            {% for heading in headings %}
+            <th>{{ heading.verbose_name }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody id="lazyBodysales">
+          {% for record in records %}
+          <tr>
+            <!-- Table Data -->
+            <td class="table-data">{{ record.val }}</td>
+            <td class="table-data">{{ record.bottles }}</td>
+            <td class="table-data">{{ record.month }}</td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  // Function to show the back to original table button
+  function showBackToOriginalButton() {
+    document.getElementById('back_to_original_invpp').style.display = 'block';
+    localStorage.setItem('backToOriginalVisible', 'true');
+  }
+
+  // Function to hide the back to original table button
+  function hideBackToOriginalButton() {
+    document.getElementById('back_to_original_invpp').style.display = 'none';
+    localStorage.removeItem('backToOriginalVisible');
+  }
+
+  // Get the date input element
+  var dateInput = document.getElementById('dateinput_invpp');
+
+  // Check if the button should be visible on page load
+  if (localStorage.getItem('backToOriginalVisible')) {
+    showBackToOriginalButton();
+  } else {
+    hideBackToOriginalButton();
+  }
+
+  // Add an event listener for when the date input value changes
+  dateInput.addEventListener('change', function() {
+    // Get the selected date value
+    const dateStr = this.value;
+
+    // Extract the month as an integer from the selected date
+    const selectedDate = new Date(dateStr + '-01');
+    const month = selectedDate.getMonth() + 1; // Months are 0-indexed, so add 1
+
+    // Set the extracted month as an integer to the hidden input field
+    document.getElementById('selectedMonth').value = month;
+
+    // Submit the form
+    document.getElementById('filter_form').submit();
+
+    // Show the back to original table option after filtering
+    showBackToOriginalButton();
+  });
+
+  // Function to handle going back to the original table
+  document.getElementById('back_to_originalinp_btn').addEventListener('click', function() {
+    
+    document.getElementById('filter_form').submit();
+
+    // Hide the back to original table option again
+    hideBackToOriginalButton();
+  });
+</script>

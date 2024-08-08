@@ -1,0 +1,76 @@
+
+<div id="fetch_cappdb" class="page hidden">
+    <div class="container-fluid">
+      <div class="heading-wrapper">
+        <h1 class="mb-4">ERP TYPES</h1>
+      </div>
+      <div class="table-responsive table-wrapper">
+        <table class="table table-striped table-dark" style="background-color: #d3e2f4">
+          <thead class="table-header">
+            <tr>
+              <th>SID</th>
+              <th>Apps</th>
+              <th>DB Name</th>
+              <th>Update Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for record in records %}
+            <tr>
+              <td class="table-data">{{ record.sid }}</td>
+              <td class="table-data">{{ record.Apps }}</td>
+              <td class="table-data">{{ record.DB_name }}</td>
+              <td class="table-data">{{ record.Update_time }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="modal fade" id="addEntryModal" tabindex="-1" role="dialog" aria-labelledby="addEntryModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="addEntryModalLabel">
+                Add Connection
+              </h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form method="post" style="background-color: #808080; padding: 20px">
+                {% csrf_token %}
+                <div class="form-group row">
+                  <label for="Apps" class="col-sm-2 col-form-label">Apps</label>
+                  <div class="col-sm-8 offset-sm-1">
+                    <input type="text" class="form-control" id="Apps" name="Apps" required />
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="DB_name" class="col-sm-2 col-form-label">DB Name</label>
+                  <div class="col-sm-8 offset-sm-1">
+                    <input type="text" class="form-control" id="DB_name" name="DB_name" required />
+                  </div>
+                </div>
+                <!-- <div class="form-group row">
+                            <div class="col-sm-8 offset-sm-3">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </div> -->
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Button to trigger modal -->
+      <div class="row mt-4">
+        <div class="col-md-6">
+          <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#addEntryModal">
+            Add Connection
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>

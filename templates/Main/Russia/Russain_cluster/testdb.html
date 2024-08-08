@@ -1,0 +1,19 @@
+<table border="1">
+    <thead>
+        <tr>
+            {% for heading in headings %}
+                <th>{{ heading }}</th>
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody id="lazyBodysales">
+        {% for record in records %}
+            <tr>
+                {% for key, value in record.items %}
+                    <td class="table-data">{{ value }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</body>

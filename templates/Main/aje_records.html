@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AJE Records</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .tracking-box {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>AJE Records for AJE Number {{ request.session.aje_number }}</h1>
+        <form method="post" action="">
+            {% csrf_token %}
+            <table class="table table-striped table-bordered mt-4">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>AJE #</th>
+                        <th>Description</th>
+                        <th>Year</th>
+                        <th>Period</th>
+                        <th>Cluster</th>
+                        <th>DR/CR</th>
+                        <th>BS/PL</th>
+                        <th>Line</th>
+                        <th>Decomposition 1</th>
+                        <th>Decomposition 2</th>
+                        <th>Amount in USD</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in aje_records %}
+                    <tr>
+                        <td>{{ record.0 }}</td>
+                        <td>{{ record.1 }}</td>
+                        <td>{{ record.2 }}</td>
+                        <td>{{ record.3 }}</td>
+                        <td>{{ record.4 }}</td>
+                        <td>{{ record.5 }}</td>
+                        <td>{{ record.6 }}</td>
+                        <td>{{ record.7 }}</td>
+                        <td>{{ record.8 }}</td>
+                        <td>{{ record.9 }}</td>
+                        <td>
+                            <input type="text" name="amount_usd_{{ forloop.counter }}" value="0" class="form-control amount-input" data-record-id="{{ record.0 }}" />
+                            <input type="hidden" name="record_id_{{ forloop.counter }}" value="0" />
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+        <div class="tracking-box">
+            <p>Debit Total: <span id="debit-total">0</span></p>
+            <p>Credit Total: <span id="credit-total">0</span></p>
+            <p>Difference: <span id="difference">0</span></p>
+        </div>
+    </div>
+
+    <div id="notification" style="display:none; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background-color: #4CAF50; color: white; padding: 10px; border-radius: 5px;">
+        Data submitted successfully
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+    $(document).ready(function() {
+        // Calculate totals
+        function calculateTotals() {
+            let debitTotal = 0;
+            let creditTotal = 0;
+
+            $('.amount-input').each(function() {
+                const value = parseFloat($(this).val()) || 0;
+                const drCr = $(this).closest('tr').find('td:nth-child(6)').text().trim(); // Assuming DR/CR is the 6th column
+
+                if (drCr.toUpperCase() === 'DR') {
+                    debitTotal += value;
+                } else if (drCr.toUpperCase() === 'CR') {
+                    creditTotal += value;
+                }
+            });
+
+            $('#debit-total').text(debitTotal.toFixed(2));
+            $('#credit-total').text(creditTotal.toFixed(2));
+            $('#difference').text((debitTotal + creditTotal).toFixed(2));
+        }
+
+        // Calculate totals on page load
+        calculateTotals();
+
+        // Recalculate totals on input change
+        $(document).on('input', '.amount-input', function() {
+            calculateTotals();
+        });
+
+        // Handle form submission
+        $('form').submit(function(event) {
+            event.preventDefault(); // Prevent the default form submission
+            
+            // Show the notification
+            showNotification('Data submitted successfully');
+            
+            // Perform form submission via AJAX (optional)
+            // You can remove this block if you want normal form submission
+            /*
+            $.post($(this).attr('action'), $(this).serialize(), function(response) {
+                showNotification('Data submitted successfully');
+            }).fail(function() {
+                showNotification('Submission failed');
+            });
+            */
+        });
+
+        // Function to show notification
+        function showNotification(message) {
+            $('#notification').text(message).fadeIn();
+            setTimeout(function() {
+                $('#notification').fadeOut();
+            }, 1000);
+        }
+    });
+    </script>
+</body>
+</html>

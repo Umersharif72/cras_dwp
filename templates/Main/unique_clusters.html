@@ -1,0 +1,34 @@
+<div id="unique_clusters" class="page hidden" style="margin-right: 300px">
+  <form method="post">
+    {% csrf_token %}
+    <!-- <label for="cluster">Cluster:</label> -->
+    <select id="cluster" name="cluster" style="width: 130px">
+      {% for cluster in unique_clusters %}
+      <option
+        value="{{ cluster }}"
+        {%
+        if
+        cluster="selected_cluster"
+        %}selected{%
+        endif
+        %}
+      >
+        {{ cluster }}
+      </option>
+      {% endfor %}
+    </select>
+    <button type="submit">Submit</button>
+  </form>
+</div>
+<div id="company_types" style="margin-right: 300px" class="page hidden">
+  <form method="post">
+    {% csrf_token %}
+    <!-- <label for="company_type">Company Type:</label> -->
+    <select id="company_type" name="company_type" style="width: 130px">
+      {% for type in company_types %}
+      <option value="{{ type }}">{{ type }}</option>
+      {% endfor %}
+    </select>
+    <input type="submit" value="Submit" />
+  </form>
+</div>

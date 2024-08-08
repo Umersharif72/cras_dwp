@@ -1,0 +1,49 @@
+[2024-08-07 17:28:24 +0000] [37272] [INFO] Worker exiting (pid: 37272)
+[2024-08-07 17:28:24 +0000] [37267] [INFO] Worker exiting (pid: 37267)
+[2024-08-07 17:28:24 +0000] [37268] [INFO] Worker exiting (pid: 37268)
+[2024-08-07 22:28:25 +0500] [38821] [INFO] Starting gunicorn 22.0.0
+[2024-08-07 22:28:25 +0500] [38821] [INFO] Listening at: unix:/run/gunicorn.sock (38821)
+[2024-08-07 22:28:25 +0500] [38821] [INFO] Using worker: sync
+[2024-08-07 22:28:25 +0500] [38824] [INFO] Booting worker with pid: 38824
+[2024-08-07 22:28:25 +0500] [38825] [INFO] Booting worker with pid: 38825
+[2024-08-07 22:28:25 +0500] [38826] [INFO] Booting worker with pid: 38826
+[2024-08-07 17:28:56 +0000] [38824] [INFO] Worker exiting (pid: 38824)
+[2024-08-07 22:28:56 +0500] [38821] [INFO] Handling signal: term
+[2024-08-07 17:28:56 +0000] [38826] [INFO] Worker exiting (pid: 38826)
+[2024-08-07 17:28:56 +0000] [38825] [INFO] Worker exiting (pid: 38825)
+[2024-08-07 22:28:56 +0500] [38821] [ERROR] Worker (pid:38824) was sent SIGTERM!
+[2024-08-07 22:28:57 +0500] [38821] [INFO] Shutting down: Master
+[2024-08-07 22:28:57 +0500] [39034] [INFO] Starting gunicorn 22.0.0
+[2024-08-07 22:28:57 +0500] [39034] [INFO] Listening at: unix:/run/gunicorn.sock (39034)
+[2024-08-07 22:28:57 +0500] [39034] [INFO] Using worker: sync
+[2024-08-07 22:28:57 +0500] [39035] [INFO] Booting worker with pid: 39035
+[2024-08-07 22:28:57 +0500] [39036] [INFO] Booting worker with pid: 39036
+[2024-08-07 22:28:57 +0500] [39037] [INFO] Booting worker with pid: 39037
+[2024-08-07 22:33:00 +0500] [39034] [INFO] Handling signal: term
+[2024-08-07 17:33:00 +0000] [39037] [INFO] Worker exiting (pid: 39037)
+[2024-08-07 17:33:00 +0000] [39036] [INFO] Worker exiting (pid: 39036)
+[2024-08-07 17:33:00 +0000] [39035] [INFO] Worker exiting (pid: 39035)
+[2024-08-07 22:33:00 +0500] [39034] [INFO] Shutting down: Master
+[2024-08-07 22:33:01 +0500] [40599] [INFO] Starting gunicorn 22.0.0
+[2024-08-07 22:33:01 +0500] [40599] [INFO] Listening at: unix:/run/gunicorn.sock (40599)
+[2024-08-07 22:33:01 +0500] [40599] [INFO] Using worker: sync
+[2024-08-07 22:33:01 +0500] [40606] [INFO] Booting worker with pid: 40606
+[2024-08-07 22:33:01 +0500] [40607] [INFO] Booting worker with pid: 40607
+[2024-08-07 22:33:01 +0500] [40608] [INFO] Booting worker with pid: 40608
+[2024-08-07 22:33:02 +0500] [40599] [INFO] Handling signal: term
+[2024-08-07 17:33:02 +0000] [40608] [INFO] Worker exiting (pid: 40608)
+[2024-08-07 17:33:02 +0000] [40607] [INFO] Worker exiting (pid: 40607)
+[2024-08-07 17:33:02 +0000] [40606] [INFO] Worker exiting (pid: 40606)
+[2024-08-07 22:33:02 +0500] [40599] [INFO] Shutting down: Master
+[2024-08-07 22:33:02 +0500] [40631] [INFO] Starting gunicorn 22.0.0
+[2024-08-07 22:33:02 +0500] [40631] [INFO] Listening at: unix:/run/gunicorn.sock (40631)
+[2024-08-07 22:33:02 +0500] [40631] [INFO] Using worker: sync
+[2024-08-07 22:33:02 +0500] [40633] [INFO] Booting worker with pid: 40633
+[2024-08-07 22:33:02 +0500] [40634] [INFO] Booting worker with pid: 40634
+[2024-08-07 22:33:02 +0500] [40635] [INFO] Booting worker with pid: 40635
+[2024-08-07 17:33:29 +0000] [40633] [INFO] Worker exiting (pid: 40633)
+[2024-08-07 22:33:29 +0500] [40631] [INFO] Handling signal: term
+[2024-08-07 17:33:29 +0000] [40634] [INFO] Worker exiting (pid: 40634)
+[2024-08-07 22:33:29 +0500] [40631] [ERROR] Worker (pid:40633) was sent SIGTERM!
+[2024-08-07 17:33:29 +0000] [40635] [INFO] Worker exiting (pid: 40635)
+[2024-08-07 22:33:29 +0500] [40631] [INFO] Shutting down: Master

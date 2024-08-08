@@ -1,0 +1,90 @@
+<!-- HTML Template with Lazy Loading -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Lazy Loading Example</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Set background color of the whole page */
+        body {
+            background-color: #172b4d; /* Dark blue color */
+            color: #fff; /* Text color */
+            padding-top: 20px;
+        }
+
+        /* Set text color of table cells to white */
+        table.table td {
+            color: #fff;
+            font-size: 14px; /* Decrease font size */
+            padding: 8px; /* Adjust padding */
+            width: 150px; /* Set fixed width for each cell */
+            overflow: hidden; /* Hide overflow content */
+            text-overflow: ellipsis; /* Show ellipsis for overflow content */
+            white-space: nowrap; /* Prevent wrapping of text */
+        }
+        table.table th {
+            font-size: 16px; /* Decrease font size for table headings */
+        }
+        table.table {
+            background-color: #808080; /* Gray color */
+            font-family: Arial, sans-serif; /* Standardize font style */
+            border: none; /* Remove table border */
+        }
+
+        /* Adjust modal size */
+        .modal-content {
+            width: 80%; /* Adjust width of modal content */
+            max-width: 600px; /* Limit maximum width */
+        }
+
+        /* Decrease padding of table cells */
+        .table td, .table th {
+            padding: 4px; /* Adjust padding */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="mb-4">Marketing</h1>
+        <div class="table-responsive">
+            <table id="lazyTable" class="table table-striped table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                       
+                        <!-- Table Headers -->
+                        <th>date</th>
+                        <th>cost_unit</th>
+                        <th>value</th>
+                        <th>item</th>
+                        <th>FS-line</th>       
+                </tr>
+                </thead>
+                <tbody id="lazyBody">
+                    <!-- Initially load first few records -->
+                    {% for record in records %}
+                    <tr>
+                        <!-- Table Data -->
+                        <td>{{ record.date }}</td>
+                        <td>{{ record.cost_unit}}</td>
+                        <td>{{ record.value}}</td>
+                        <td>{{ record.item}}</td>
+                        <td>{{ record.fS_line}}</td>
+                    </tr>
+                    
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Add Bootstrap JS (optional) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- Custom JavaScript for Lazy Loading -->
+    
+                    
+
+</body>
+</html>

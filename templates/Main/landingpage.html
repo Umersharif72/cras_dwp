@@ -1,0 +1,402 @@
+{% load static %}
+
+<!DOCTYPE html>
+<!-- Coding by CodingNepal || www.codingnepalweb.com -->
+<html lang="en">
+  <head>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/pikaday/css/pikaday.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Include jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Include Select2 CSS -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Include Select2 JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <!-- Include Select2 JS -->
+
+    <!-- Boxicons CSS -->
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+
+    <title>Side Navigation Bar in HTML CSS JavaScript</title>
+
+    <!-- Include custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/landingpage2.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/landingpage1.css' %}" />
+
+    <style>
+      #notification {
+        display: none;
+        position: fixed;
+        top: 20%;
+        right: 40%;
+        background-color: #4caf50;
+        color: white;
+        padding: 18px 36px;
+        border-radius: 8px;
+        z-index: 1000;
+        height: fit-content;
+        width: fit-content;
+        font-size: 18px;
+        text-align: center;
+      }
+
+      .submenu,
+      .subsubmenu {
+        display: none;
+        list-style-type: none;
+      }
+
+      .submenu.show,
+      .subsubmenu.show {
+        display: block;
+      }
+
+      .nav_link {
+        cursor: pointer;
+      }
+
+      .tracking-box {
+        margin-top: 20px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+      }
+
+      .submenu {
+        display: none;
+        list-style-type: none;
+        padding-left: 20px;
+      }
+
+      .submenu_item {
+        cursor: pointer;
+      }
+
+      .nav_link {
+        display: flex;
+        align-items: center;
+      }
+
+      .navlink_icon {
+        margin-right: 0px;
+      }
+
+      .arrow-left {
+        margin-left: auto;
+      }
+
+      #imageContainer img {
+        width: 100%;
+        height: 85vh;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- navbar -->
+
+    <nav>{% include 'Main/lp_nvb.html' %}</nav>
+
+    <!-- sidebar -->
+
+    {% include 'Main/sidebar.html' %}
+
+    <!--inventory, balance,COGS, INFO1,INFO2,marketing,reclass,purchases sales-->
+
+    {% include 'Main/standalone_options.html' %}
+
+    <!---------Adjustment Screen code and script  --------------------------------------- -->
+    <!-- -------------------------------------------------------------------------------- -->
+    <!---------Adjustment Screen code and script  --------------------------------------- -->
+    <!-- -------------------------------------------------------------------------------- -->
+
+    {% include 'Main/Adjustment/adjustment.html' %}
+
+    <!-- Russia Q1 and Q2 Table -->
+
+    {% include 'Main/Russia/russia_tables.html' %}
+
+    <!--Georgian Tables-->
+
+    {% include 'Main/Georgia/us_tables.html' %}
+
+    <!-- contetn for the table extraction------------------- -->
+
+    {% include 'Main/Setting/table_extraction.html' %}
+
+    <!-- content for Source connections------------------------- -->
+
+    {% include 'Main/Setting/source_connection.html' %}
+
+    <!-- content for Source ERP TYPES------------------------- -->
+
+    {% include 'Main/Setting/source_erp_types.html' %}
+
+    <!-- Add Bootstrap JS (optional) -->
+    <!-- content for cemapng ------------------------- -->
+
+    {% include 'Main/Setting/cemapng.html' %}
+
+    <!-- content for uplaod file for loader------------------------- -->
+    {% include 'Main/loader/uplaod.html' %}
+    <!-- content for  success uplaod file for loader------------------------- -->
+    {% include 'Main/loader/success.html' %}
+    <!-- Unique Clusters dropdown -->
+    {% include 'Main/unique_clusters.html' %}
+
+    <!-- Operation Types dropdown -->
+    <!-- {% include 'Main/operation_type.html' %} -->
+
+    <!-- Russain cluster option page -->
+
+    <!-- Russian Cluster -->
+    {% include 'Main/Russia/Russain_cluster/PnLByEntity.html' %}
+
+    <!-- User Administration Signup -->
+    {% include 'Main/Admin/Signup.html' %}
+
+    <!-- User Administration User List -->
+    {% include 'Main/Admin/user_list.html' %}
+
+    <!-- User Administration User activity -->
+    {% include 'Main/Admin/view_user_activity_logs.html' %}
+
+    <form action="{% url 'xyz' %}" method="get">
+      <div
+        id="ge_drp"
+        class="page hidden"
+        style="margin-left: 270px; padding: 50px"
+      >
+        <label for="dropdown-menu">Select an Option:</label>
+        <select id="dropdown-menu">
+          <option value="uab-ids-borjomi-europe">
+            UAB IDS Borjomi Europe (Lithuania). (TrCo)
+          </option>
+          <option value="ids-borjomi-kazakhstan">
+            IDS Borjomi Kazakhstan (Kazakhstan). (TrCo)
+          </option>
+          <option value="ids-borjomi-azerbaijan">
+            IDS Borjomi Azerbaijan LLC (Azerbaijan). (TrCo)
+          </option>
+          <option value="ids-borjomi-uzbekistan">
+            IDS Borjomi (Uzbekistan). (TrCo)
+          </option>
+          <option value="ids-borjomi-tbilisi">
+            IDS Borjomi Tbilisi (Geo). (TrCo)
+          </option>
+          <option value="borjomi-america">
+            Borjomi America Inc (USA). (TrCo)
+          </option>
+          <option value="borjomi-waters">
+            Borjomi Waters Ltd (Geo). (TrCo)
+          </option>
+          <option value="ids-borjomi-georgia">
+            IDS Borjomi Georgia (Geo). (OpCo)
+          </option>
+          <option value="borjomi-mintsklebi">
+            BorjomiMinTsklebi (Geo). (OpCo)
+          </option>
+          <option value="ids-borjomi-georgia-ibb">
+            IDS Borjomi Georgia, Georgian Branch of IBB Co NV (Geo). (OpCo)
+          </option>
+          <option value="ids-borjomi-beverages">
+            IDS Borjomi Beverages Co N.V. (Curacao). (OpCo) – Manual Data Entry
+            in CRAS
+          </option>
+        </select>
+        <button type="submit">Go</button>
+      </div>
+    </form>
+
+    <div
+      id="ru_drp"
+      class="page hidden"
+      style="margin-left: 270px; padding: 50px"
+    >
+      <form action="{% url 'xyz' %}" method="get">
+        {% csrf_token %}
+        <label for="dropdown-menu">Select an Option:</label>
+        <select id="dropdown-menu" name="option">
+          <option value="highroad-holdings-limited">
+            Highroad Holdings Limited (Cyprus) (BU HOD)
+          </option>
+          <option value="edelweis-l-llc">Edelweis L LLC (NE) (BU PET)</option>
+          <option value="llc-edel-lab">LLC Edel Lab (BU PET)</option>
+          <option value="llc-aqua-star">LLC Aqua Star (NE) (BU PET)</option>
+          <option value="llc-mineral-waters-borjomi">
+            LLC Mineral Waters Borjomi (NE) (BU PET)
+          </option>
+          <option value="ids-borjomi-bel">
+            IDS Borjomi Bel (Belarus) (BU Belarus)
+          </option>
+          <option value="ids-borjomi-llc">IDS Borjomi LLC (NE) (BU PET)</option>
+          <option value="llc-lipetskkurortresoursy">
+            LLC Lipetskkurortresoursy (NE) (BU PET)
+          </option>
+          <option value="llc-zavod-svyatoy-istochnik">
+            LLC Zavod Svyatoy Istochnik (NE) (BU PET)
+          </option>
+          <option value="llc-kompaniya-chistaya-voda">
+            LLC Kompaniya Chistaya Voda (NE)
+          </option>
+          <option value="llc-borjomi-tech">LLC Borjomi Tech (NE)</option>
+        </select>
+        <button type="submit">Go</button>
+      </form>
+    </div>
+    <!-- JavaScript -->
+    <script>
+      var urlPaths = {
+        inventory: "{% url 'inventory' %}",
+        balance: "{% url 'balance' %}",
+        COGS: "{% url 'COGS' %}",
+        INFO1: "{% url 'INFO1' %}",
+        INFO2: "{% url 'INFO2' %}",
+        marketing: "{% url 'marketing' %}",
+        reclass: "{% url 'reclass' %}",
+        sales: "{% url 'sales' %}",
+        purchases: "{% url 'purchases' %}",
+        juri_table: "{% url 'juri_table' %}",
+        juri_col: "{% url 'juri_col' %}",
+        fetch_sourceConn: "{% url 'fetch_sourceConn' %}",
+        fetch_cappdb: "{% url 'fetch_cappdb' %}",
+        cemapng: "{% url 'cemapng' %}",
+        invbalpur: "{% url 'invbalpur' %}",
+        balance_sheet: "{% url 'otherassetliabilities' %}",
+        leaserollforward: "{% url 'leaserollforward' %}",
+        capex_1: "{% url 'capex1v' %}",
+        capex_2: "{% url 'capex2v' %}", // Added missing entry
+        finance_costs: "{% url 'fincostview' %}", // Added missing entry
+        section_01: "{% url '01' %}",
+        taxes_header: "{% url 'taxeshead' %}",
+        business_cash_value: "{% url 'bcv' %}",
+        consultation: "{% url 'consult' %}",
+        monthly_reports: "{% url 'mon' %}", // Added missing entry
+        zero_equity_value: "{% url '0ev' %}",
+        sustainable_finance_value: "{% url 'sfv' %}",
+        total_capital_value: "{% url 'tcv' %}",
+        total_inventory_value: "{% url 'tiv' %}",
+        level_0_v12: "{% url 'l0v12' %}",
+        section_11_ic_v1: "{% url '11icv1' %}",
+        quantity_1: "{% url 'quantity1v' %}",
+        quantity_2: "{% url 'quantity2v' %}",
+        gross_discount_1: "{% url 'grossdiscount1v' %}",
+        gross_discount_2: "{% url 'grossdiscount2v' %}",
+        gross_revenue_1: "{% url 'grossrevenue1v' %}",
+        gross_revenue_2: "{% url 'grossrevenue2v' %}",
+        COGS_1: "{% url 'cogs1v' %}",
+        COGS_2: "{% url 'cogs2v' %}",
+        custom_COGS: "{% url 'cogscustom' %}",
+        monthly_COGS: "{% url 'cogsmon' %}",
+        COGS_log: "{% url 'coglog' %}",
+        log1: "{% url 'log1' %}",
+        ct_us_pl_6_log_2: "{% url 'ctuspl6log2' %}",
+        ct_us_pnl_9_forex_v: "{% url 'ctuspnl9forexv' %}",
+        ct_cwc_pl_0_v12: "{% url 'ctcwcpl0v12' %}",
+        ct_us_bs_2_inv_balance_date_at_v:
+          "{% url 'ctusbs2invbalancedateatv' %}",
+        ct_us_bs_2_inv_balance_purchase:
+          "{% url 'ctusbs2invbalancepurchase' %}",
+        ctuspnl0v: "{% url 'ctuspnl0v' %}",
+        adjustment_screen: "{% url 'adjustment_screen' %}",
+        home: "{% url 'landingpage' %}",
+        us_guide_table: "{% url 'usa_guide_list' %}",
+        azrb_guide_table: "{% url 'azrb_guide_list' %}",
+        kz_guide_table: "{% url 'kz_guide_list' %}",
+        query1: "{% url 'sql_query_1' %}",
+        query2: "{% url 'sql_query_2' %}",
+        ge_drp: "{% url 'anythinga' %}",
+        ru_drp: "{% url 'anything_ru' %}",
+        unique_clusters: "{% url 'unique_clusters' %}",
+        company_types: "{% url 'unique_company_types' %}",
+        loader_upload: "{% url 'upload' %}",
+        signupModal: "{% url 'create' %}",
+        user_list: "{% url 'view' %}",
+        user_activity_logs: "{% url 'useractivity' %}",
+      };
+    </script>
+
+    <script>
+      document.querySelector(".dropbtn").addEventListener("click", function () {
+        var dropdownContent = this.nextElementSibling;
+        if (
+          dropdownContent.style.display === "none" ||
+          dropdownContent.style.display === ""
+        ) {
+          dropdownContent.style.display = "block";
+        } else {
+          dropdownContent.style.display = "none";
+        }
+      });
+
+      // Close the dropdown if the user clicks outside of it
+      window.onclick = function (event) {
+        if (!event.target.matches(".dropbtn")) {
+          var dropdowns = document.getElementsByClassName("dropdown-content");
+          for (var i = 0; i < dropdowns.length; i++) {
+            var openDropdown = dropdowns[i];
+            if (openDropdown.style.display === "block") {
+              openDropdown.style.display = "none";
+            }
+          }
+        }
+      };
+      document.addEventListener(function () {
+        const menuItems = document.querySelectorAll(".menu_items .nav_link");
+        const hierarchy = document.getElementById("hierarchy");
+
+        menuItems.forEach((item) => {
+          item.addEventListener("click", function (event) {
+            event.preventDefault();
+            const selectedOption = this.textContent.trim();
+            const level = this.closest("ul").classList.contains("submenu")
+              ? 2
+              : 1;
+            updateHierarchy(selectedOption, level);
+          });
+        });
+
+        function updateHierarchy(option, level) {
+          let currentHierarchy = hierarchy.textContent.split(" > ");
+          currentHierarchy = currentHierarchy.slice(0, level - 1);
+          currentHierarchy.push(option);
+          hierarchy.textContent = currentHierarchy.join(" > ");
+        }
+      });
+    </script>
+
+    <script>
+      var generateCsvUrl = "{% url 'generate_csv' %}";
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{% static 'js/visualisations.js' %}"></script>
+    <script src="{% static 'js/download.js' %}"></script>
+    <script src="{% static 'js/pageChanging.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+  </body>
+</html>

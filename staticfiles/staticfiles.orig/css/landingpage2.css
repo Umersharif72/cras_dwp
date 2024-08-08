@@ -1,0 +1,422 @@
+body {
+  background-color: none !important;
+  background-image: linear-gradient(90deg, #010e0f, rgb(0 189 219));
+}
+
+/* Styles for the background container */
+.background-container {
+  position: relative; /* Ensure the container is positioned relative to its parent */
+  width: 100%; /* Set the width of the container */
+  height: 700px; /* Set the height of the container */
+  background-image: url("/static/images/Bjmi.png"); /* Set the background image */
+  background-size: cover; /* Cover the entire background */
+  background-position: center; /* Center the background image */
+  margin-bottom: 60px;
+}
+
+/* Styles for the "Learn More" button */
+.learn-more-button {
+  position: absolute; /* Position the button relative to its containing block */
+  top: 20px; /* Position the button 20 pixels from the bottom */
+  right: 1%; /* Position the button horizontally centered */
+  transform: translateX(-50%); /* Center the button horizontally */
+  padding: 10px 20px; /* Add padding to the button */
+  border: 2px solid #000; /* Add a rectangular border */
+  background-color: white; /* Set the background color to transparent */
+  color: #000; /* Set the text color */
+  cursor: pointer; /* Change cursor to pointer on hover */
+  transition: background-color 0.3s; /* Add transition for smooth color change */
+}
+
+.breadcrumb {
+  /* background-color: #e9ecef; */
+  margin-bottom: 20px;
+  margin-left: 340px;
+  margin-top: 5px;
+  font-size: small;
+  align-items: center;
+  height: 40px;
+  overflow: hidden;
+  text-align: center;
+  font-weight: bold;
+  font-size: large;
+  background-color: skyblue !important;
+}
+
+/* Hover styles for the button */
+.learn-more-button:hover {
+  background-color: red; /* Change background color to red on hover */
+  color: #fff; /* Change text color to white on hover */
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+:root {
+  --white-color: #fff;
+  --blue-color: #4070f4;
+  --grey-color: #707070;
+  --grey-color-light: #aaa;
+}
+body {
+  background-color: #040d32;
+  transition: all 0.5s ease;
+}
+body.dark {
+  background-color: #333;
+}
+body.dark {
+  --white-color: #333;
+  --blue-color: #fff;
+  --grey-color: #f2f2f2;
+  --grey-color-light: #aaa;
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 30px;
+  z-index: 1000;
+  /* background-image: linear-gradient(
+    90deg,
+    #010e0f,
+    #010e0f,
+    rgb(0 220 255 / 45%)
+  ); */
+  background-image: linear-gradient(90deg, black, #016669);
+}
+
+.menu_items.submenu a.nav_link.sublink {
+  padding-top: 2px; /* Adjust the padding as needed */
+  padding-bottom: 2px; /* Adjust the padding as needed */
+  margin-top: 0; /* Remove or reduce margin */
+  margin-bottom: 0; /* Remove or reduce margin */
+}
+
+.logo_item {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+  font-size: 22px;
+  font-weight: 500;
+  color: #00ffff;
+}
+
+.logo_item p {
+  margin-bottom: 0px;
+}
+.navbar img {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+}
+.search_bar {
+  height: 47px;
+  max-width: 430px;
+  width: 100%;
+}
+.search_bar input {
+  height: 100%;
+  width: 100%;
+  border-radius: 25px;
+  font-size: 18px;
+  outline: none;
+  background-color: var(--white-color);
+  color: var(--grey-color);
+  border: 1px solid var(--grey-color-light);
+  padding: 0 20px;
+}
+.navbar_content {
+  display: flex;
+  align-items: center;
+  column-gap: 25px;
+}
+.navbar_content i {
+  cursor: pointer;
+  font-size: 20px;
+  /* color: #005461; */
+  color: #86eaee;
+}
+/* sidebar */
+.sidebar {
+  background-color: var(--white-color);
+  width: 280px;
+  position: fixed;
+  top: 49px;
+  left: 0;
+  height: 87vh;
+  padding: 20px 0px !important;
+  z-index: 100;
+  overflow-y: scroll;
+  box-shadow: 0 0 1px var(--grey-color-light);
+  /* background-image: linear-gradient(180deg, #010e0f, rgb(0 220 255 / 45%)); */
+  background: transparent;
+}
+.sidebar.close {
+  padding: 60px 0;
+  width: 80px;
+}
+.sidebar::-webkit-scrollbar {
+  display: none;
+}
+.menu_content {
+  position: relative;
+}
+
+.bt_secondary {
+  margin-left: 30px;
+}
+.menu_title {
+  margin: 15px 0;
+  padding: 0 20px;
+  font-size: 18px;
+}
+.sidebar.close .menu_title {
+  padding: 6px 30px;
+}
+.menu_title::before {
+  color: var(--grey-color);
+  white-space: nowrap;
+}
+.menu_dahsboard::before {
+  content: "Menu";
+}
+.menu_logout::before {
+  content: "Logout";
+}
+.menu_editor::before {
+  content: "Editor";
+}
+.menu_Trop::before {
+  content: "TrCo-OpCo";
+}
+.menu_setting::before {
+  content: "Adjustment";
+}
+.sidebar.close::before {
+  position: absolute;
+  height: 2px;
+  width: 18px;
+  border-radius: 12px;
+  background: var(--grey-color-light);
+}
+.menu_items {
+  padding: 0;
+  list-style: none;
+}
+.navlink_icon {
+  position: relative;
+  font-size: 20px;
+  min-width: 40px;
+  line-height: 32px;
+  display: inline-block;
+  text-align: center;
+  border-radius: 6px;
+}
+.navlink_icon::before {
+  content: "";
+  position: absolute;
+  height: 100%;
+  width: calc(100% + 100px);
+  left: -20px;
+}
+.navlink_icon:hover {
+  background: transparent;
+}
+a.nav_link,
+span.navlink {
+  font-size: 14px;
+}
+.sidebar .nav_link {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 4px;
+  border-radius: 4px;
+  text-decoration: none;
+  /* color: #00cdeb; */
+  color: #00ffff;
+  white-space: nowrap;
+  padding-left: 0px;
+}
+.sidebar.close .navlink {
+  display: none;
+}
+.nav_link:hover {
+  color: #005461;
+  background: #86eaee;
+  border-radius: 4px;
+}
+
+li.nav_link:hover {
+  color: #005461;
+  background: #86eaee;
+  border-radius: 4px;
+}
+
+.sidebar.close .nav_link:hover {
+  background: var(--white-color);
+}
+.submenu_item {
+  cursor: pointer;
+}
+.submenu {
+  display: none;
+}
+.submenu_item .arrow-left {
+  position: absolute;
+  right: 10px;
+  display: inline-block;
+  margin-right: auto;
+}
+.sidebar.close .submenu {
+  display: none;
+}
+.show_submenu ~ .submenu {
+  display: block;
+}
+.show_submenu .arrow-left {
+  transform: rotate(90deg);
+}
+.submenu .sublink {
+  padding: 4px 7px 4px 52px;
+}
+.bottom_content {
+  position: fixed;
+  bottom: 60px;
+  left: 0;
+  width: 260px;
+  cursor: pointer;
+  transition: all 0.5s ease;
+}
+.bottom {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  left: 0;
+  justify-content: space-around;
+  padding: 18px 0;
+  text-align: center;
+  width: 100%;
+  color: var(--grey-color);
+  border-top: 1px solid #005461;
+  /* background-color: #86eaee; */
+  background-color: #001e1f;
+}
+.bottom i {
+  font-size: 20px;
+}
+.bottom span {
+  font-size: 18px;
+}
+.sidebar.close .bottom_content {
+  width: 50px;
+  left: 15px;
+}
+.sidebar.close .bottom span {
+  display: none;
+}
+.sidebar.hoverable .collapse_sidebar {
+  display: none;
+}
+#sidebarOpen {
+  display: none;
+}
+@media screen and (max-width: 768px) {
+  #sidebarOpen {
+    font-size: 25px;
+    display: block;
+    margin-right: 10px;
+    cursor: pointer;
+    color: var(--grey-color);
+  }
+  .sidebar.close {
+    left: -100%;
+  }
+  .search_bar {
+    display: none;
+  }
+  .sidebar.close .bottom_content {
+    left: -100%;
+  }
+}
+
+/* Add your CSS styles here */
+/* Style the progress bar */
+/* #progress-bar {
+      width: 100%;
+      background-color: #ddd;
+    }
+    #progress {
+      margin-bottom: 20px;
+      margin-left: 340px;
+      margin-top: 5px;
+      font-size: small;
+      align-items: center;
+      height: 40px;
+      overflow: hidden;
+      text-align: center;
+    } */
+/* Adjusted styles for the content area */
+.page {
+  margin-left: 300px; /* Adjust based on your sidebar width */
+  padding-left: 20px;
+  padding-bottom: 20px;
+  padding-right: 20px;
+  transition: margin-left 0.5s ease; /* Add transition for smooth animation */
+}
+.sidebar.close + .page {
+  margin-left: 80px; /* Adjust based on your collapsed sidebar width */
+}
+/* Additional styles */
+
+.sidebar {
+  width: 300px;
+  transition: width 0.3s ease;
+}
+
+.sidebar.collapsed {
+  width: 80px; /* Adjust as needed */
+}
+
+.sidebar .menu_content {
+  display: flex;
+  flex-direction: column;
+  transition: opacity 0.3s ease;
+}
+
+.sidebar.collapsed .menu_content {
+  opacity: 1;
+  overflow: hidden;
+}
+
+.sidebar.collapsed .bottom_content {
+  display: block;
+}
+
+.bottom.expand_sidebar {
+  color: #005461; /* Color for expand icon */
+  width: 65px;
+  transition: width 0.3s ease;
+}
+
+.bottom.collapse_sidebar {
+  /* color: #005461; */
+  color: #86eaee; /* Color for collapse icon */
+  width: 300px;
+  transition: width 0.3s ease;
+}
+
+.sidebar.collapsed #hidehome {
+  display: none; /* Specifically hide the home link */
+  opacity: 0;
+}

@@ -1,0 +1,63 @@
+0000000000000000000000000000000000000000 dde8e2cc7af41398b6b8740b120c564267574119 Muhammad Aseer <maseer@borjomi.com> 1721723496 +0400	clone: from https://github.com/Najeeb-Tareen/cras.git
+dde8e2cc7af41398b6b8740b120c564267574119 b5315b23b97c76b180be49678681b38d552d97e8 Muhammad Aseer <maseer@borjomi.com> 1721723693 +0400	pull origin main: Fast-forward
+b5315b23b97c76b180be49678681b38d552d97e8 bc5d0762585b6fddc3899ff0844eb1b7967f4bc3 Muhammad Aseer <maseer@borjomi.com> 1721804510 +0400	pull origin main: Fast-forward
+bc5d0762585b6fddc3899ff0844eb1b7967f4bc3 bc5d0762585b6fddc3899ff0844eb1b7967f4bc3 Muhammad Aseer <maseer@borjomi.com> 1721804607 +0400	checkout: moving from main to aseer/adj_dis
+bc5d0762585b6fddc3899ff0844eb1b7967f4bc3 bc5d0762585b6fddc3899ff0844eb1b7967f4bc3 Muhammad Aseer <maseer@borjomi.com> 1721808625 +0400	checkout: moving from aseer/adj_dis to main
+bc5d0762585b6fddc3899ff0844eb1b7967f4bc3 bc5d0762585b6fddc3899ff0844eb1b7967f4bc3 Muhammad Aseer <maseer@borjomi.com> 1721808779 +0400	checkout: moving from main to aseer/adj_dis
+bc5d0762585b6fddc3899ff0844eb1b7967f4bc3 2cbd597e3eb1d84644d6d94c2fb8791219220e66 Muhammad Aseer <maseer@borjomi.com> 1721816325 +0400	commit: update menu
+2cbd597e3eb1d84644d6d94c2fb8791219220e66 bc5d0762585b6fddc3899ff0844eb1b7967f4bc3 Muhammad Aseer <maseer@borjomi.com> 1721882367 +0400	checkout: moving from aseer/adj_dis to main
+bc5d0762585b6fddc3899ff0844eb1b7967f4bc3 902ef4baadc249c509ac70fd763a5f4ec9997cd4 Muhammad Aseer <maseer@borjomi.com> 1721882400 +0400	pull origin main: Fast-forward
+902ef4baadc249c509ac70fd763a5f4ec9997cd4 902ef4baadc249c509ac70fd763a5f4ec9997cd4 Muhammad Aseer <maseer@borjomi.com> 1721882565 +0400	checkout: moving from main to aseer/adjustment
+902ef4baadc249c509ac70fd763a5f4ec9997cd4 bd2db317b2083c5f9499d83ecdd505cf576f9486 Muhammad Aseer <maseer@borjomi.com> 1721884236 +0400	commit: Add Munal Entry
+bd2db317b2083c5f9499d83ecdd505cf576f9486 bd2db317b2083c5f9499d83ecdd505cf576f9486 Muhammad Aseer <maseer@borjomi.com> 1721885201 +0400	checkout: moving from aseer/adjustment to aseer/clusterPage
+bd2db317b2083c5f9499d83ecdd505cf576f9486 902ef4baadc249c509ac70fd763a5f4ec9997cd4 Muhammad Aseer <maseer@borjomi.com> 1721885212 +0400	checkout: moving from aseer/clusterPage to main
+902ef4baadc249c509ac70fd763a5f4ec9997cd4 a79f9c9ed688e3958945cb9cf24ae179639afa9d Muhammad Aseer <maseer@borjomi.com> 1721885229 +0400	pull origin main: Fast-forward
+a79f9c9ed688e3958945cb9cf24ae179639afa9d a79f9c9ed688e3958945cb9cf24ae179639afa9d Muhammad Aseer <maseer@borjomi.com> 1721885237 +0400	checkout: moving from main to main
+a79f9c9ed688e3958945cb9cf24ae179639afa9d bd2db317b2083c5f9499d83ecdd505cf576f9486 Muhammad Aseer <maseer@borjomi.com> 1721885267 +0400	checkout: moving from main to aseer/clusterPage
+bd2db317b2083c5f9499d83ecdd505cf576f9486 7eae153ac3790ad87efd516b09fa9d80bdbede3c Muhammad Aseer <maseer@borjomi.com> 1721897633 +0400	commit: update cluster page
+7eae153ac3790ad87efd516b09fa9d80bdbede3c a79f9c9ed688e3958945cb9cf24ae179639afa9d Muhammad Aseer <maseer@borjomi.com> 1721897852 +0400	checkout: moving from aseer/clusterPage to main
+a79f9c9ed688e3958945cb9cf24ae179639afa9d 42f51a9935f78d487f33090b42328848c5632397 Muhammad Aseer <maseer@borjomi.com> 1721897875 +0400	pull origin main: Fast-forward
+42f51a9935f78d487f33090b42328848c5632397 7eae153ac3790ad87efd516b09fa9d80bdbede3c Muhammad Aseer <maseer@borjomi.com> 1721898263 +0400	checkout: moving from main to aseer/clusterPage
+7eae153ac3790ad87efd516b09fa9d80bdbede3c 5892bb49475ec3f2ca43fd154987e2d2bac5b047 Muhammad Aseer <maseer@borjomi.com> 1721898361 +0400	commit: update cluster pages
+5892bb49475ec3f2ca43fd154987e2d2bac5b047 42f51a9935f78d487f33090b42328848c5632397 Muhammad Aseer <maseer@borjomi.com> 1721898447 +0400	checkout: moving from aseer/clusterPage to main
+42f51a9935f78d487f33090b42328848c5632397 7b546c2beb90900241d70fbfc9c049cca8d404aa Muhammad Aseer <maseer@borjomi.com> 1721898463 +0400	pull origin main: Fast-forward
+7b546c2beb90900241d70fbfc9c049cca8d404aa 7b546c2beb90900241d70fbfc9c049cca8d404aa Muhammad Aseer <maseer@borjomi.com> 1721898652 +0400	checkout: moving from main to aseer/manualEntries
+7b546c2beb90900241d70fbfc9c049cca8d404aa eb74bff9c7e022938881e0f0777a430880b0004a Muhammad Aseer <maseer@borjomi.com> 1721898757 +0400	commit: update manual entries
+eb74bff9c7e022938881e0f0777a430880b0004a 7b546c2beb90900241d70fbfc9c049cca8d404aa Muhammad Aseer <maseer@borjomi.com> 1721898815 +0400	checkout: moving from aseer/manualEntries to main
+7b546c2beb90900241d70fbfc9c049cca8d404aa 9296443f6953e4c29a5ee962c1119b54e2890f22 Muhammad Aseer <maseer@borjomi.com> 1721898833 +0400	pull origin main: Fast-forward
+9296443f6953e4c29a5ee962c1119b54e2890f22 9296443f6953e4c29a5ee962c1119b54e2890f22 Muhammad Aseer <maseer@borjomi.com> 1721901123 +0400	checkout: moving from main to aseer/loader
+9296443f6953e4c29a5ee962c1119b54e2890f22 6629ed63747cd6c01b9f7757aefa577b458ceef5 Muhammad Aseer <maseer@borjomi.com> 1721901743 +0400	commit: update loader section
+6629ed63747cd6c01b9f7757aefa577b458ceef5 9296443f6953e4c29a5ee962c1119b54e2890f22 Muhammad Aseer <maseer@borjomi.com> 1721902097 +0400	checkout: moving from aseer/loader to main
+9296443f6953e4c29a5ee962c1119b54e2890f22 16df3977dd9be26994a82fd0d6f32095a41b48c7 Muhammad Aseer <maseer@borjomi.com> 1721902266 +0400	pull origin main: Fast-forward
+16df3977dd9be26994a82fd0d6f32095a41b48c7 16df3977dd9be26994a82fd0d6f32095a41b48c7 Muhammad Aseer <maseer@borjomi.com> 1721902531 +0400	checkout: moving from main to aseer/adj
+16df3977dd9be26994a82fd0d6f32095a41b48c7 22f583b9119fb85e51858119f25758e8770260ce Muhammad Aseer <maseer@borjomi.com> 1721991768 +0400	commit: Update Completely sidebar
+22f583b9119fb85e51858119f25758e8770260ce 16df3977dd9be26994a82fd0d6f32095a41b48c7 Muhammad Aseer <maseer@borjomi.com> 1721991845 +0400	checkout: moving from aseer/adj to main
+16df3977dd9be26994a82fd0d6f32095a41b48c7 229e1fd3f4ea7b5040cba609c27f255f2c387f53 Muhammad Aseer <maseer@borjomi.com> 1721991861 +0400	pull origin main: Fast-forward
+229e1fd3f4ea7b5040cba609c27f255f2c387f53 bd599739d92ce0213b9263697dfdaaa55a24b33d Muhammad Aseer <maseer@borjomi.com> 1722229026 +0400	pull origin main: Fast-forward
+bd599739d92ce0213b9263697dfdaaa55a24b33d bd599739d92ce0213b9263697dfdaaa55a24b33d Muhammad Aseer <maseer@borjomi.com> 1722229261 +0400	checkout: moving from main to aseer/sidebarURL
+bd599739d92ce0213b9263697dfdaaa55a24b33d 7b5c99a4f9109d2eab146448ae88c0d45dcc9423 Muhammad Aseer <maseer@borjomi.com> 1722250626 +0400	commit: working on tabs
+7b5c99a4f9109d2eab146448ae88c0d45dcc9423 bd599739d92ce0213b9263697dfdaaa55a24b33d Muhammad Aseer <maseer@borjomi.com> 1722313692 +0400	checkout: moving from aseer/sidebarURL to main
+bd599739d92ce0213b9263697dfdaaa55a24b33d 0fcb8756724cadb3a52ad1ea4b06de7d2126aaa0 Muhammad Aseer <maseer@borjomi.com> 1722313711 +0400	pull origin main: Fast-forward
+0fcb8756724cadb3a52ad1ea4b06de7d2126aaa0 0fcb8756724cadb3a52ad1ea4b06de7d2126aaa0 Muhammad Aseer <maseer@borjomi.com> 1722313733 +0400	checkout: moving from main to aseer/tabs
+0fcb8756724cadb3a52ad1ea4b06de7d2126aaa0 45ea4a4379931013a6deebe52dee173269589fea Muhammad Aseer <maseer@borjomi.com> 1722410688 +0400	commit: tabs reverse to normal
+45ea4a4379931013a6deebe52dee173269589fea 0fcb8756724cadb3a52ad1ea4b06de7d2126aaa0 Muhammad Aseer <maseer@borjomi.com> 1722410745 +0400	checkout: moving from aseer/tabs to main
+0fcb8756724cadb3a52ad1ea4b06de7d2126aaa0 0d3c3d0b2ee4e3523ae21d32f53b8c318f39551b Muhammad Aseer <maseer@borjomi.com> 1722410754 +0400	pull origin main: Fast-forward
+0d3c3d0b2ee4e3523ae21d32f53b8c318f39551b 0d3c3d0b2ee4e3523ae21d32f53b8c318f39551b Muhammad Aseer <maseer@borjomi.com> 1722410807 +0400	checkout: moving from main to aseer/rusianTables
+0d3c3d0b2ee4e3523ae21d32f53b8c318f39551b a43e33b3ea5ea0a9affd6a30c4ddbcad71967748 Muhammad Aseer <maseer@borjomi.com> 1722420572 +0400	commit: landing page styling
+a43e33b3ea5ea0a9affd6a30c4ddbcad71967748 0d3c3d0b2ee4e3523ae21d32f53b8c318f39551b Muhammad Aseer <maseer@borjomi.com> 1722420660 +0400	checkout: moving from aseer/rusianTables to main
+0d3c3d0b2ee4e3523ae21d32f53b8c318f39551b fe3599a9ecb2372faf9f42d0f54afc6dd0f21e90 Muhammad Aseer <maseer@borjomi.com> 1722420676 +0400	pull origin main: Fast-forward
+fe3599a9ecb2372faf9f42d0f54afc6dd0f21e90 fe3599a9ecb2372faf9f42d0f54afc6dd0f21e90 Muhammad Aseer <maseer@borjomi.com> 1722421398 +0400	checkout: moving from main to aseer/russianCluster
+fe3599a9ecb2372faf9f42d0f54afc6dd0f21e90 854c5d0abc00d7c33321a84fb2c42a16eff0bb79 Muhammad Aseer <maseer@borjomi.com> 1722424874 +0400	commit: russian cluster
+854c5d0abc00d7c33321a84fb2c42a16eff0bb79 a66b9f06cf2d4be6722072b15e5919522769aa75 Muhammad Aseer <maseer@borjomi.com> 1722505771 +0400	commit: update styling for all screens
+a66b9f06cf2d4be6722072b15e5919522769aa75 1714f98eb0565ab16d6a8a75892bc4f428111dd1 Muhammad Aseer <maseer@borjomi.com> 1722583081 +0400	commit: russian cluster updated
+1714f98eb0565ab16d6a8a75892bc4f428111dd1 fe3599a9ecb2372faf9f42d0f54afc6dd0f21e90 Muhammad Aseer <maseer@borjomi.com> 1722583138 +0400	checkout: moving from aseer/russianCluster to main
+fe3599a9ecb2372faf9f42d0f54afc6dd0f21e90 ade54b07074db1bb018ce52315687a7bddb2b630 Muhammad Aseer <maseer@borjomi.com> 1722583153 +0400	pull origin main: Fast-forward
+ade54b07074db1bb018ce52315687a7bddb2b630 ade54b07074db1bb018ce52315687a7bddb2b630 Muhammad Aseer <maseer@borjomi.com> 1722583195 +0400	checkout: moving from main to aseer/ruReports
+ade54b07074db1bb018ce52315687a7bddb2b630 d98b33641f59a63469a00f9f250d1372020571bf Muhammad Aseer <maseer@borjomi.com> 1722603124 +0400	commit: update the style code
+d98b33641f59a63469a00f9f250d1372020571bf ade54b07074db1bb018ce52315687a7bddb2b630 Muhammad Aseer <maseer@borjomi.com> 1722669828 +0400	checkout: moving from aseer/ruReports to main
+ade54b07074db1bb018ce52315687a7bddb2b630 ce3c5db86351c1d9db458089e115a0e3d231ba97 Muhammad Aseer <maseer@borjomi.com> 1722669878 +0400	pull origin main: Fast-forward
+ce3c5db86351c1d9db458089e115a0e3d231ba97 ce3c5db86351c1d9db458089e115a0e3d231ba97 Muhammad Aseer <maseer@borjomi.com> 1722669950 +0400	checkout: moving from main to aseer/createTabs
+ce3c5db86351c1d9db458089e115a0e3d231ba97 f0763f7ae2a5389f3d840a3a2d0351d83c9ae483 Muhammad Aseer <maseer@borjomi.com> 1722838769 +0400	commit: update styling
+f0763f7ae2a5389f3d840a3a2d0351d83c9ae483 ce3c5db86351c1d9db458089e115a0e3d231ba97 Muhammad Aseer <maseer@borjomi.com> 1722838875 +0400	checkout: moving from aseer/createTabs to main
+ce3c5db86351c1d9db458089e115a0e3d231ba97 68b7867e830c0a956f0ed56c0105e455b81e42bf Muhammad Aseer <maseer@borjomi.com> 1722838892 +0400	pull origin main: Fast-forward
+68b7867e830c0a956f0ed56c0105e455b81e42bf 68b7867e830c0a956f0ed56c0105e455b81e42bf Muhammad Aseer <maseer@borjomi.com> 1722839150 +0400	checkout: moving from main to aseer/userAdministration

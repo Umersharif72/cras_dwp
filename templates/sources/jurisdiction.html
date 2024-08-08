@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
+    <!-- Include Select2 CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+
+    <!-- Include Select2 JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+</head>
+<body>
+
+    <form method="post" id="myForm" >
+        {% csrf_token %}
+        <!-- Jurisdiction select -->
+        <label for="jurisdiction">Select Jurisdiction:</label>
+        <select id="jurisdiction" name="jurisdiction">
+            {% for jurisdiction in juri %}
+                <option value="{{ jurisdiction }}">{{ jurisdiction }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" id="submitBtn">Submit</button>
+    </form>
+
+    <form method="post" id="myForm"> <!-- Add an id to the form for easier targeting -->
+        {% csrf_token %}
+        
+        <!-- Action select and API/File inputs -->
+        
+        <label for="action">Select Action:</label>
+        <select id="action" name="action">
+            <option value="tables">Tables</option>
+            <option value="api">API</option>
+            <option value="file">File</option>
+        </select>
+        <br>
+        <div id="tables-div">
+            <label for="tables">Select Tables:</label>
+            <select id="tables" name="tables[]" multiple>
+                {% for table in tables %}
+                    <option value="{{ table }}">{{ table }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div id="api-div" style="display: none;">
+            <label for="api">Enter API:</label>
+            <input type="text" id="api" name="tables[]">
+        </div>
+        <div id="file-div" style="display: none;">
+            <label for="file">Upload File:</label>
+            <input type="file" id="file" name="tables[]">
+        </div>
+        
+        
+        <!-- Single submit button -->
+        <button type="submit" id="submitBtn">Submit</button>
+    </form>
+    
+
+<script>
+    document.getElementById('action').addEventListener('change', function() {
+        var action = this.value;
+        if (action === 'tables') {
+            document.getElementById('tables-div').style.display = 'block';
+            document.getElementById('api-div').style.display = 'none';
+            document.getElementById('file-div').style.display = 'none';
+        } else if (action === 'api') {
+            document.getElementById('tables-div').style.display = 'none';
+            document.getElementById('api-div').style.display = 'block';
+            document.getElementById('file-div').style.display = 'none';
+        } else if (action === 'file') {
+            document.getElementById('tables-div').style.display = 'none';
+            document.getElementById('api-div').style.display = 'none';
+            document.getElementById('file-div').style.display = 'block';
+        }
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        // Initialize Select2
+        $('#tables').select2();
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AZRB Guide List</title>
+</head>
+<body>
+    <h1>AZRB Guide List</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name of Sheet</th>
+                <th>Short Instruction</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for guide in azrb_guides %}
+            <tr>
+                <td>{{ guide.id }}</td>
+                <td>{{ guide.name_of_sheet }}</td>
+                <td>{{ guide.short_instruction}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

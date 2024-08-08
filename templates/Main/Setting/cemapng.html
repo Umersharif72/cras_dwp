@@ -1,0 +1,86 @@
+<div id="cemapng" class="page hidden">
+  <div class="container-fluid">
+    <div class="heading-wrapper">
+      <h1 class="mb-4">Mapping</h1>
+    </div>
+    <div class="table-responsive table-wrapper">
+      <table class="table table-striped table-dark" style="background-color: #d3e2f4">
+        <thead class="table-header">
+          <tr>
+            <th>SID</th>
+            <th>Jurisdiction</th>
+            <th>Src Type</th>
+            <th>Src TblNm</th>
+            <th>Tgt TblNm</th>
+            <th>Tgt TbCols</th>
+            <th>Mapng Nm</th>
+            <th>Mpngtxt</th>
+            <th>Insert Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for record in records %}
+          <tr>
+            <td class="table-data">{{ record.SID }}</td>
+            <td class="table-data">{{ record.jusrisdiction }}</td>
+            <td class="table-data">{{ record.src_type }}</td>
+            <td class="table-data">{{ record.src_tblnm }}</td>
+            <td class="table-data">{{ record.tgt_tblnm }}</td>
+            <!-- <td class="table-data">{{ record.tgt_tblcols }}</td> -->
+            <td class="text-cell" data-full-text="{{ record.tgt_tblcols }}">
+              {% with record.mpngtxt.split|slice:":5" as truncated_text %}
+              {{ truncated_text|join:" " }}{% if record.mpngtxt|length > truncated_text|length %} <span
+                class="more-link">...more</span>{% endif %}
+              {% endwith %}
+            </td>
+            <td class="table-data">{{ record.mapng_nm }}</td>
+            <td class="text-cell" data-full-text="{{ record.mpngtxt }}">
+              {% with record.mpngtxt.split|slice:":5" as truncated_text %}
+              {{ truncated_text|join:" " }}{% if record.mpngtxt|length > truncated_text|length %} <span
+                class="more-link">...more</span>{% endif %}
+              {% endwith %}
+            </td>
+            <td class="table-data">{{ record.insrt_TIMESTAMP }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- contetn for the table extraction------------------- -->
+
+<script>
+  $(document).ready(function () {
+    // Initialize Select2 on table and file elements
+    $("#table").select2();
+    $("#file").select2();
+  });
+</script>
+
+<script>
+  document
+    .getElementById("actionCol")
+    .addEventListener("change", function () {
+      var action = this.value;
+      document.getElementById("tablesCol-div").style.display = "none";
+      document.getElementById("api-div").style.display = "none";
+      document.getElementById("file-div").style.display = "none";
+
+      if (action === "tables") {
+        document.getElementById("tablesCol-div").style.display = "block";
+      } else if (action === "api") {
+        document.getElementById("api-div").style.display = "block";
+      } else if (action === "file") {
+        document.getElementById("file-div").style.display = "block";
+      }
+    });
+</script>
+
+<script>
+  $(document).ready(function () {
+    // Initialize Select2
+    $("#jurisdictionCol,  #columns").select2();
+  });
+</script>

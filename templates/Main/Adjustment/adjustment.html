@@ -1,0 +1,735 @@
+{% if home == "Ok" %}
+<div id="home" class="page hidden adj_pad" style="display: block">
+  <img id="mainImage" src="/static/images/heroimage4.jpg" alt="Main Image" />
+</div>
+{% endif %}
+
+<div
+  id="amountSection"
+  style="position: absolute; right: 10px; top: 100px; display: none"
+>
+  <div
+    style="
+      border: 1px solid #c10000;
+      width: fit-content;
+      padding: 12px;
+      border-radius: 8px;
+      letter-spacing: 0.5px;
+    "
+  >
+    <div
+      style="color: #ec0000; font-weight: bold; font-size: 16px"
+      id="displayedAmount"
+    >
+      Total Amount: $0.00
+    </div>
+    <div id="alertMessage" style="display: none; color: red">
+      Total amount is not zero!
+    </div>
+    <button id="saveButton" style="display: none">Save</button>
+  </div>
+</div>
+
+<div
+  id="adjustment_screen"
+  class="page hidden"
+  style="margin-left: 270px; padding: 50px"
+>
+  <div>
+    <form id="adjustment-form">
+      <div class="form-group inline">
+        <select
+          id="aje-description"
+          name="aje_description"
+          class="form-control"
+          required
+          style="width: 100px"
+        >
+          <option value="">AJE # Description</option>
+          <option value="1 Elim of IC bottles">1 Elim of IC bottles</option>
+          <option value="2 Elim of IC revenue">2 Elim of IC revenue</option>
+          <option value="3 Current year mark-up">3 Current year mark-up</option>
+          <option value="4 Reversal of opening mark-up">
+            4 Reversal of opening mark-up
+          </option>
+          <option value="5 Elim of IC Transport revenue">
+            5 Elim of IC Transport revenue
+          </option>
+          <option value="6 Accrual of LTI">6 Accrual of LTI</option>
+          <option value="7 Reclass of frozen cash">
+            7 Reclass of frozen cash
+          </option>
+          <option value="8 Elim of investments">8 Elim of investments</option>
+          <option value="9 Elim of IC balances">9 Elim of IC balances</option>
+        </select>
+      </div>
+
+      <div class="form-group inline">
+        <input
+          type="date"
+          id="year"
+          name="year"
+          class="form-control year-picker"
+          required
+          style="width: 100px"
+        />
+      </div>
+
+      <div class="form-group inline">
+        <input
+          type="text"
+          id="period"
+          name="period"
+          class="form-control"
+          placeholder="Period"
+          required
+          style="width: 100px"
+        />
+      </div>
+
+      <div class="form-group inline">
+        <select
+          id="cluster"
+          name="cluster"
+          class="form-control"
+          required
+          style="width: 100px"
+        >
+          <option value="">Cluster</option>
+          <option value="IBB">IBB</option>
+          <option value="HHL">HHL</option>
+          <option value="Rissa">Rissa</option>
+          <option value="IDS LTD">IDS LTD</option>
+          <option value="BF">BF</option>
+        </select>
+      </div>
+
+      <div class="form-group inline">
+        <select
+          id="dr-cr"
+          name="dr_cr"
+          class="form-control"
+          required
+          style="width: 70px"
+        >
+          <option value="">DR/CR</option>
+          <option value="debit">Debit</option>
+          <option value="credit">Credit</option>
+        </select>
+      </div>
+
+      <div class="form-group inline">
+        <select
+          id="bs-pl"
+          name="bs_pl"
+          class="form-control"
+          required
+          style="width: 70px"
+        >
+          <option value="">BS/PL</option>
+          <option value="BS">BS</option>
+          <option value="PL">PL</option>
+        </select>
+      </div>
+
+      <div class="form-group inline">
+        <select
+          id="line"
+          name="line"
+          class="form-control"
+          required
+          placeholder="Amount in USD"
+          style="width: 100px"
+        >
+          <option value="">Line</option>
+        </select>
+      </div>
+
+      <div class="form-group inline">
+        <input
+          type="number"
+          id="amount1"
+          name="amount"
+          class="form-control"
+          step="0.01"
+          placeholder="Amount in USD"
+          required
+          style="width: 100px"
+        />
+      </div>
+      <!-- <button onclick="displayAmountFromFirstFlow()">Display Amount</button> -->
+    </form>
+
+    <form id="adjustment-form">
+      <div class="form-group inline">
+        <select
+          id="aje-description2"
+          name="aje_description"
+          class="form-control"
+          required
+          style="width: 100px"
+        >
+          <option value="">AJE # Description</option>
+          <option value="1 Elim of IC bottles">1 Elim of IC bottles</option>
+          <option value="2 Elim of IC revenue">2 Elim of IC revenue</option>
+          <option value="3 Current year mark-up">3 Current year mark-up</option>
+          <option value="4 Reversal of opening mark-up">
+            4 Reversal of opening mark-up
+          </option>
+          <option value="5 Elim of IC Transport revenue">
+            5 Elim of IC Transport revenue
+          </option>
+          <option value="6 Accrual of LTI">6 Accrual of LTI</option>
+          <option value="7 Reclass of frozen cash">
+            7 Reclass of frozen cash
+          </option>
+          <option value="8 Elim of investments">8 Elim of investments</option>
+          <option value="9 Elim of IC balances">9 Elim of IC balances</option>
+        </select>
+      </div>
+
+      <div class="form-group inline">
+        <input
+          type="date"
+          id="year"
+          name="year"
+          class="form-control year-picker"
+          required
+          style="width: 100px"
+        />
+      </div>
+
+      <div class="form-group inline">
+        <input
+          type="text"
+          id="period"
+          name="period"
+          class="form-control"
+          placeholder="Period"
+          required
+          style="width: 100px"
+        />
+      </div>
+
+      <div class="form-group inline">
+        <select
+          id="cluster"
+          name="cluster"
+          class="form-control"
+          required
+          style="width: 100px"
+        >
+          <option value="">Cluster</option>
+          <option value="IBB">IBB</option>
+          <option value="HHL">HHL</option>
+          <option value="Rissa">Rissa</option>
+          <option value="IDS LTD">IDS LTD</option>
+          <option value="BF">BF</option>
+        </select>
+      </div>
+
+      <div class="form-group inline">
+        <select
+          id="dr-cr"
+          name="dr_cr"
+          class="form-control"
+          required
+          style="width: 70px"
+        >
+          <option value="">DR/CR</option>
+          <option value="debit">Debit</option>
+          <option value="credit">Credit</option>
+        </select>
+      </div>
+
+      <div class="form-group inline">
+        <select
+          id="bs-pl"
+          name="bs_pl"
+          class="form-control"
+          required
+          style="width: 70px"
+        >
+          <option value="">BS/PL</option>
+          <option value="BS">BS</option>
+          <option value="PL">PL</option>
+        </select>
+      </div>
+
+      <div class="form-group inline">
+        <select
+          id="line2"
+          name="line"
+          class="form-control"
+          required
+          placeholder="Amount in USD"
+          style="width: 100px"
+        >
+          <option value="">Line</option>
+        </select>
+      </div>
+
+      <div class="form-group inline">
+        <input
+          type="number"
+          id="amount2"
+          name="amount"
+          class="form-control"
+          step="0.01"
+          placeholder="Amount in USD"
+          required
+          style="width: 100px"
+        />
+      </div>
+      <button
+        id="amount-submit"
+        class="btn btn-primary"
+        type="submit"
+        style="display: none"
+      >
+        Submit
+      </button>
+    </form>
+  </div>
+</div>
+
+{% if adj == "ok" %}
+<div id="cluster_lvl" style="margin: 34px 0px 2px 300px; display: visible">
+  <form id="initialForm" method="post">
+    {% csrf_token %}
+    <label for="ajeDropdown">Select AJE:</label>
+    <select id="ajeDropdown" name="aje_number" onchange="this.form.submit()">
+      <option value="">Select Adjustment Type (AJE)</option>
+      {% for aje in aa %}
+      <option value="{{ aje }}">{{ aje }}</option>
+      {% endfor %}
+    </select>
+  </form>
+  <div class="container-fluid mt-5 hidden">
+    <div class="header-total">
+      <h1>AJE Records for AJE Number {{ request.session.aje_number }}</h1>
+      <div class="tracking-box">
+        <div class="cluster-amount">
+          <p>Debit Total: <span id="debit-total">0</span></p>
+          <p>Credit Total: <span id="credit-total">0</span></p>
+          <p>Difference: <span id="difference">0</span></p>
+        </div>
+        <p id="note" style="display: block">
+          Note: When difference is zero then save button show.
+        </p>
+      </div>
+    </div>
+    <form id="cluster-data-show" method="post" action="">
+      {% csrf_token %}
+      <table class="table table-striped table-bordered mt-4">
+        <thead class="thead-dark">
+          <tr>
+            <th>AJE #</th>
+            <th>Description</th>
+            <th>Year</th>
+            <th>Period</th>
+            <th>Cluster</th>
+            <th>DR/CR</th>
+            <th>BS/PL</th>
+            <th>Line</th>
+            <th>Decomposition 1</th>
+            <th>Decomposition 2</th>
+            <th>Amount in USD</th>
+          </tr>
+        </thead>
+        <tbody id="record-body">
+          {% for record in aje_records %}
+          <tr class="record-row">
+            <td>{{ record.0 }}</td>
+            <td>{{ record.1 }}</td>
+            <td>{{ record.2 }}</td>
+            <td>{{ record.3 }}</td>
+            <td>{{ record.4 }}</td>
+            <td>{{ record.5 }}</td>
+            <td>{{ record.6 }}</td>
+            <td>{{ record.7 }}</td>
+            <td>{{ record.8 }}</td>
+            <td>{{ record.9 }}</td>
+            <td>
+              <input
+                type="text"
+                name="amount_usd_{{ forloop.counter }}"
+                value="0"
+                class="form-control amount-input"
+                data-record-id="{{ record.0 }}"
+              />
+              <input
+                type="hidden"
+                name="record_id_{{ forloop.counter }}"
+                value="0"
+              />
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <button id="add-record" type="button" class="btn btn-success">
+        Add Record
+      </button>
+      <button id="remove-record" type="button" class="btn btn-danger">
+        Remove Record
+      </button>
+      <button
+        id="save-button"
+        type="submit"
+        class="btn btn-primary"
+        style="display: none"
+      >
+        Save
+      </button>
+    </form>
+  </div>
+</div>
+{% endif %}
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    let recordCount = "{{ aje_records|length }}";
+    const recordBody = document.getElementById("record-body");
+    const addRecordButton = document.getElementById("add-record");
+    const removeRecordButton = document.getElementById("remove-record");
+
+    // Get values from the last fetched record (assuming at least one record exists)
+    const lastRecord = document.querySelector(
+      "#record-body .record-row:last-child"
+    );
+    const lastRecordValues = Array.from(lastRecord.children).map((td) =>
+      td.textContent.trim()
+    );
+
+    // Add Record
+    addRecordButton.addEventListener("click", function () {
+      recordCount++;
+
+      // Create a new row with values from the last record
+      const newRow = document.createElement("tr");
+      newRow.className = "record-row";
+      newRow.innerHTML = `
+            <td>${lastRecordValues[0]}</td> <!-- AJE # -->
+            <td>${lastRecordValues[1]}</td> <!-- Description -->
+            <td>${lastRecordValues[2]}</td> <!-- Year -->
+            <td>${lastRecordValues[3]}</td> <!-- Period -->
+            <td>
+                <select name="cluster_${recordCount}" class="form-control">
+                    <option value="HHL">HHL</option>
+                    <option value="IBB">IBB</option>
+                </select>
+            </td>
+            <td>
+                <select name="dr_cr_${recordCount}" class="form-control">
+                    <option value="DR">DR</option>
+                    <option value="CR">CR</option>
+                </select>
+            </td>
+            <td>
+                <select name="bs_pl_${recordCount}" class="form-control">
+                    <option value="BS">BS</option>
+                    <option value="PL">PL</option>
+                </select>
+            </td>
+            <td>
+                <select name="unique_options_${recordCount}" class="form-control">
+                    <option value="Bottles">Bottles</option>
+                    <option value="Liters">Liters</option>
+                    <option value="Gross Revenue">Gross Revenue</option>
+                    <option value="COGS">COGS</option>
+                    <option value="Inventory">Inventory</option>
+                    <option value="Deferred tax assets">Deferred tax assets</option>
+                    <option value="Corporate profit tax">Corporate profit tax</option>
+                    <option value="Logistics">Logistics</option>
+                    <option value="G&A Expenses">G&A Expenses</option>
+                    <option value="Financial costs">Financial costs</option>
+                    <option value="Other non-current liabilities">Other non-current liabilities</option>
+                    <option value="Other non-current assets">Other non-current assets</option>
+                    <option value="Cash and Banks">Cash and Banks</option>
+                    <option value="Share capital">Share capital</option>
+                    <option value="Share Premium">Share Premium</option>
+                    <option value="Financial fixed asset">Financial fixed asset</option>
+                    <option value="Intercompany accounts non-current liabilities">Intercompany accounts non-current liabilities</option>
+                    <option value="Intercompany accounts payables">Intercompany accounts payables</option>
+                    <option value="Intercompany accounts non-current assets">Intercompany accounts non-current assets</option>
+                    <option value="Intercompany accounts receivables">Intercompany accounts receivables</option>
+                    <option value="Foreign Exchange Gain / Loss">Foreign Exchange Gain / Loss</option>
+                </select>
+            </td>
+            <td>
+                <input type="text" name="manual_input_1_${recordCount}" value="" class="form-control" />
+            </td>
+            <td>
+                <input type="text" name="manual_input_2_${recordCount}" value="" class="form-control" />
+            </td>
+            <td>
+                <input type="text" name="manual_input_3_${recordCount}" value="" class="form-control" />
+            </td>
+        `;
+
+      // Append the new row to the table body
+      recordBody.appendChild(newRow);
+      document.getElementById("save-button").style.display = "block";
+    });
+
+    // Remove Record
+    removeRecordButton.addEventListener("click", function () {
+      const rows = document.querySelectorAll("#record-body .record-row");
+      if (rows.length > 0) {
+        recordBody.removeChild(rows[rows.length - 1]);
+        document.getElementById("save-button").style.display =
+          rows.length > 1 ? "block" : "none";
+      }
+    });
+  });
+</script>
+<script>
+  $(document).ready(function () {
+    // Calculate totals
+    function calculateTotals() {
+      let debitTotal = 0;
+      let creditTotal = 0;
+
+      $(".amount-input").each(function () {
+        const value = parseFloat($(this).val()) || 0;
+        const drCr = $(this)
+          .closest("tr")
+          .find("td:nth-child(6)")
+          .text()
+          .trim(); // Assuming DR/CR is the 6th column
+
+        if (drCr.toUpperCase() === "DR") {
+          debitTotal += value;
+        } else if (drCr.toUpperCase() === "CR") {
+          creditTotal += value;
+        }
+      });
+
+      $("#debit-total").text(debitTotal.toFixed(2));
+      $("#credit-total").text(creditTotal.toFixed(2));
+      $("#difference").text((debitTotal - creditTotal).toFixed(2));
+
+      // Show the save button if totals are zero, hide otherwise
+      if (debitTotal === 0 && creditTotal === 0) {
+        $("#save-button").show();
+      } else {
+        $("#save-button").hide();
+      }
+      // if (debitTotal !== 0 && creditTotal !== 0)
+      // {
+
+      //   $("#note").show();
+      // } else {
+
+      //   $("#note").hide();
+      // }
+    }
+
+    // Calculate totals on page load
+    calculateTotals();
+
+    // Recalculate totals on input change
+    $(document).on("input", ".amount-input", function () {
+      calculateTotals();
+    });
+
+    // Show the container if there are AJE records
+    if ($("tbody tr").length > 0) {
+      $(".container-fluid.mt-5").removeClass("hidden");
+      $("#initialForm").addClass("hidden");
+    }
+
+    // Hide initial form and show container on form submission if there are AJE records
+    $("#initialForm").on("submit", function (event) {
+      event.preventDefault(); // Prevent default form submission
+      if ($("tbody tr").length > 0) {
+        $(".container.mt-5").removeClass("hidden");
+        $("#initialForm").addClass("hidden");
+      } else {
+        this.submit(); // Submit form if there are no records
+      }
+    });
+  });
+</script>
+
+<script>
+  // Function to update the displayed amount in the box
+  function updateAmount() {
+    document.getElementById("amountSection").style.display = "block";
+    var amount1 = parseFloat(document.getElementById("amount1").value) || 0;
+    var amount2 = parseFloat(document.getElementById("amount2").value) || 0;
+    var totalAmount = amount1 - amount2;
+    document.getElementById("displayedAmount").textContent =
+      "Total Amount: $" + totalAmount.toFixed(2);
+
+    if (totalAmount === 0) {
+      // Show the submit button
+      document.getElementById("amount-submit").style.display = "block";
+    } else {
+      // Hide the submit button
+      document.getElementById("amount-submit").style.display = "none";
+    }
+
+    // Check if the sum equals the initially entered amount
+    var initialAmount = parseFloat(
+      document.getElementById("initialAmount").textContent
+    );
+
+    if (totalAmount === initialAmount) {
+      // Show the save button
+      document.getElementById("saveButton").style.display = "block";
+      // Hide any previous alert
+      document.getElementById("alertMessage").style.display = "none";
+    } else {
+      // Hide the save button
+      document.getElementById("saveButton").style.display = "none";
+      // Show alert
+      document.getElementById("alertMessage").style.display = "block";
+    }
+  }
+
+  // Event listeners for input fields to trigger updateAmount function
+  document.getElementById("amount1").addEventListener("input", updateAmount);
+  document.getElementById("amount2").addEventListener("input", updateAmount);
+
+  // Function to hide the any section
+  function hideAmountSection() {
+    document.getElementById("amountSection").style.display = "none";
+    document.getElementById("adjustment_screen").style.display = "none";
+    document.getElementById("juri_table").style.display = "none";
+    document.getElementById("juri_col").style.display = "none";
+    document.getElementById("cluster_lvl").style.display = "none";
+    document.getElementById("carouselExampleIndicators").style.display = "none";
+    document.getElementById("us_guide_table").style.display = "none";
+    document.getElementById("azrb_guide_table").style.display = "none";
+    document.getElementById("kz_guide_table").style.display = "none";
+    document.querySelector(".hidequery").style.display = "none";
+    document.getElementById("datepickerInput").style.display = "none";
+    document.querySelector(".flatpickr-calendar").style.display = "none";
+  }
+
+  // Add event listeners to all navigation links
+  document.querySelectorAll(".nav_link").forEach((link) => {
+    link.addEventListener("click", hideAmountSection);
+  });
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var yearPicker = new Pikaday({
+      field: document.getElementById("year"),
+      format: "YYYY-MM-DD",
+      yearRange: [1900, 2099],
+      onSelect: function (date) {
+        var formattedDate = formatDate(date);
+        document.getElementById("year").value = formattedDate;
+      },
+    });
+
+    function formatDate(date) {
+      var year = date.getFullYear();
+      var month = String(date.getMonth() + 1).padStart(2, "0");
+      var day = String(date.getDate()).padStart(2, "0");
+      return year + "-" + month + "-" + day;
+    }
+  });
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $("#aje-description").change(function () {
+      var aje_number = $(this).val();
+      if (aje_number) {
+        $.ajax({
+          url: "",
+          type: "GET",
+          data: {
+            aje_number: aje_number,
+          },
+          success: function (data) {
+            var linesSelect = $("#line");
+            linesSelect.empty();
+            linesSelect.append('<option value="">Select a line</option>');
+            $.each(data.lines, function (index, line) {
+              linesSelect.append(
+                '<option value="' + line + '">' + line + "</option>"
+              );
+            });
+          },
+        });
+      } else {
+        $("#line").empty().append('<option value="">Select a line</option>');
+      }
+    });
+  });
+</script>
+<script>
+  $(document).ready(function () {
+    $("#aje-description2").change(function () {
+      var aje_number = $(this).val();
+      if (aje_number) {
+        $.ajax({
+          url: "",
+          type: "GET",
+          data: {
+            aje_number: aje_number,
+          },
+          success: function (data) {
+            var linesSelect = $("#line2");
+            linesSelect.empty();
+            linesSelect.append('<option value="">Select a line</option>');
+            $.each(data.lines, function (index, line) {
+              linesSelect.append(
+                '<option value="' + line + '">' + line + "</option>"
+              );
+            });
+          },
+        });
+      } else {
+        $("#line2").empty().append('<option value="">Select a line</option>');
+      }
+    });
+  });
+</script>
+<script>
+  $(document).ready(function () {
+    $("#aje-description").select2();
+    $("#cluster").select2();
+    $("#dr-cr").select2();
+    $("#bs-pl").select2();
+    $("#line").select2();
+
+    $("#aje-description").change(function () {
+      $("#year-div").show();
+    });
+
+    $("#year").change(function () {
+      $("#period-div").show();
+    });
+
+    $("#period").change(function () {
+      $("#cluster-div").show();
+    });
+
+    $("#cluster").change(function () {
+      $("#dr-cr-div").show();
+    });
+
+    $("#dr-cr").change(function () {
+      $("#bs-pl-div").show();
+    });
+
+    $("#bs-pl").change(function () {
+      $("#line-div").show();
+    });
+
+    $("#line").change(function () {
+      $("#amount-div").show();
+    });
+  });
+</script>

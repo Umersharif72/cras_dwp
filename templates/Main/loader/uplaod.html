@@ -1,0 +1,14 @@
+<div id="loader_upload" class="page hidden" style="margin-left: 300px;">
+    {% if upload_success %}
+    <div id="success_upload" class="alert alert-success" style="margin-left: 300px;">
+        <h1 class="display-4">Upload Successful!</h1>
+        <p class="lead">Your CSV file has been uploaded and processed successfully.</p>
+    </div>
+    {% else %}
+    <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Upload</button>
+    </form>
+    {% endif %}
+</div>

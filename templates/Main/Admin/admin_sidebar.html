@@ -1,0 +1,162 @@
+<style>
+    #notification {
+      display: none;
+      position: fixed;
+      top: 20%;
+      right: 40%;
+      background-color: #4caf50;
+      color: white;
+      padding: 18px 36px;
+      border-radius: 8px;
+      z-index: 1000;
+      height: fit-content;
+      width: fit-content;
+      font-size: 18px;
+      text-align: center;
+    }
+
+    .submenu,
+    .subsubmenu {
+      display: none;
+      list-style-type: none;
+    }
+
+    .submenu.show,
+    .subsubmenu.show {
+      display: block;
+    }
+
+    .nav_link {
+      cursor: pointer;
+    }
+
+    .tracking-box {
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+    }
+
+    .submenu {
+      display: none;
+      list-style-type: none;
+      padding-left: 20px;
+    }
+
+    .submenu_item {
+      cursor: pointer;
+    }
+
+    .nav_link {
+      display: flex;
+      align-items: center;
+    }
+
+    .navlink_icon {
+      margin-right: 0px;
+    }
+
+    .arrow-left {
+      margin-left: auto;
+    }
+
+    #imageContainer img {
+      width: 100%;
+      height: 85vh;
+    }
+  </style>
+
+<nav class="sidebar border-bottom border-body" data-bs-theme="dark" style="width: 300px;">
+  <div class="menu_content">
+    <ul class="menu_items">
+      <li class="item">
+        <div class="nav_link submenu_item" id="homeLink">
+          <span class="navlink_icon">
+            <i class="bx bx-home-alt"></i>
+          </span>
+          <a href="{% url 'landingpage' %}" class="nav_link sublink" onclick="showPage('home')">Home</a>
+        </div>
+      </li>
+
+      <script>
+        function toggleDropdown(id) {
+          var element = document.getElementById(id);
+          element.classList.toggle('show');
+        }
+
+        function toggleSubOptions(id) {
+          var element = document.getElementById(id);
+          element.classList.toggle('show');
+        }
+        document
+          .getElementById("homeLink")
+          .addEventListener("click", function () {
+            window.location.href = "/sources/landingpage";
+          });
+        function toggleDropdown(id) {
+          var element = document.getElementById(id);
+          element.classList.toggle('show');
+        }
+      </script>
+      <li class="item">
+        <div class="nav_link submenu_item" onclick="toggleDropdown('standAlonesDropdown')">
+          <span class="navlink_icon">
+            <i class="bx bx-grid-alt"></i>
+          </span>
+          <span class="navlink">User Management</span>
+          <i class="bx bx-chevron-right arrow-left"></i>
+        </div>
+        <ul class="menu_items submenu" id="standAlonesDropdown">
+            <li class="dropdown_option nav_link sublink">
+                <a href="{% url 'create' %}" onclick="showPage()">Create</a>
+              </li>
+              <li class="dropdown_option nav_link sublink">
+                <a href="{% url 'view' %}" onclick="showPage('')">View</a>
+              </li>
+        </ul>
+      <li class="item">
+        <div class="nav_link submenu_item" onclick="toggleDropdown('manualAdjustmentsDropdown')">
+          <span class="navlink_icon">
+            <i class="bx bx-grid-alt"></i>
+          </span>
+          <span class="navlink">Permission Management</span>
+          <i class="bx bx-chevron-right arrow-left"></i>
+        </div>
+        <ul class="menu_items submenu" id="manualAdjustmentsDropdown">
+            <li class="dropdown_option nav_link sublink">
+                <a href="{% url 'sql_query_2' %}" onclick="showPage('query2')">Permissions</a>
+            </li>
+            <li class="dropdown_option nav_link sublink">
+                <a href="{% url 'useractivity' %}" onclick="showPage('')">Permission History</a>
+            </li>
+        </ul>
+      <li class="item">
+        <a href="#" class="nav_link submenu_item" id="logoutLink">
+          <span class="navlink_icon">
+            <i class="bx bx-log-out-circle"></i>
+          </span>
+          <span class="navlink">Logout</span>
+        </a>
+      </li>
+      <script>
+        document
+          .getElementById("logoutLink")
+          .addEventListener("click", function (event) {
+            event.preventDefault(); // Prevent the default action of clicking a link
+            window.location.href = "{% url 'logout_button' %}"; // Redirect to the logout URL
+          });
+      </script>
+      <!-- Sidebar Open / Close -->
+      <div class="bottom_content">
+        <div class="bottom expand_sidebar">
+          <span> Expand</span>
+          <i class="bx bx-log-in"></i>
+        </div>
+        <div class="bottom collapse_sidebar">
+          <span> Collapse</span>
+          <i class="bx bx-log-out"></i>
+        </div>
+      </div>
+  </div>
+</nav>

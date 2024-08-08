@@ -1,0 +1,1545 @@
+{% load static %}
+
+<!DOCTYPE html>
+<!-- Coding by CodingNepal || www.codingnepalweb.com -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Include jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Include Select2 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- Include Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <!-- Boxicons CSS -->
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+
+    <title>Side Navigation Bar in HTML CSS JavaScript</title>
+
+    <!-- Include custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/dmy.css' %}" />
+    <style>
+      /* External style file: styles.css */
+
+      /* Styling for the table */
+      .table-wrapper {
+        height: 450px;
+        overflow-y: auto;
+        margin: 2rem;
+        width: 100%;
+      }
+
+      /* Styling for the table header */
+      .table-header {
+        background-color: #5f9dc4;
+      }
+
+      /* Styling for the table */
+      .table {
+        background-color: #b9cce3;
+      }
+
+      /* Styling for the table data */
+      .table-data {
+        color: black;
+      }
+
+      .heading-wrapper {
+        background-color: #5266c0; /* Blue color (adjust as needed) */
+        color: #fff; /* White text color */
+        /* Add padding for spacing */
+        border-radius: 5px; /* Add rounded corners */
+        text-align: center; /* Center-align text */
+        margin-bottom: 20px; /* Add margin to separate from other elements */
+        margin-left: 50px;
+      }
+      .m-7 {
+        margin: 1.75rem; /* 7 * 0.25rem = 1.75rem */
+      }
+      .mx-8 {
+        margin-left: 2rem;
+        margin-right: 2rem;
+      }
+      .table tbody tr {
+        padding: 5px; /* Adjust this value as needed */
+      }
+      #inventory {
+        transition: width 0.3s ease;
+      }
+      #inventory.expanded {
+        margin-left: 280px; /* Adjust this value according to the sidebar's expanded width */
+      }
+      #balance {
+        transition: width 0.3s ease;
+      }
+      #balance.expanded {
+        margin-left: 280px; /* Adjust this value according to the sidebar's expanded width */
+      }
+      #COGS {
+        transition: width 0.3s ease;
+      }
+      #COGS.expanded {
+        margin-left: 280px; /* Adjust this value according to the sidebar's expanded width */
+      }
+      #info1 {
+        transition: width 0.3s ease;
+      }
+      #info1.expanded {
+        margin-left: 280px; /* Adjust this value according to the sidebar's expanded width */
+      }
+      #info2 {
+        transition: width 0.3s ease;
+      }
+      #info2.expanded {
+        margin-left: 280px; /* Adjust this value according to the sidebar's expanded width */
+      }
+      #balance {
+        transition: width 0.3s ease;
+      }
+      #balance.expanded {
+        margin-left: 280px; /* Adjust this value according to the sidebar's expanded width */
+      }
+      #purchases {
+        transition: width 0.3s ease;
+      }
+      #purchases.expanded {
+        margin-left: 280px; /* Adjust this value according to the sidebar's expanded width */
+      }
+      #reclass {
+        transition: width 0.3s ease;
+      }
+      #reclass.expanded {
+        margin-left: 280px; /* Adjust this value according to the sidebar's expanded width */
+      }
+      #sales {
+        transition: width 0.3s ease;
+      }
+      #sales.expanded {
+        margin-left: 280px; /* Adjust this value according to the sidebar's expanded width */
+      }
+      #juri_table {
+        transition: width 0.5s ease;
+      }
+      #juri_table.expanded {
+        margin-left: 340px; /* Adjust this value according to the sidebar's expanded width */
+      }
+      #juri_col {
+        transition: width 0.3s ease;
+      }
+      #juri_col.expanded {
+        margin-left: 340px; /* Adjust this value according to the sidebar's expanded width */
+      }
+      #fetch_sourceConn {
+        transition: width 0.3s ease;
+      }
+      #fetch_sourceConn.expanded {
+        margin-left: 280px; /* Adjust this value according to the sidebar's expanded width */
+      }
+      #fetch_cappdb {
+        transition: width 0.3s ease;
+      }
+      #fetch_cappdb.expanded {
+        margin-left: 280px; /* Adjust this value according to the sidebar's expanded width */
+      }
+      #cemapng {
+        transition: width 0.3s ease;
+      }
+      #cemapng.expanded {
+        margin-left: 280px; /* Adjust this value according to the sidebar's expanded width */
+      }
+
+      .hidden {
+        display: none;
+      }
+      .sidebar.close + .page {
+        margin-left: 80px; /* Adjust based on your collapsed sidebar width */
+      }
+      .page {
+        margin-left: 230px; /* Adjust based on your sidebar width */
+        padding: 20px;
+        transition: margin-left 0.5s ease;
+      } /* Add transition for smooth animation */
+      .page {
+        display: none;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      .visible {
+        display: block;
+      }
+
+      .breadcrumb {
+        /* background-color: #e9ecef; */
+        margin-bottom: 20px;
+        margin-left: 340px;
+        margin-top: 5px;
+        font-size: small;
+        align-items: center;
+        height: 40px;
+        overflow: hidden;
+        text-align: center;
+      }
+
+      .submenu {
+        display: none;
+      }
+      .submenu_item:hover .submenu {
+        display: block;
+      }
+
+      .content-area {
+        margin-left: 120px; /* Adjust based on your sidebar width */
+        padding: 20px;
+        transition: margin-left 0.5s ease; /* Add transition for smooth animation */
+      }
+      .sidebar.close + .content-area {
+        margin-left: 80px; /* Adjust based on your collapsed sidebar width */
+      }
+      /* Additional styles */
+      #contentContainer {
+        transition: width 0.3s ease;
+      }
+      #contentContainer.expanded {
+        margin-left: 280px; /* Adjust this value according to the sidebar's expanded width */
+      }
+
+      #chartContainer {
+        margin-top: 20px;
+        display: block;
+        width: 100%; /* Ensure the container takes full width */
+        height: auto; /* Allow the container to adjust height automatically */
+      }
+
+      #chartContainer canvas {
+        width: 100% !important; /* Ensure the canvas takes the full width of its container */
+        height: auto !important; /* Adjust height automatically */
+        display: block !important; /* Ensure canvas is displayed as block */
+      }
+
+      .content-area {
+        margin: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- navbar -->
+    <nav>{% include 'Main/lp_nvb.html' %}</nav>
+
+    <!-- sidebar -->
+    <nav class="sidebar border-bottom border-body" data-bs-theme="dark">
+      <div class="menu_content">
+        <ul class="menu_items">
+          <div class="menu_title menu_dahsboard"></div>
+          <!-- duplicate or remove this li tag if you want to add or remove navlink with submenu -->
+          <!-- start -->
+          <li class="item">
+            <div href="#" class="nav_link submenu_item">
+              <span class="navlink_icon">
+                <i class="bx bx-home-alt"></i>
+              </span>
+              <span class="navlink">Setup</span>
+              <i class="bx bx-chevron-right arrow-left"></i>
+            </div>
+
+            <ul class="menu_items submenu">
+              <a href="#" class="nav_link sublink">Nav Sub Link</a>
+              <a href="#" class="nav_link sublink">Nav Sub Link</a>
+              <a href="#" class="nav_link sublink">Nav Sub Link</a>
+              <a href="#" class="nav_link sublink">Nav Sub Link</a>
+            </ul>
+          </li>
+          <!-- end -->
+
+          <!-- duplicate this li tag if you want to add or remove  navlink with submenu -->
+          <!-- start -->
+          <li class="item">
+            <div href="#" class="nav_link submenu_item">
+              <span class="navlink_icon">
+                <i class="bx bx-grid-alt"></i>
+              </span>
+              <span class="navlink">Sourcs Connection</span>
+              <i class="bx bx-chevron-right arrow-left"></i>
+            </div>
+
+            <ul class="menu_items submenu">
+              <a
+                href="{% url 'inventory' %}"
+                class="nav_link sublink"
+                onclick="showPage('inventory')"
+                >inventory</a
+              >
+              <a
+                href="{% url 'balance' %}"
+                class="nav_link sublink"
+                onclick="showPage('balance')"
+                >balance</a
+              >
+              <a
+                href="{% url 'COGS' %}"
+                class="nav_link sublink"
+                onclick="showPage('COGS')"
+                >COGS</a
+              >
+              <a
+                href="{% url 'INFO1' %}"
+                class="nav_link sublink"
+                onclick="showPage('INFO1')"
+                >INFO1</a
+              >
+              <a
+                href="{% url 'INFO2' %}"
+                class="nav_link sublink"
+                onclick="showPage('INFO2')"
+                >INFO2</a
+              >
+              <a
+                href="{% url 'marketing' %}"
+                class="nav_link sublink"
+                onclick="showPage('Marketing')"
+                >Marketing</a
+              >
+              <a
+                href="{% url 'reclass' %}"
+                class="nav_link sublink"
+                onclick="showPage('Reclass')"
+                >Reclass</a
+              >
+              <a
+                href="{% url 'sales' %}"
+                class="nav_link sublink"
+                onclick="showPage('sales')"
+                >sales</a
+              >
+              <a
+                href="{% url 'purchases' %}"
+                class="nav_link sublink"
+                onclick="showPage('purchases')"
+                >purchases</a
+              >
+            </ul>
+          </li>
+          <!-- end -->
+
+          <li class="item">
+            <div href="#" class="nav_link submenu_item">
+              <span class="navlink_icon">
+                <i class="bx bx-home-alt"></i>
+              </span>
+              <span class="navlink">Examples</span>
+              <i class="bx bx-chevron-right arrow-left"></i>
+            </div>
+
+            <ul class="menu_items submenu">
+              <a href="#" class="nav_link sublink">Nav Sub Link</a>
+              <a href="#" class="nav_link sublink">Nav Sub Link</a>
+              <a href="#" class="nav_link sublink">Nav Sub Link</a>
+              <a href="#" class="nav_link sublink">Nav Sub Link</a>
+            </ul>
+          </li>
+        </ul>
+
+        <ul class="menu_items">
+          <div class="menu_title menu_editor"></div>
+          <!-- duplicate these li tag if you want to add or remove navlink only -->
+          <!-- Start -->
+          <li class="item">
+            <div href="#" class="nav_link submenu_item">
+              <span class="navlink_icon">
+                <i class="bx bx-grid-alt"></i>
+              </span>
+              <span class="navlink">C-Practice</span>
+              <i class="bx bx-chevron-right arrow-left"></i>
+            </div>
+            <ul class="menu_items submenu">
+              <a
+                href="{% url 'juri_table' %}"
+                class="nav_link sublink"
+                onclick="showPage('juri_table')"
+                >Source Table
+              </a>
+              <a
+                href="{% url 'juri_col' %}"
+                class="nav_link sublink"
+                onclick="showPage('juri_col')"
+                >Source Columns</a
+              >
+              <a
+                href="{% url 'fetch_sourceConn' %}"
+                class="nav_link sublink"
+                onclick="showPage('fetch_sourceConn')"
+                >Mapping</a
+              >
+              <a
+                href="{% url 'fetch_cappdb' %}"
+                class="nav_link sublink"
+                onclick="showPage('fetch_cappdb')"
+                >ERP Types</a
+              >
+              <a
+                href="{% url 'cemapng' %}"
+                class="nav_link sublink"
+                onclick="showPage('cemapng')"
+                >Source Connections</a
+              >
+            </ul>
+          </li>
+          <!-- End -->
+
+          <li class="item">
+            <a href="#" class="nav_link">
+              <span class="navlink_icon">
+                <i class="bx bx-loader-circle"></i>
+              </span>
+              <span class="navlink">Summary</span>
+            </a>
+          </li>
+          <li class="item">
+            <div href="#" class="nav_link submenu_item">
+              <span class="navlink_icon">
+                <i class="bx bx-grid-alt"></i>
+              </span>
+              <span class="navlink">Details</span>
+              <i class="bx bx-chevron-right arrow-left"></i>
+            </div>
+            <ul class="menu_items submenu">
+              <a
+                href="{% url 'juri_table' %}"
+                class="nav_link sublink"
+                onclick="showPage('juri_table')"
+                >Sheet1
+              </a>
+              <a
+                href="{% url 'juri_col' %}"
+                class="nav_link sublink"
+                onclick="showPage('juri_col')"
+                >Sheet2</a
+              >
+              <a
+                href="{% url 'fetch_sourceConn' %}"
+                class="nav_link sublink"
+                onclick="showPage('fetch_sourceConn')"
+                >Sheet3</a
+              >
+              <a
+                href="{% url 'fetch_cappdb' %}"
+                class="nav_link sublink"
+                onclick="showPage('fetch_cappdb')"
+                >Sheet4</a
+              >
+              <!-- <a href="{% url 'cemapng' %}" class="nav_link sublink" onclick="showPage('cemapng')">Source Connections</a> -->
+            </ul>
+          </li>
+          <li class="item">
+            <a href="#" class="nav_link">
+              <span class="navlink_icon">
+                <i class="bx bx-cloud-upload"></i>
+              </span>
+              <span class="navlink">Source Connection</span>
+            </a>
+          </li>
+        </ul>
+        <ul class="menu_items">
+          <div class="menu_title menu_setting"></div>
+
+          <li class="item">
+            <a href="#" class="nav_link">
+              <span class="navlink_icon">
+                <i class="bx bx-cog"></i>
+              </span>
+              <span class="navlink">Setting</span>
+            </a>
+          </li>
+          <li class="item">
+            <a href="#" class="nav_link">
+              <span class="navlink_icon">
+                <i class="bx bx-layer"></i>
+              </span>
+              <span class="navlink">Features</span>
+            </a>
+          </li>
+        </ul>
+
+        <!-- Sidebar Open / Close -->
+        <div class="bottom_content">
+          <div class="bottom expand_sidebar">
+            <span> Expand</span>
+            <i class="bx bx-log-in"></i>
+          </div>
+          <div class="bottom collapse_sidebar">
+            <span> Collapse</span>
+            <i class="bx bx-log-out"></i>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <!--inventory, balance,COGS, INFO1,INFO2,marketing,reclass,purchases sales-->
+    <div>
+      <div class="breadcrumb" id="hierarchy"></div>
+    </div>
+
+    <div id="contentContainer" class="content-area"></div>
+    <!-- Content Sections for inventory -->
+    <div id="inventory" class="page hidden">
+      <div class="container">
+        <div class="heading-wrapper">
+          <h1 class="mb-4">inventory</h1>
+        </div>
+        <div class="table-responsive table-wrapper">
+          <table
+            class="table table-striped table-dark"
+            style="background-color: #d3e2f4"
+          >
+            <thead class="table-header">
+              <tr>
+                <th>Year</th>
+                <th>Month</th>
+                <th>GL Account</th>
+                <th>Actual</th>
+                <th>Quantity</th>
+                <th>SKU</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for record in records %}
+              <tr>
+                <td class="table-data">{{ record.Year }}</td>
+                <td class="table-data">{{ record.month }}</td>
+                <td class="table-data">{{ record.GLAccount }}</td>
+                <td class="table-data">{{ record.Actual }}</td>
+                <td class="table-data">{{ record.Quantity }}</td>
+                <td class="table-data">{{ record.sku }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <!-- Add Bootstrap JS (optional) -->
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    </div>
+
+    <!-- Content Sections for balance -->
+    <div id="balance" class="page hidden">
+      <div class="container">
+        <div class="heading-wrapper">
+          <h1 class="mb-4">Balance</h1>
+        </div>
+        <div class="table-responsive table-wrapper">
+          <table
+            class="table table-striped table-dark"
+            style="background-color: #d3e2f4"
+          >
+            <thead class="table-header">
+              <tr>
+                <!-- Table Headers -->
+                <th>Month</th>
+                <th>Ledger Account</th>
+                <th>Value</th>
+                <th>Correction</th>
+                <th>Total</th>
+                <th>Mapping</th>
+                <th>FS Line</th>
+                <th>GA Group</th>
+              </tr>
+            </thead>
+            <tbody id="lazyBody">
+              <!-- Initially load first few records -->
+              {% for record in records %}
+
+              <tr>
+                <!-- Table Data -->
+                <td class="table-data">{{ record.month }}</td>
+                <td class="table-data">{{ record.ledger_Account }}</td>
+                <td class="table-data">{{ record.val }}</td>
+                <td class="table-data">{{ record.Corection }}</td>
+                <td class="table-data">{{ record.Total }}</td>
+                <td class="table-data">{{ record.Mapping }}</td>
+                <td class="table-data">{{ record.fsline }}</td>
+                <td class="table-data">{{ record.GA_Group }}</td>
+              </tr>
+
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <!-- content for COGS-------------------------------------------- -->
+    <div id="COGS" class="page hidden">
+      <div class="container">
+        <div class="heading-wrapper">
+          <h1 class="mb-4">COGS</h1>
+        </div>
+        <div class="table-responsive table-wrapper">
+          <table
+            class="table table-striped table-dark"
+            style="background-color: #d3e2f4"
+          >
+            <thead class="table-header">
+              <tr>
+                <!-- Table Headers -->
+                <th>Month</th>
+                <th>Credit</th>
+              </tr>
+            </thead>
+            <tbody id="lazyBody">
+              <!-- Initially load first few records -->
+              {% for record in records %}
+
+              <tr>
+                <!-- Table Data -->
+                <td class="table-data">{{ record.month }}</td>
+                <td class="table-data">{{ record.credit}}</td>
+              </tr>
+
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- contetn for the info1------------------- -->
+    <div id="INFO1" class="page hidden">
+      <div class="container">
+        <div class="heading-wrapper">
+          <h1 class="mb-4">INFO1</h1>
+        </div>
+        <div class="table-responsive table-wrapper">
+          <table
+            class="table table-striped table-dark"
+            style="background-color: #d3e2f4"
+          >
+            <thead class="table-header">
+              <tr>
+                <!--  , , , , ,  -->
+                <!-- Table Headers -->
+                <th>SKU</th>
+                <th>RevGL</th>
+                <th>COGSGL</th>
+                <th>InvGL</th>
+                <th>BrandGroup</th>
+                <th>Vol</th>
+              </tr>
+            </thead>
+            <tbody id="lazyBody">
+              <!-- Initially load first few records -->
+              {% for record in records %}
+
+              <tr>
+                <!-- Table Data -->
+                <td class="table-data">{{ record.SKU }}</td>
+                <td class="table-data">{{ record.RevGL}}</td>
+                <td class="table-data">{{ record.COGSGL}}</td>
+                <td class="table-data">{{ record.InvGL}}</td>
+                <td class="table-data">{{ record.BrandGroup}}</td>
+                <td class="table-data">{{ record.Vol}}</td>
+              </tr>
+
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- contetn for the info2------------------- -->
+    <div id="INFO2" class="page hidden">
+      <div class="container">
+        <div class="heading-wrapper">
+          <h1 class="mb-4">INFO2</h1>
+        </div>
+        <div class="table-responsive table-wrapper">
+          <table
+            class="table table-striped table-dark"
+            style="background-color: #d3e2f4"
+          >
+            <thead class="table-header">
+              <tr>
+                <!-- Table Headers -->
+                <th>Code</th>
+                <th>Group</th>
+                <th>Item</th>
+                <th>FS-line</th>
+              </tr>
+            </thead>
+            <tbody id="lazyBody">
+              <!-- Initially load first few records -->
+              {% for record in records %}
+              <!--  , , ,  -->
+              <tr>
+                <!-- Table Data -->
+                <td class="table-data">{{ record.Code }}</td>
+                <td class="table-data">{{ record.Groups}}</td>
+                <td class="table-data">{{ record.Item}}</td>
+                <td class="table-data">{{ record.FS_line}}</td>
+              </tr>
+
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- contetn for the marketing------------------- -->
+    <div id="marketing" class="page hidden">
+      <div class="container">
+        <div class="heading-wrapper">
+          <h1 class="mb-4">Marketig</h1>
+        </div>
+        <div class="table-responsive table-wrapper">
+          <table
+            class="table table-striped table-dark"
+            style="background-color: #d3e2f4"
+          >
+            <thead class="table-header">
+              <tr>
+                <!-- Table Headers -->
+                <th>date</th>
+                <th>cost_unit</th>
+                <th>value</th>
+                <th>item</th>
+                <th>FS-line</th>
+              </tr>
+            </thead>
+            <tbody id="lazyBody">
+              <!-- Initially load first few records -->
+              {% for record in records %}
+              <tr>
+                <!-- Table Data -->
+                <td class="table-data">{{ record.date }}</td>
+                <td class="table-data">{{ record.cost_unit}}</td>
+                <td class="table-data">{{ record.value}}</td>
+                <td class="table-data">{{ record.item}}</td>
+                <td class="table-data">{{ record.fS_line}}</td>
+              </tr>
+
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- contetn for the reclass------------------- -->
+    <div id="reclass" class="page hidden">
+      <div class="container">
+        <div class="heading-wrapper">
+          <h1 class="mb-4">Reclass</h1>
+        </div>
+        <div class="table-responsive table-wrapper">
+          <table
+            class="table table-striped table-dark"
+            style="background-color: #d3e2f4"
+          >
+            <thead class="table-header">
+              <tr>
+                <!-- Table Headers -->
+                <th>Reknr</th>
+                <th>GLDesc</th>
+                <th>Account</th>
+                <th>value</th>
+                <th>ReclassGL</th>
+              </tr>
+            </thead>
+            <tbody id="lazyBody">
+              <!-- Initially load first few records -->
+              {% for record in records %}
+              <tr>
+                <!-- , , , ,  -->
+                <!-- Table Data -->
+                <td class="table-data">{{ record.reknr }}</td>
+                <td class="table-data">{{ record.GLDesc}}</td>
+                <td class="table-data">{{ record.Account}}</td>
+                <td class="table-data">{{ record.value}}</td>
+                <td class="table-data">{{ record.ReclassGL}}</td>
+              </tr>
+
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- contetn for the purchases------------------- -->
+
+    <div id="purchases" class="page hidden">
+      <div class="container">
+        <div class="heading-wrapper">
+          <h1 class="mb-4">Purchases</h1>
+        </div>
+        <div class="table-responsive table-wrapper">
+          <table
+            class="table table-striped table-dark"
+            style="background-color: #d3e2f4"
+          >
+            <thead class="table-header">
+              <tr>
+                <!-- Table Headers -->
+                <th>Month</th>
+                <th>SKU</th>
+                <th>Bottles</th>
+                <th>Liters</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+            <tbody id="lazyBody">
+              <!-- Initially load first few records -->
+              {% for record in records %}
+              <tr>
+                <!-- Table Data -->
+                <td class="table-data">{{ record.month }}</td>
+                <td class="table-data">{{ record.SKU}}</td>
+                <td class="table-data">{{ record.bottles}}</td>
+                <td class="table-data">{{ record.Liters}}</td>
+                <td class="table-data">{{ record.Amount}}</td>
+              </tr>
+
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- contetn for the sales------------------- -->
+
+    <div id="sales" class="page hidden">
+      <div class="container">
+        <div class="heading-wrapper">
+          <h1 class="mb-4">Sales</h1>
+        </div>
+        <div class="table-responsive table-wrapper">
+          <table
+            class="table table-striped table-dark"
+            style="background-color: #d3e2f4"
+          >
+            <thead class="table-header">
+              <tr>
+                <!-- Table Headers -->
+                <th>Month</th>
+                <th>Reknr</th>
+                <th>GLAccount</th>
+                <th>Gross-Revenue</th>
+                <th>Bottles</th>
+                <th>SKU</th>
+                <th>Liters</th>
+                <th>COGS</th>
+                <th>COGS-customs</th>
+                <th>COGS-logistics</th>
+                <th>Gross-discount</th>
+              </tr>
+            </thead>
+            <tbody id="lazyBody">
+              <!-- Initially load first few records -->
+              {% for record in records %}
+              <tr>
+                <!-- , , , , , , , , , , 
+-->
+                <!-- Table Data -->
+                <td class="table-data">{{ record.month }}</td>
+                <td class="table-data">{{ record.reknr}}</td>
+                <td class="table-data">{{ record.GLAccount}}</td>
+                <td class="table-data">{{ record.Gross_Revenue}}</td>
+                <td class="table-data">{{ record.Bottles}}</td>
+                <td class="table-data">{{ record.SKU}}</td>
+                <td class="table-data">{{ record.Liters}}</td>
+                <td class="table-data">{{ record.COGS}}</td>
+                <td class="table-data">{{ record.cogs_customs}}</td>
+                <td class="table-data">{{ record.cogs_logistics}}</td>
+                <td class="table-data">{{ record.Gross_discount}}</td>
+              </tr>
+
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- contetn for the table extraction------------------- -->
+
+    <div
+      id="juri_table"
+      class="page visible"
+      style="margin-left: 390px; padding: 50px"
+    >
+      <div
+        class="card mb-3"
+        style="
+          border-radius: 15px;
+          background-color: #f8f9fa;
+          border: 1px solid #ced4da;
+          width: 300px;
+        "
+      >
+        <div class="card-body">
+          <form method="post" id="jurisdictionForm">
+            {% csrf_token %}
+
+            <label for="jurisdiction">Selectos Jurisdiction:</label>
+
+            <select id="jurisdictions" name="jurisdiction">
+              {% for jurisdiction in juriss %}
+              <option value="{{ jurisdiction }}">{{ jurisdiction }}</option>
+              {% endfor %}
+            </select>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              id="jurisdictionSubmitBtn"
+            >
+              Submit
+            </button>
+          </form>
+
+          <form method="post" id="actionForm" style="display: none">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label for="actionSelect" class="form-label"
+                >Select Action:</label
+              >
+              <select class="form-select" id="aactionSelect" name="action">
+                <option value="tables">Tables</option>
+                <option value="api">API</option>
+                <option value="file">File</option>
+              </select>
+            </div>
+            <div id="ttables-div">
+              <label for="tables">Select Tables:</label>
+              <select id="ttables" name="tables[]" multiple>
+                {% for table in tabless %}
+                <option value="{{ table }}">{{ table }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div id="aapi-div" style="display: none">
+              <label for="api">Enter API:</label>
+              <input type="text" id="aapi" name="tables[]" />
+            </div>
+            <div id="ffile-div" style="display: none">
+              <label for="file">Upload File:</label>
+              <input type="file" id="ffile" name="tables[]" />
+            </div>
+            <button type="submit" class="btn btn-primary" id="actionSubmitBtn">
+              Submit
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+      $(document).ready(function () {
+        // Initialize Select2 with multiple selection enabled
+        if ($.fn.select2) {
+          $("#tables").select2({
+            multiple: true, // Enable multiple selection
+          });
+        } else {
+          console.error(
+            "Select2 is not loaded. Please ensure the library is included."
+          );
+        }
+
+        // Function to prevent default form submission and handle the logic
+        function handleJurisdictionFormSubmission(event) {
+          // event.preventDefault(); // Prevent the default form submission
+          $("#jurisdictionForm").hide(); // Hide the jurisdiction form
+          $("#actionForm").show(); // Show the action form
+        }
+
+        // Add event listener for the jurisdiction form submission
+        $("#jurisdictionForm").submit(handleJurisdictionFormSubmission);
+
+        // Event listener for action selection
+        $("#actionSelect").change(function () {
+          var action = $(this).val();
+          if (action === "tables") {
+            $("#tables-div").show();
+            $("#api-div, #file-div").hide();
+          } else if (action === "api") {
+            $("#api-div").show();
+            $("#tables-div, #file-div").hide();
+          } else if (action === "file") {
+            $("#file-div").show();
+            $("#tables-div, #api-div").hide();
+          }
+        });
+      });
+    </script>
+
+    <!-- contetn for the table colls extraction------------------- -->
+
+    <div
+      id="juri_col"
+      class="page hidden"
+      style="margin-left: 390px; padding: 50px"
+    >
+      <form method="post" id="myForm">
+        {% csrf_token %}
+        <!-- Jurisdiction select -->
+        <label for="jurisdictionCol">Select Jurisdiction:</label>
+        <select id="jurisdictionCol" name="jurisdictionCol">
+          {% for jurisdictionCol in juri %}
+          <option value="{{ jurisdictionCol }}">{{ jurisdictionCol }}</option>
+          {% endfor %}
+        </select>
+
+        <button type="submit" id="submitBtnCol">Submit</button>
+      </form>
+
+      <form method="post" class="mt-3">
+        {% csrf_token %}
+
+        <!-- actionCol select and table selection -->
+
+        <div class="form-group">
+          <label for="actionCol">Select actionCol:</label>
+          <select class="form-control" id="actionCol" name="actionCol">
+            <option value="tables">Tables</option>
+            <option value="api">API</option>
+            <option value="file">File</option>
+          </select>
+        </div>
+        <div class="form-group" id="tablesCol-div">
+          <label for="table">Select Table:</label>
+          <select class="form-control" id="table" name="tableclls">
+            {% for table in tablescls %}
+            <option value="{{ table }}">{{ table }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group" id="api-div" style="display: none">
+          <label for="api">Enter API:</label>
+          <input type="text" class="form-control" id="api" name="tablesCol[]" />
+        </div>
+        <div class="form-group" id="file-div" style="display: none">
+          <label for="file">Upload File:</label>
+          <input
+            type="file"
+            class="form-control-file"
+            id="file"
+            name="tablesCol[]"
+          />
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+
+      <!-- Display columns for the selected table -->
+      {% if fetched_cols %}
+      <form method="post" class="mt-3">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="columns">Select Columns:</label>
+          <select class="form-control" id="columns" name="columns[]" multiple>
+            {% for column in fetched_cols %}
+            <option value="{{ column }}">{{ column }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+      {% endif %}
+    </div>
+
+    <script>
+      document
+        .getElementById("actionCol")
+        .addEventListener("change", function () {
+          var actionCol = this.value;
+          if (actionCol === "tablesCol") {
+            // Only display the tablesCol dropdown if it's not already displayed
+            if (
+              document.getElementById("table-div").style.display !== "block"
+            ) {
+              document.getElementById("table-div").style.display = "block";
+              document.getElementById("api-div").style.display = "none";
+              document.getElementById("file-div").style.display = "none";
+            }
+          } else if (actionCol === "api") {
+            document.getElementById("table-div").style.display = "none";
+            document.getElementById("api-div").style.display = "block";
+            document.getElementById("file-div").style.display = "none";
+          } else if (actionCol === "file") {
+            document.getElementById("table-div").style.display = "none";
+            document.getElementById("api-div").style.display = "none";
+            document.getElementById("file-div").style.display = "block";
+          }
+        });
+    </script>
+    <script>
+      $(document).ready(function () {
+        // Initialize Select2
+        $("#jurisdictionCol,  #columns").select2();
+      });
+    </script>
+
+    <!-- content for Source connections------------------------- -->
+    <div id="fetch_sourceConn" class="page hidden">
+      <div class="container">
+        <div class="heading-wrapper">
+          <h1 class="mb-4">Source Connections</h1>
+        </div>
+        <div class="table-responsive table-wrapper">
+          <table
+            class="table table-striped table-dark"
+            style="background-color: #d3e2f4"
+          >
+            <thead class="table-header">
+              <tr>
+                <th>SID</th>
+                <th>Jurisdiction</th>
+                <th>DATABASES</th>
+                <th>Src_DB_NAME</th>
+                <th>Src_USER_NAME</th>
+                <th>Src_PASSWRD</th>
+                <th>Src_HOST</th>
+                <th>Src_PORT</th>
+                <th>Src_UPDATE_TIME</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for record in records %}
+              <tr>
+                <td class="table-data">{{ record.SID }}</td>
+                <td class="table-data">{{ record.Jurisdiction }}</td>
+                <td class="table-data">{{ record.DATABASES }}</td>
+                <td class="table-data">{{ record.Src_DB_NAME }}</td>
+                <td class="table-data">{{ record.Src_USER_NAME }}</td>
+                <td class="table-data">{{ record.Src_PASSWRD }}</td>
+                <td class="table-data">{{ record.Src_HOST }}</td>
+                <td class="table-data">{{ record.Src_PORT }}</td>
+                <td class="table-data">{{ record.Src_UPDATE_TIME }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Modal for adding entry -->
+        <div
+          class="modal fade"
+          id="addEntryModal"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="addEntryModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="addEntryModalLabel">
+                  Add Connection
+                </h5>
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form
+                  method="post"
+                  style="background-color: #808080; padding: 20px"
+                >
+                  {% csrf_token %}
+                  <div class="form-group row">
+                    <label for="Jurisdiction" class="col-sm-2 col-form-label"
+                      >Jurisdiction</label
+                    >
+                    <div class="col-sm-8 offset-sm-1">
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="Jurisdiction"
+                        name="Jurisdiction"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="DATABASES" class="col-sm-2 col-form-label"
+                      >DATABASES</label
+                    >
+                    <div class="col-sm-8 offset-sm-1">
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="DATABASES"
+                        name="DATABASES"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="Src_DB_NAME" class="col-sm-2 col-form-label"
+                      >Src_DB_NAME</label
+                    >
+                    <div class="col-sm-8 offset-sm-1">
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="Src_DB_NAME"
+                        name="Src_DB_NAME"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="Src_USER_NAME" class="col-sm-2 col-form-label"
+                      >Src_USER_NAME</label
+                    >
+                    <div class="col-sm-8 offset-sm-1">
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="Src_USER_NAME"
+                        name="Src_USER_NAME"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="Src_PASSWRD" class="col-sm-2 col-form-label"
+                      >Src_PASSWRD</label
+                    >
+                    <div class="col-sm-8 offset-sm-1">
+                      <input
+                        type="password"
+                        class="form-control"
+                        id="Src_PASSWRD"
+                        name="Src_PASSWRD"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="Src_HOST" class="col-sm-2 col-form-label"
+                      >Src_HOST</label
+                    >
+                    <div class="col-sm-8 offset-sm-1">
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="Src_HOST"
+                        name="Src_HOST"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="Src_PORT" class="col-sm-2 col-form-label"
+                      >Src_PORT</label
+                    >
+                    <div class="col-sm-8 offset-sm-1">
+                      <input
+                        type="number"
+                        class="form-control"
+                        id="Src_PORT"
+                        name="Src_PORT"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-sm-8 offset-sm-3">
+                      <button type="submit" class="btn btn-primary">
+                        Submit
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Button to trigger modal -->
+        <div class="row mt-4">
+          <div class="col-md-6">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-toggle="modal"
+              data-target="#addEntryModal"
+            >
+              Add Connection
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- content for Source ERP TYPES------------------------- -->
+    <div id="fetch_cappdb" class="page hidden">
+      <div class="container">
+        <div class="heading-wrapper">
+          <h1 class="mb-4">ERP TYPES</h1>
+        </div>
+        <div class="table-responsive table-wrapper">
+          <table
+            class="table table-striped table-dark"
+            style="background-color: #d3e2f4"
+          >
+            <thead class="table-header">
+              <tr>
+                <th>SID</th>
+                <th>Apps</th>
+                <th>DB Name</th>
+                <th>Update Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for record in records %}
+              <tr>
+                <td class="table-data">{{ record.sid }}</td>
+                <td class="table-data">{{ record.Apps }}</td>
+                <td class="table-data">{{ record.DB_name }}</td>
+                <td class="table-data">{{ record.Update_time }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div
+          class="modal fade"
+          id="addEntryModal"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="addEntryModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="addEntryModalLabel">
+                  Add Connection
+                </h5>
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form
+                  method="post"
+                  style="background-color: #808080; padding: 20px"
+                >
+                  {% csrf_token %}
+                  <div class="form-group row">
+                    <label for="Apps" class="col-sm-2 col-form-label"
+                      >Apps</label
+                    >
+                    <div class="col-sm-8 offset-sm-1">
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="Apps"
+                        name="Apps"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label for="DB_name" class="col-sm-2 col-form-label"
+                      >DB Name</label
+                    >
+                    <div class="col-sm-8 offset-sm-1">
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="DB_name"
+                        name="DB_name"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <!-- <div class="form-group row">
+                            <div class="col-sm-8 offset-sm-3">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </div> -->
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Button to trigger modal -->
+        <div class="row mt-4">
+          <div class="col-md-6">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-toggle="modal"
+              data-target="#addEntryModal"
+            >
+              Add Connection
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add Bootstrap JS (optional) -->
+    </div>
+    <!-- content for cemapng ------------------------- -->
+    <div id="cemapng" class="page hidden">
+      <div class="container">
+        <div class="heading-wrapper">
+          <h1 class="mb-4">INFO2</h1>
+        </div>
+        <div class="table-responsive table-wrapper">
+          <table
+            class="table table-striped table-dark"
+            style="background-color: #d3e2f4"
+          >
+            <thead class="table-header">
+              <tr>
+                <th>SID</th>
+                <th>Jurisdiction</th>
+                <th>Src Type</th>
+                <th>Src TblNm</th>
+                <th>Tgt TblNm</th>
+                <th>Tgt TbCols</th>
+                <th>Mapng Nm</th>
+                <th>Mpngtxt</th>
+                <th>Insert Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for record in records %}
+              <tr>
+                <td class="table-data">{{ record.SID }}</td>
+                <td class="table-data">{{ record.jusrisdiction }}</td>
+                <td class="table-data">{{ record.src_type }}</td>
+                <td class="table-data">{{ record.src_tblnm }}</td>
+                <td class="table-data">{{ record.tgt_tblnm }}</td>
+                <td class="table-data">{{ record.tgt_tblcols }}</td>
+                <td class="table-data">{{ record.mapng_nm }}</td>
+                <td class="table-data">{{ record.mpngtxt }}</td>
+                <td class="table-data">{{ record.insrt_TIMESTAMP }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <!-- JavaScript -->
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const menuItems = document.querySelectorAll(".menu_items .nav_link");
+        const hierarchy = document.getElementById("hierarchy");
+
+        menuItems.forEach((item) => {
+          item.addEventListener("click", function (event) {
+            event.preventDefault();
+            const selectedOption = this.textContent.trim();
+            const level = this.closest("ul").classList.contains("submenu")
+              ? 2
+              : 1;
+            updateHierarchy(selectedOption, level);
+          });
+        });
+
+        function updateHierarchy(option, level) {
+          let currentHierarchy = hierarchy.textContent.split(" > ");
+          currentHierarchy = currentHierarchy.slice(0, level - 1);
+          currentHierarchy.push(option);
+          hierarchy.textContent = currentHierarchy.join(" > ");
+        }
+      });
+    </script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var urlPath = window.location.pathname;
+
+        // Show the corresponding page based on the URL path
+        if (urlPath === "{% url 'inventory' %}") {
+          showPage("inventory");
+        } else if (urlPath === "{% url 'balance' %}") {
+          showPage("balance");
+        } else if (urlPath === "{% url 'COGS' %}") {
+          showPage("COGS");
+        } else if (urlPath === "{% url 'INFO1' %}") {
+          showPage("INFO1");
+        } else if (urlPath === "{% url 'INFO2' %}") {
+          showPage("INFO2");
+        } else if (urlPath === "{% url 'marketing' %}") {
+          showPage("marketing");
+        } else if (urlPath === "{% url 'reclass' %}") {
+          showPage("reclass");
+        } else if (urlPath === "{% url 'sales' %}") {
+          showPage("sales");
+        } else if (urlPath === "{% url 'purchases' %}") {
+          showPage("purchases");
+        } else if (urlPath === "{% url 'juri_table' %}") {
+          showPage("juri_table");
+        } else if (urlPath === "{% url 'juri_col' %}") {
+          showPage("juri_col");
+        } else if (urlPath === "{% url 'fetch_sourceConn' %}") {
+          showPage("fetch_sourceConn");
+        } else if (urlPath === "{% url 'fetch_cappdb' %}") {
+          showPage("fetch_cappdb");
+        } else if (urlPath === "{% url 'cemapng' %}") {
+          showPage("cemapng");
+        }
+      });
+
+      // Function to show the specified page and hide others
+      function showPage(pageId) {
+        var pages = document.querySelectorAll(".page");
+        pages.forEach(function (page) {
+          if (page.id === pageId) {
+            page.classList.remove("hidden");
+            page.classList.add("visible");
+          } else {
+            page.classList.remove("visible");
+            page.classList.add("hidden");
+          }
+        });
+      }
+
+      // If the page is 'inventory' and it has content in the same template,
+      // you might need to add specific logic to show/hide the 'inventory' content div.
+      if (pageId === "inventory") {
+        document.getElementById("inventory").classList.remove("hidden");
+      } else {
+        document.getElementById("inventory").classList.add("hidden");
+      }
+    </script>
+
+    <script src="{% static 'js/main.js' %}"></script>
+  </body>
+</html>

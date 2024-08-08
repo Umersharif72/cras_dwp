@@ -1,0 +1,40 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+	symlinks = false
+	ignorecase = true
+[remote "origin"]
+	url = https://github.com/Najeeb-Tareen/cras.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "main"]
+	remote = origin
+	merge = refs/heads/main
+	vscode-merge-base = origin/main
+[branch "aseer/adj_dis"]
+	vscode-merge-base = origin/main
+[branch "aseer/adjustment"]
+	vscode-merge-base = origin/main
+[branch "aseer/clusterPage"]
+	vscode-merge-base = origin/main
+[branch "aseer/manualEntries"]
+	vscode-merge-base = origin/main
+[branch "aseer/loader"]
+	vscode-merge-base = origin/main
+[branch "aseer/adj"]
+	vscode-merge-base = origin/main
+[branch "aseer/sidebarURL"]
+	vscode-merge-base = origin/main
+[branch "aseer/tabs"]
+	vscode-merge-base = origin/main
+[branch "aseer/rusianTables"]
+	vscode-merge-base = origin/main
+[branch "aseer/russianCluster"]
+	vscode-merge-base = origin/main
+[branch "aseer/ruReports"]
+	vscode-merge-base = origin/main
+[branch "aseer/createTabs"]
+	vscode-merge-base = origin/main
+[branch "aseer/userAdministration"]
+	vscode-merge-base = origin/main

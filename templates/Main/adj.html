@@ -1,0 +1,12 @@
+<!-- adj.html -->
+<form method="post">
+    {% csrf_token %}
+    <label for="ajeDropdown">Select AJE:</label>
+    <select id="ajeDropdown" name="aje_number">
+        <option value="">--Select AJE--</option>
+        {% for aje in aa %}
+            <option value="{{ aje }}">{{ aje }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Submit</button>
+</form>
